@@ -1,5 +1,7 @@
 ﻿import * as Discord from 'discord.js';
+import { token } from './env';
 const client = new Discord.Client();
+
 
 client.on('ready', () => {
 	console.log(`Logged in as ${client.user.tag}!`);
@@ -68,4 +70,4 @@ client.on('message',async message => {
 	}
 });
 
-client.login('NzMyMzc3MjU4ODU3MDcwNjAy.XwzteQ.QXukuVpWgws4HpYpwZ0H5Z9fUuI');
+client.login(token);

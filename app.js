@@ -70,5 +70,5 @@ client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* ()
         }*/
     }
 }));
-client.login('NzMyMzc3MjU4ODU3MDcwNjAy.XwzteQ.QXukuVpWgws4HpYpwZ0H5Z9fUuI');
+client.login('');
 //# sourceMappingURL=app.js.map
