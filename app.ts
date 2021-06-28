@@ -13,7 +13,7 @@ client.on('interaction', async interaction => {
 });
 
 client.on('message',async message => {
-	// If the message is "ping"
+	// Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
 	if (message.content.substr(0, 2) === 'b ' && message.member.roles.cache.some((a) => a.id =="854467063677976586")) {
 		if (message.content === 'b help') {
 
@@ -41,7 +41,22 @@ client.on('message',async message => {
 			let m = await message.channel.send(exampleEmbed);
 		}
 
-		if (message.content.substr(0,6) === 'b poll') {
+		if (message.content.substr(0, 6) === 'b poll') {
+			await message.delete();
+
+			let exampleEmbed = new Discord.MessageEmbed()
+				.setTitle('Question!')
+				.setAuthor(message.member.nickname)
+				.setDescription(message.content.substr(7))
+					
+			let m = await message.channel.send(exampleEmbed);
+
+			await m.react('✅')
+			await m.react('🔘')
+			m.react('❌')
+		}
+		/**
+		if (message.content.substr(0, 6) === 'b pollold') {
 			await message.delete();
 
 			let m = await message.channel.send(message.member.nickname + " asks: " + message.content.substr(7));
@@ -49,7 +64,7 @@ client.on('message',async message => {
 			await m.react('✅')
 			await m.react('🔘')
 			m.react('❌')
-		}
+		}*/
 	}
 });
 

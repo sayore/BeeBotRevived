@@ -22,7 +22,7 @@ client.on('interaction', (interaction) => __awaiter(void 0, void 0, void 0, func
     }
 }));
 client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* () {
-    // If the message is "ping"
+    // Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
     if (message.content.substr(0, 2) === 'b ' && message.member.roles.cache.some((a) => a.id == "854467063677976586")) {
         if (message.content === 'b help') {
         }
@@ -49,11 +49,25 @@ client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* ()
         }
         if (message.content.substr(0, 6) === 'b poll') {
             yield message.delete();
-            let m = yield message.channel.send(message.member.nickname + " asks: " + message.content.substr(7));
+            let exampleEmbed = new Discord.MessageEmbed()
+                .setTitle('Question!')
+                .setAuthor(message.member.nickname)
+                .setDescription(message.content.substr(7));
+            let m = yield message.channel.send(exampleEmbed);
             yield m.react('✅');
             yield m.react('🔘');
             m.react('❌');
         }
+        /**
+        if (message.content.substr(0, 6) === 'b pollold') {
+            await message.delete();
+
+            let m = await message.channel.send(message.member.nickname + " asks: " + message.content.substr(7));
+
+            await m.react('✅')
+            await m.react('🔘')
+            m.react('❌')
+        }*/
     }
 }));
 client.login('NzMyMzc3MjU4ODU3MDcwNjAy.XwzteQ.QXukuVpWgws4HpYpwZ0H5Z9fUuI');
