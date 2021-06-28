@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Discord = require("discord.js");
+const env_1 = require("./env");
 const client = new Discord.Client();
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -70,5 +71,5 @@ client.on('message', (message) => __awaiter(void 0, void 0, void 0, function* ()
         }*/
     }
 }));
-client.login('');
+client.login(env_1.token);
 //# sourceMappingURL=app.js.map

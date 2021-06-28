@@ -363,3 +363,5 @@ MigrationBackup/
 FodyWeavers.xsd
 
 env.ts
+env.js
+env.js.map
