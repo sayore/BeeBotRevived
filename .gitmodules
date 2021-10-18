@@ -1,0 +1,3 @@
+[submodule "SevDevLibTS"]
+	path = SevDevLibTS
+	url = https://github.com/edenprojectde/SevDevLibTS

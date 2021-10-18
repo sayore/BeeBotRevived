@@ -42,8 +42,8 @@ exports.clientBee.on('interaction', (interaction) => __awaiter(void 0, void 0, v
 exports.clientBee.on('messageCreate', (message) => __awaiter(void 0, void 0, void 0, function* () {
     //console.log("message..." + (await message.content))
     // Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
-    if (!(0, command_helper_1.SimplePerRules)(master_1.MasterCommands, message))
-        (0, command_helper_1.SimplePerRules)(trusted_1.TrustedCommands, message);
+    if (!command_helper_1.SimplePerRules(master_1.MasterCommands, message))
+        command_helper_1.SimplePerRules(trusted_1.TrustedCommands, message);
     if (message.content.substr(0, 2) === 'b ' && message.member.roles.cache.some((a) => a.id == "854467063677976586")) {
         if (message.content === 'b help') {
         }
@@ -94,7 +94,7 @@ exports.clientBee.on('messageCreate', (message) => __awaiter(void 0, void 0, voi
 exports.clientBob.on('messageCreate', (message) => __awaiter(void 0, void 0, void 0, function* () {
     //console.log("message..." + (await message.content))
     // Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
-    (0, command_helper_1.SimplePerRules)(bobjokes_1.BobCommands, message);
+    command_helper_1.SimplePerRules(bobjokes_1.BobCommands, message);
 }));
 exports.clientBee.login(env_1.beeToken);
 exports.clientBob.login(env_1.bobToken);
