@@ -1,3 +1,3 @@
-[submodule "SevDevLibTS"]
-	path = SevDevLibTS
-	url = https://github.com/edenprojectde/SevDevLibTS
+[submodule "supernode"]
+	path = supernode
+	url = https://github.com/edenprojectde/supernode

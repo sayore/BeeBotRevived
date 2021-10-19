@@ -7,6 +7,8 @@ import Level from 'level-ts';
 import { DBHelper } from './db.helper';
 import { TrustedCommands } from './CmdGroups/trusted';
 import { BobCommands } from './CmdGroups/bobjokes';
+import { Application } from './SevDevLibTS/Base/Application';
+
 export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 
@@ -79,25 +81,22 @@ clientBee.on('messageCreate', async message => {
 			await m.react('🔘')
 			m.react('❌')
 		}
-		/**
-		if (message.content.substr(0, 6) === 'b pollold') {
-			await message.delete();
-
-			let m = await message.channel.send(message.member.nickname + " asks: " + message.content.substr(7));
-
-			await m.react('✅')
-			await m.react('🔘')
-			m.react('❌')
-		}*/
 	}
 });
 
 clientBob.on('messageCreate', async message => {
-	//console.log("message..." + (await message.content))
-	// Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
-	
 	SimplePerRules(BobCommands, message);
 });
 
 clientBee.login(beeToken);
 clientBob.login(bobToken);
+
+export let BotApplication : Application = {
+	init() {},
+	run() {
+
+		
+		clientBee.login(beeToken);
+		clientBob.login(bobToken);
+	}
+}

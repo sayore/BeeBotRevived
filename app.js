@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.db = exports.clientBob = exports.clientBee = void 0;
+exports.BotApplication = exports.db = exports.clientBob = exports.clientBee = void 0;
 const Discord = require("discord.js");
 const env_1 = require("./env");
 const level_ts_1 = require("level-ts");
@@ -79,23 +79,18 @@ exports.clientBee.on('messageCreate', (message) => __awaiter(void 0, void 0, voi
             yield m.react('🔘');
             m.react('❌');
         }
-        /**
-        if (message.content.substr(0, 6) === 'b pollold') {
-            await message.delete();
-
-            let m = await message.channel.send(message.member.nickname + " asks: " + message.content.substr(7));
-
-            await m.react('✅')
-            await m.react('🔘')
-            m.react('❌')
-        }*/
     }
 }));
 exports.clientBob.on('messageCreate', (message) => __awaiter(void 0, void 0, void 0, function* () {
-    //console.log("message..." + (await message.content))
-    // Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
     command_helper_1.SimplePerRules(bobjokes_1.BobCommands, message);
 }));
 exports.clientBee.login(env_1.beeToken);
 exports.clientBob.login(env_1.bobToken);
+exports.BotApplication = {
+    init() { },
+    run() {
+        exports.clientBee.login(env_1.beeToken);
+        exports.clientBob.login(env_1.bobToken);
+    }
+};
 //# sourceMappingURL=app.js.map
