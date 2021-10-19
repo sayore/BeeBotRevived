@@ -1,26 +1,8 @@
 import { ICommand, TypeOfCmd } from "./icommands";
 import * as Discord from 'discord.js';
 import { clientBee } from "../app";
+import { MessageHelper } from "../supernode/Discord/MessageHelper";
 
-function actionModal() {
-    return
-}
-
-function getSendersVisibleName(msg:Discord.Message) {
-    return msg.member.displayName
-}
-
-function getRepliantsVisibleName(msg:Discord.Message) {
-    return (msg.mentions.repliedUser?
-                (msg.mentions.repliedUser.username?
-                    msg.mentions.repliedUser.username
-                    :msg.mentions.repliedUser.tag)
-                :"noone?")
-}
-
-function hasRepliant(msg:Discord.Message) {
-    return msg.mentions.repliedUser != null;
-}
 
 export let TrustedCommands : ICommand[] = [
     {
@@ -59,7 +41,7 @@ export let TrustedCommands : ICommand[] = [
 			const exampleEmbed = new Discord.MessageEmbed()
 				.setColor('#FFD35D')
 				.setTitle('Hugs!')
-                .setDescription(`${getSendersVisibleName(msg)} hugs ${getRepliantsVisibleName(msg)}`)
+                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} hugs ${MessageHelper.getRepliantsVisibleName(msg)}`)
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
             
@@ -81,7 +63,7 @@ export let TrustedCommands : ICommand[] = [
 			const exampleEmbed = new Discord.MessageEmbed()
 				.setColor('#FFD35D')
 				.setTitle('Boop!')
-                .setDescription(`${getSendersVisibleName(msg)} boops ${getRepliantsVisibleName(msg)}`)
+                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} boops ${MessageHelper.getRepliantsVisibleName(msg)}`)
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
         }
@@ -103,7 +85,7 @@ export let TrustedCommands : ICommand[] = [
 			const exampleEmbed = new Discord.MessageEmbed()
 				.setColor('#FFD35D')
 				.setTitle('Kiss!')
-                .setDescription(`${getSendersVisibleName(msg)} kisses ${getRepliantsVisibleName(msg)}`)
+                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} kisses ${MessageHelper.getRepliantsVisibleName(msg)}`)
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
             
@@ -124,7 +106,7 @@ export let TrustedCommands : ICommand[] = [
 			const exampleEmbed = new Discord.MessageEmbed()
 				.setColor('#FFD35D')
 				.setTitle('Kiss!')
-                .setDescription(`${getSendersVisibleName(msg)} kisses ${getRepliantsVisibleName(msg)}`)
+                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} kisses ${MessageHelper.getRepliantsVisibleName(msg)}`)
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
             
@@ -147,7 +129,7 @@ export let TrustedCommands : ICommand[] = [
 			const exampleEmbed = new Discord.MessageEmbed()
 				.setColor('#FFD35D')
 				.setTitle('Cuddle!')
-                .setDescription(`${getSendersVisibleName(msg)} cuddles ${getRepliantsVisibleName(msg)}`)
+                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} cuddles ${MessageHelper.getRepliantsVisibleName(msg)}`)
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
             
@@ -169,7 +151,7 @@ export let TrustedCommands : ICommand[] = [
 			const exampleEmbed = new Discord.MessageEmbed()
 				.setColor('#FFD35D')
 				.setTitle('Handholding!')
-                .setDescription(`${getSendersVisibleName(msg)} handholds ${getRepliantsVisibleName(msg)} ***blushes***`)
+                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} handholds ${MessageHelper.getRepliantsVisibleName(msg)} ***blushes***`)
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
             
@@ -191,7 +173,7 @@ export let TrustedCommands : ICommand[] = [
 			const exampleEmbed = new Discord.MessageEmbed()
 				.setColor('#FFD35D')
 				.setTitle('Hides!')
-                .setDescription(`${getSendersVisibleName(msg)} hides ${(hasRepliant(msg)?"from "+getRepliantsVisibleName(msg)+"!!!":"!!!")}`)
+                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} hides ${(MessageHelper.hasRepliant(msg)?"from "+MessageHelper.getRepliantsVisibleName(msg)+"!!!":"!!!")}`)
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
             
@@ -215,7 +197,7 @@ export let TrustedCommands : ICommand[] = [
 			const exampleEmbed = new Discord.MessageEmbed()
 				.setColor('#FFD35D')
 				.setTitle('Blush!')
-                .setDescription(`${getSendersVisibleName(msg)} blushes.`)
+                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} blushes.`)
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
             
@@ -239,7 +221,7 @@ export let TrustedCommands : ICommand[] = [
 			const exampleEmbed = new Discord.MessageEmbed()
 				.setColor('#FFD35D')
 				.setTitle('Love!')
-                .setDescription(`${getSendersVisibleName(msg)} loves ${getRepliantsVisibleName(msg)}.`)
+                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} loves ${MessageHelper.getRepliantsVisibleName(msg)}.`)
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
             

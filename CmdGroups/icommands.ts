@@ -7,7 +7,7 @@ export interface ICommand {
     grouplimitedids?:string[]
     messagecontent?:string
     triggerwords?:string[]
-    triggerfunc?:Function
+    triggerfunc?:(msg:Discord.Message) => boolean;
     typeofcmd?:TypeOfCmd
     cmd(msg: Discord.Message) : void
 }

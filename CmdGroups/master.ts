@@ -1,7 +1,8 @@
 import { ICommand } from "./icommands";
 import * as Discord from 'discord.js';
 import { CheckForManyWords } from "./command.helper";
-import { db } from "../app";
+import { clientBee, db } from "../app";
+import { MessageHelper } from "../supernode/Discord/MessageHelper";
 
 export let MasterCommands : ICommand[] = [
     {
@@ -21,9 +22,16 @@ export let MasterCommands : ICommand[] = [
     },
     {
         triggerfunc:(msg:Discord.Message)=>{
-            if(msg.toString().indexOf(' ')===-1 && msg.toString().startsWith('<')  && msg.toString().endsWith('>') && msg.toString().toLowerCase().indexOf('pat')!==-1)
+            MessageHelper.getRepliantsVisibleName(msg)
+            if(msg.content.toString().indexOf(' ')===-1 && msg.content.toString().startsWith('<')  && msg.content.toString().endsWith('>') && msg.content.toString().toLowerCase().indexOf('pat')!==-1)
             {
-                return true;
+                console.log("A"+ msg.mentions)
+                console.log(MessageHelper.isRepliant(msg, clientBee.user.id))
+                console.log(MessageHelper.hasRepliant(msg))
+                console.log(msg)
+                if(MessageHelper.isRepliant(msg, clientBee.user.id)) {
+                    return true;
+                }
             }
             return false;
          },

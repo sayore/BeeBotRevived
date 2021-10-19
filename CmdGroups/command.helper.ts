@@ -26,7 +26,7 @@ export function SimplePerRules(cmds:ICommand[],msg:Discord.Message) : boolean {
         }
 
         if(v.triggerfunc!=undefined)
-        if(v.triggerfunc(msg.content)) {
+        if(v.triggerfunc(msg)) {
             v.cmd(msg);
             report.executed++;
         }
