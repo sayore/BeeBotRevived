@@ -1,9 +1,5 @@
 ﻿import * as Discord from 'discord.js';
-try {
-	import { beeToken, bobToken } from './env';
-	} catch (e) {
-
-}
+import { beeToken, bobToken } from './env';
 import level from 'level-ts';
 import { MasterCommands } from './CmdGroups/master';
 import { SimplePerRules } from './CmdGroups/command.helper';
@@ -92,7 +88,7 @@ export class BotApplication implements Application {
 		clientBob.on('messageCreate', async message => {
 			SimplePerRules(BobCommands, message);
 		});
-	},
+	}
 	run() {
 		clientBee.login(beeToken);
 		clientBob.login(bobToken);
