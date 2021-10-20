@@ -1,5 +1,9 @@
 ﻿import * as Discord from 'discord.js';
-import { beeToken, bobToken } from './env';
+try {
+	import { beeToken, bobToken } from './env';
+	} catch (e) {
+
+}
 import level from 'level-ts';
 import { MasterCommands } from './CmdGroups/master';
 import { SimplePerRules } from './CmdGroups/command.helper';
@@ -20,8 +24,11 @@ async function GenerealReadyAsync(e)  {
 	await db.put('logins', ++logins);
 }
 
-export let BotApplication : Application = {
+export class BotApplication implements Application {
+	static hasStarted = false;
+
 	init() {
+		BotApplication.hasStarted=true;
 		clientBee.on('ready', GenerealReadyAsync);
 		clientBob.on('ready', GenerealReadyAsync);
 		
@@ -89,9 +96,14 @@ export let BotApplication : Application = {
 	run() {
 		clientBee.login(beeToken);
 		clientBob.login(bobToken);
-		
 	}
 }
 
-BotApplication.init();
-BotApplication.run();
+/** Autorun if not started externally */
+setTimeout(()=>{
+	if(!BotApplication.hasStarted) {
+		let botApp = new BotApplication();
+		botApp.init();
+		botApp.run();
+	}
+}, 1200)
