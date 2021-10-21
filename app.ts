@@ -88,7 +88,7 @@ export class BotApplication implements Application {
 		clientBob.on('messageCreate', async message => {
 			SimplePerRules(BobCommands, message);
 		});
-	}
+	} 
 	run() {
 		clientBee.login(beeToken);
 		clientBob.login(bobToken);
