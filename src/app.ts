@@ -7,7 +7,10 @@ import Level from 'level-ts';
 import { DBHelper } from './db.helper';
 import { TrustedCommands } from './CmdGroups/trusted';
 import { BobCommands } from './CmdGroups/bobjokes';
-import { Application } from './supernode/Base/Application';
+import { Application, SafetyMode, TypeOfApplication } from 'supernode/Base/Application';
+import { ExpressApplication } from 'supernode/Base/ExpressApplication';
+import { ApplicationCollection } from 'supernode/Base/ApplicationCollection';
+
 
 export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
@@ -20,11 +23,23 @@ async function GenerealReadyAsync(e)  {
 	await db.put('logins', ++logins);
 }
 
-export class BotApplication implements Application {
-	static hasStarted = false;
+export class BeeApplication implements Application {
+	Type = TypeOfApplication.BackgroundProcess;
+	uid="BeeBot Application";
+	error?(eventdata?: any): void {
+		console.log(eventdata)
+	}
+	exit?(eventdata?: any): void {
+		console.log(eventdata)
+	}
+	typeOfApplication?: TypeOfApplication;
+	needsSafeMode?: SafetyMode;
+	meta?: object;
 
+	static hasStarted = false;
+	db() {return db; }
 	init() {
-		BotApplication.hasStarted=true;
+		BeeApplication.hasStarted=true;
 		clientBee.on('ready', GenerealReadyAsync);
 		clientBob.on('ready', GenerealReadyAsync);
 		
@@ -95,11 +110,45 @@ export class BotApplication implements Application {
 	}
 }
 
+export class BeeWebserverApplication extends ExpressApplication {
+	subdomain = "bee";
+	domain = "sayore.de";
+	Type: TypeOfApplication.Webserver;
+	uid = "BeeWebserver Application";
+	error?(eventdata?: any): void {
+		throw new Error('Method not implemented.');
+	}
+	exit?(eventdata?: any): void {
+		throw new Error('Method not implemented.');
+	}
+	needsSafeMode?: SafetyMode;
+
+	init(eventdata?: any): void {
+		this.app.get('/', (req, res) => {
+		res.send('Hello World!')
+		})
+	}
+	typeOfApplication = TypeOfApplication.Webserver
+}
+
+class _BeeBotApps extends ApplicationCollection {
+	constructor() {
+		super()
+		
+	}
+	applications: Application[] = [
+		new BeeApplication(),
+		new BeeWebserverApplication(80)
+	];
+}
+
+export let BeeBotApps : ApplicationCollection = new _BeeBotApps();
+
 /** Autorun if not started externally */
-setTimeout(()=>{
-	if(!BotApplication.hasStarted) {
-		let botApp = new BotApplication();
+/**setTimeout(()=>{
+	if(!BeeApplication.hasStarted) {
+		let botApp = new BeeApplication();
 		botApp.init();
 		botApp.run();
 	}
-}, 1200)
+}, 1200)*/

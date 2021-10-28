@@ -1,7 +1,7 @@
 import { ICommand, TypeOfCmd } from "./icommands";
 import * as Discord from 'discord.js';
 import { clientBee } from "../app";
-import { MessageHelper } from "../supernode/Discord/MessageHelper";
+import { MessageHelper } from "supernode/Discord/MessageHelper";
 
 
 export let TrustedCommands : ICommand[] = [

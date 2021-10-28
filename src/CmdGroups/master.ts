@@ -2,7 +2,7 @@ import { ICommand } from "./icommands";
 import * as Discord from 'discord.js';
 import { CheckForManyWords } from "./command.helper";
 import { clientBee, db } from "../app";
-import { MessageHelper } from "../supernode/Discord/MessageHelper";
+import { MessageHelper } from "supernode/Discord/MessageHelper";
 
 export let MasterCommands : ICommand[] = [
     {
