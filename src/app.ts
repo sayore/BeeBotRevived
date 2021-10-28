@@ -104,7 +104,7 @@ export class BeeApplication implements Application {
 			SimplePerRules(BobCommands, message);
 		});
 	} 
-	run() {
+	async run(eventdata : any) {
 		clientBee.login(beeToken);
 		clientBob.login(bobToken);
 	}

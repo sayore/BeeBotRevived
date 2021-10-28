@@ -17,7 +17,7 @@ export declare class BeeApplication implements Application {
     static hasStarted: boolean;
     db(): level<any>;
     init(): void;
-    run(): void;
+    run(eventdata: any): Promise<void>;
 }
 export declare class BeeWebserverApplication extends ExpressApplication {
     subdomain: string;
