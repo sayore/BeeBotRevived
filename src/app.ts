@@ -26,6 +26,13 @@ async function GenerealReadyAsync(e)  {
 }
 
 export class BeeApplication implements Application {
+	beeToken: string;
+	bobToken: string;
+	constructor(beeToken:string,bobToken:string) {
+		this.beeToken = beeToken;
+		this.bobToken = bobToken;
+	}
+
 	Type = TypeOfApplication.BackgroundProcess;
 	uid="BeeBot Application";
 	error?(eventdata?: any): void {
@@ -108,7 +115,14 @@ export class BeeApplication implements Application {
 		});
 	} 
 	async run(eventdata : any) {
-		clientBee.login(beeToken); 
+		if(this.beeToken)
+		clientBee.login(this.beeToken);
+		else
+		clientBee.login(beeToken);
+		
+		if(this.bobToken)
+		clientBob.login(this.bobToken);
+		else
 		clientBob.login(bobToken);
 	}
 }
@@ -134,23 +148,28 @@ export class BeeWebserverApplication extends ExpressApplication {
 	typeOfApplication = TypeOfApplication.Express
 }
 
-class _BeeBotApps extends ApplicationCollection {
+// TODO: Instead of initing manually here should be a lookup possible  so the webserver can set the applications settings.
+export class _BeeBotApps extends ApplicationCollection {
+	public beeToken: string;
+	public bobToken: string;
 	constructor() {
 		super()
-		
 	}
-	applications: Application[] = [
-		new BeeApplication(),
-		new BeeWebserverApplication(80)
-	];
+	init() {
+		this.applications = [
+			new BeeApplication(this.beeToken,this.bobToken),
+			new BeeWebserverApplication(80)
+		];
+	}
+	applications: Application[];
 }
 
-export let BeeBotApps : ApplicationCollection = new _BeeBotApps();
+export let BeeBotApps : _BeeBotApps = new _BeeBotApps();
 
 /** Autorun if not started externally */
 setTimeout(()=>{
 	if(!BeeApplication.hasStarted) {
-		let botApp = new BeeApplication();
+		let botApp = new BeeApplication(beeToken,bobToken);
 		botApp.init();
 		botApp.run({});
 	}

@@ -31,7 +31,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BeeBotApps = exports.BeeWebserverApplication = exports.BeeApplication = exports.db = exports.clientBob = exports.clientBee = void 0;
+exports.BeeBotApps = exports._BeeBotApps = exports.BeeWebserverApplication = exports.BeeApplication = exports.db = exports.clientBob = exports.clientBee = void 0;
 const Discord = __importStar(require("discord.js"));
 const env_1 = require("./env");
 const level_ts_1 = __importDefault(require("level-ts"));
@@ -56,9 +56,11 @@ function GenerealReadyAsync(e) {
     });
 }
 class BeeApplication {
-    constructor() {
+    constructor(beeToken, bobToken) {
         this.Type = Application_1.TypeOfApplication.BackgroundProcess;
         this.uid = "BeeBot Application";
+        this.beeToken = beeToken;
+        this.bobToken = bobToken;
     }
     error(eventdata) {
         console.log(eventdata);
@@ -127,8 +129,14 @@ class BeeApplication {
     }
     run(eventdata) {
         return __awaiter(this, void 0, void 0, function* () {
-            exports.clientBee.login(env_1.beeToken);
-            exports.clientBob.login(env_1.bobToken);
+            if (this.beeToken)
+                exports.clientBee.login(this.beeToken);
+            else
+                exports.clientBee.login(env_1.beeToken);
+            if (this.bobToken)
+                exports.clientBob.login(this.bobToken);
+            else
+                exports.clientBob.login(env_1.bobToken);
         });
     }
 }
@@ -154,20 +162,24 @@ class BeeWebserverApplication extends ExpressApplication_1.ExpressApplication {
     }
 }
 exports.BeeWebserverApplication = BeeWebserverApplication;
+// TODO: Instead of initing manually here should be a lookup possible  so the webserver can set the applications settings.
 class _BeeBotApps extends ApplicationCollection_1.ApplicationCollection {
     constructor() {
         super();
+    }
+    init() {
         this.applications = [
-            new BeeApplication(),
+            new BeeApplication(this.beeToken, this.bobToken),
             new BeeWebserverApplication(80)
         ];
     }
 }
+exports._BeeBotApps = _BeeBotApps;
 exports.BeeBotApps = new _BeeBotApps();
 /** Autorun if not started externally */
 setTimeout(() => {
     if (!BeeApplication.hasStarted) {
-        let botApp = new BeeApplication();
+        let botApp = new BeeApplication(env_1.beeToken, env_1.bobToken);
         botApp.init();
         botApp.run({});
     }

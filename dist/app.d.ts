@@ -7,6 +7,9 @@ export declare let clientBee: Discord.Client<boolean>;
 export declare let clientBob: Discord.Client<boolean>;
 export declare let db: level<any>;
 export declare class BeeApplication implements Application {
+    beeToken: string;
+    bobToken: string;
+    constructor(beeToken: string, bobToken: string);
     Type: TypeOfApplication;
     uid: string;
     error?(eventdata?: any): void;
@@ -30,4 +33,11 @@ export declare class BeeWebserverApplication extends ExpressApplication {
     init(eventdata?: any): void;
     typeOfApplication: TypeOfApplication;
 }
-export declare let BeeBotApps: ApplicationCollection;
+export declare class _BeeBotApps extends ApplicationCollection {
+    beeToken: string;
+    bobToken: string;
+    constructor();
+    init(): void;
+    applications: Application[];
+}
+export declare let BeeBotApps: _BeeBotApps;
