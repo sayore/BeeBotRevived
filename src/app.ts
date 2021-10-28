@@ -105,13 +105,12 @@ export class BeeApplication implements Application {
 		});
 	} 
 	async run(eventdata : any) {
-		clientBee.login(beeToken);
+		clientBee.login(beeToken); 
 		clientBob.login(bobToken);
 	}
 }
 
 export class BeeWebserverApplication extends ExpressApplication {
-	subdomain = "bee";
 	domain = "sayore.de";
 	Type: TypeOfApplication.Webserver;
 	uid = "BeeWebserver Application";

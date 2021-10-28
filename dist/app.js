@@ -135,7 +135,6 @@ BeeApplication.hasStarted = false;
 class BeeWebserverApplication extends ExpressApplication_1.ExpressApplication {
     constructor() {
         super(...arguments);
-        this.subdomain = "bee";
         this.domain = "sayore.de";
         this.uid = "BeeWebserver Application";
         this.typeOfApplication = Application_1.TypeOfApplication.Webserver;

@@ -20,7 +20,6 @@ export declare class BeeApplication implements Application {
     run(eventdata: any): Promise<void>;
 }
 export declare class BeeWebserverApplication extends ExpressApplication {
-    subdomain: string;
     domain: string;
     Type: TypeOfApplication.Webserver;
     uid: string;
