@@ -38,11 +38,12 @@ const level_ts_1 = __importDefault(require("level-ts"));
 const master_1 = require("./CmdGroups/master");
 const command_helper_1 = require("./CmdGroups/command.helper");
 const db_helper_1 = require("./db.helper");
+const everyone_1 = require("./CmdGroups/everyone");
 const trusted_1 = require("./CmdGroups/trusted");
 const bobjokes_1 = require("./CmdGroups/bobjokes");
 const Application_1 = require("supernode/Base/Application");
-const ExpressApplication_1 = require("supernode/Base/ExpressApplication");
 const ApplicationCollection_1 = require("supernode/Base/ApplicationCollection");
+const ExpressApplication_1 = require("supernode/Base/ExpressApplication");
 exports.clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 exports.clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 exports.db = new level_ts_1.default('./database');
@@ -80,6 +81,7 @@ class BeeApplication {
         exports.clientBee.on('messageCreate', (message) => __awaiter(this, void 0, void 0, function* () {
             //console.log("message..." + (await message.content))
             // Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
+            (0, command_helper_1.SimplePerRules)(everyone_1.EveryoneCommands, message);
             if (!(0, command_helper_1.SimplePerRules)(master_1.MasterCommands, message))
                 (0, command_helper_1.SimplePerRules)(trusted_1.TrustedCommands, message);
             if (message.content.substr(0, 2) === 'b ' && message.member.roles.cache.some((a) => a.id == "854467063677976586")) {
@@ -135,15 +137,15 @@ BeeApplication.hasStarted = false;
 class BeeWebserverApplication extends ExpressApplication_1.ExpressApplication {
     constructor() {
         super(...arguments);
+        this.subdomain = "bee";
         this.domain = "sayore.de";
-        this.uid = "BeeWebserver Application";
-        this.typeOfApplication = Application_1.TypeOfApplication.Webserver;
+        this.uid = `BeeWebserver (${this.subdomain}.${this.domain})`;
+        this.needsSafeMode = Application_1.SafetyMode.NeedsCatch;
+        this.typeOfApplication = Application_1.TypeOfApplication.Express;
     }
     error(eventdata) {
-        throw new Error('Method not implemented.');
     }
     exit(eventdata) {
-        throw new Error('Method not implemented.');
     }
     init(eventdata) {
         this.app.get('/', (req, res) => {
@@ -163,11 +165,11 @@ class _BeeBotApps extends ApplicationCollection_1.ApplicationCollection {
 }
 exports.BeeBotApps = new _BeeBotApps();
 /** Autorun if not started externally */
-/**setTimeout(()=>{
-    if(!BeeApplication.hasStarted) {
+setTimeout(() => {
+    if (!BeeApplication.hasStarted) {
         let botApp = new BeeApplication();
         botApp.init();
-        botApp.run();
+        botApp.run({});
     }
-}, 1200)*/ 
+}, 1200);
 //# sourceMappingURL=app.js.map

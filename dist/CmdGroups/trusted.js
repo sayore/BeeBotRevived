@@ -31,7 +31,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TrustedCommands = void 0;
 const icommands_1 = require("./icommands");
 const Discord = __importStar(require("discord.js"));
-const MessageHelper_1 = require("supernode/Discord/MessageHelper");
+const mod_1 = require("supernode/Discord/mod");
 exports.TrustedCommands = [
     {
         prefix: true,
@@ -73,7 +73,7 @@ exports.TrustedCommands = [
                 const exampleEmbed = new Discord.MessageEmbed()
                     .setColor('#FFD35D')
                     .setTitle('Hugs!')
-                    .setDescription(`${MessageHelper_1.MessageHelper.getSendersVisibleName(msg)} hugs ${MessageHelper_1.MessageHelper.getRepliantsVisibleName(msg)}`)
+                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} hugs ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
             });
@@ -87,15 +87,39 @@ exports.TrustedCommands = [
             return __awaiter(this, void 0, void 0, function* () {
                 let links = [
                     "https://c.tenor.com/l5XjHcppGN0AAAAd/boop.gif",
+                    "https://c.tenor.com/B1ohHuPJIpgAAAAS/anime-cuteness.gif",
                     "https://c.tenor.com/YYoFAH8B7GAAAAAd/anime-your-face-is-cute.gif",
-                    "https://c.tenor.com/YowICbg6ApcAAAAC/aww-hugging.gif"
+                    "https://c.tenor.com/YowICbg6ApcAAAAC/aww-hugging.gif",
+                    "https://c.tenor.com/HZWeNnmcbBYAAAAS/cat-boop.gif",
+                    "https://c.tenor.com/RmQElPHERIoAAAAC/boop-anime.gif"
                 ];
                 // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
                 // Send "pong" to the same channel
                 const exampleEmbed = new Discord.MessageEmbed()
                     .setColor('#FFD35D')
                     .setTitle('Boop!')
-                    .setDescription(`${MessageHelper_1.MessageHelper.getSendersVisibleName(msg)} boops ${MessageHelper_1.MessageHelper.getRepliantsVisibleName(msg)}`)
+                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} boops ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}`)
+                    .setImage(links[Math.floor(Math.random() * links.length)]);
+                let m = yield msg.reply({ embeds: [exampleEmbed] });
+            });
+        }
+    },
+    {
+        prefix: true,
+        typeofcmd: icommands_1.TypeOfCmd.Action,
+        messagecontent: "sex",
+        cmd(msg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                let links = [
+                    "https://c.tenor.com/-XrLQFqn8N0AAAAC/yuri-lewd.gif",
+                    "https://c.tenor.com/XCLEsDZBeBQAAAAC/kissxsis-anime.gif", //clothed, touching wiender kiss xsis
+                ];
+                // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
+                // Send "pong" to the same channel
+                const exampleEmbed = new Discord.MessageEmbed()
+                    .setColor('#FFD35D')
+                    .setTitle('Sex!')
+                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} fucks ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}. **moans***`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
             });
@@ -118,7 +142,7 @@ exports.TrustedCommands = [
                 const exampleEmbed = new Discord.MessageEmbed()
                     .setColor('#FFD35D')
                     .setTitle('Kiss!')
-                    .setDescription(`${MessageHelper_1.MessageHelper.getSendersVisibleName(msg)} kisses ${MessageHelper_1.MessageHelper.getRepliantsVisibleName(msg)}`)
+                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} kisses ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
             });
@@ -139,7 +163,7 @@ exports.TrustedCommands = [
                 const exampleEmbed = new Discord.MessageEmbed()
                     .setColor('#FFD35D')
                     .setTitle('Kiss!')
-                    .setDescription(`${MessageHelper_1.MessageHelper.getSendersVisibleName(msg)} kisses ${MessageHelper_1.MessageHelper.getRepliantsVisibleName(msg)}`)
+                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} kisses ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
             });
@@ -162,7 +186,7 @@ exports.TrustedCommands = [
                 const exampleEmbed = new Discord.MessageEmbed()
                     .setColor('#FFD35D')
                     .setTitle('Cuddle!')
-                    .setDescription(`${MessageHelper_1.MessageHelper.getSendersVisibleName(msg)} cuddles ${MessageHelper_1.MessageHelper.getRepliantsVisibleName(msg)}`)
+                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} cuddles ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
             });
@@ -184,7 +208,34 @@ exports.TrustedCommands = [
                 const exampleEmbed = new Discord.MessageEmbed()
                     .setColor('#FFD35D')
                     .setTitle('Handholding!')
-                    .setDescription(`${MessageHelper_1.MessageHelper.getSendersVisibleName(msg)} handholds ${MessageHelper_1.MessageHelper.getRepliantsVisibleName(msg)} ***blushes***`)
+                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} handholds ${mod_1.MessageHelper.getRepliantsVisibleName(msg)} ***blushes***`)
+                    .setImage(links[Math.floor(Math.random() * links.length)]);
+                let m = yield msg.reply({ embeds: [exampleEmbed] });
+            });
+        }
+    },
+    {
+        prefix: true,
+        typeofcmd: icommands_1.TypeOfCmd.Action,
+        messagecontent: "pat",
+        cmd(msg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                let links = [
+                    "https://c.tenor.com/tYS5DBIos-UAAAAS/kyo-ani-musaigen.gif",
+                    "https://c.tenor.com/EtvotzSToyMAAAAd/petra-rezero.gif",
+                    "https://c.tenor.com/rc8PwWHaV9gAAAAC/headpat-patpat.gif",
+                    "https://c.tenor.com/wLqFGYigJuIAAAAC/mai-sakurajima.gif",
+                    "https://c.tenor.com/0XzZ4R16RaQAAAAC/anime-smile.gif",
+                    "https://c.tenor.com/QAIyvivjoB4AAAAC/anime-anime-head-rub.gif",
+                    "https://c.tenor.com/2oOTpioZ_j4AAAAC/pet-cute.gif",
+                    "https://c.tenor.com/Vz5yn1fwv-gAAAAd/pat-anime.gif",
+                ];
+                // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
+                // Send "pong" to the same channel
+                const exampleEmbed = new Discord.MessageEmbed()
+                    .setColor('#FFD35D')
+                    .setTitle('Pats!')
+                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} pats ${mod_1.MessageHelper.getRepliantsVisibleName(msg)} ***happynoises are filling the room***`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
             });
@@ -206,7 +257,7 @@ exports.TrustedCommands = [
                 const exampleEmbed = new Discord.MessageEmbed()
                     .setColor('#FFD35D')
                     .setTitle('Hides!')
-                    .setDescription(`${MessageHelper_1.MessageHelper.getSendersVisibleName(msg)} hides ${(MessageHelper_1.MessageHelper.hasRepliant(msg) ? "from " + MessageHelper_1.MessageHelper.getRepliantsVisibleName(msg) + "!!!" : "!!!")}`)
+                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} hides ${(mod_1.MessageHelper.hasRepliant(msg) ? "from " + mod_1.MessageHelper.getRepliantsVisibleName(msg) + "!!!" : "!!!")}`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
             });
@@ -230,7 +281,7 @@ exports.TrustedCommands = [
                 const exampleEmbed = new Discord.MessageEmbed()
                     .setColor('#FFD35D')
                     .setTitle('Blush!')
-                    .setDescription(`${MessageHelper_1.MessageHelper.getSendersVisibleName(msg)} blushes.`)
+                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} blushes.`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
             });
@@ -254,7 +305,7 @@ exports.TrustedCommands = [
                 const exampleEmbed = new Discord.MessageEmbed()
                     .setColor('#FFD35D')
                     .setTitle('Love!')
-                    .setDescription(`${MessageHelper_1.MessageHelper.getSendersVisibleName(msg)} loves ${MessageHelper_1.MessageHelper.getRepliantsVisibleName(msg)}.`)
+                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} loves ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}.`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
             });

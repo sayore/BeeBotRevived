@@ -6,10 +6,12 @@ export interface ICommand {
     userlimitedids?:string[]
     grouplimitedids?:string[]
     messagecontent?:string
+    always?:boolean
     triggerwords?:string[]
     triggerfunc?:(msg:Discord.Message) => boolean;
     typeofcmd?:TypeOfCmd
     cmd(msg: Discord.Message) : void
+    isHalting?:boolean
 }
 
 

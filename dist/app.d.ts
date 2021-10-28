@@ -1,8 +1,8 @@
 import * as Discord from 'discord.js';
 import level from 'level-ts';
-import { Application, SafetyMode, TypeOfApplication } from 'supernode/Base/Application';
-import { ExpressApplication } from 'supernode/Base/ExpressApplication';
+import { TypeOfApplication, SafetyMode, Application } from 'supernode/Base/Application';
 import { ApplicationCollection } from 'supernode/Base/ApplicationCollection';
+import { ExpressApplication } from 'supernode/Base/ExpressApplication';
 export declare let clientBee: Discord.Client<boolean>;
 export declare let clientBob: Discord.Client<boolean>;
 export declare let db: level<any>;
@@ -20,8 +20,9 @@ export declare class BeeApplication implements Application {
     run(eventdata: any): Promise<void>;
 }
 export declare class BeeWebserverApplication extends ExpressApplication {
+    subdomain: string;
     domain: string;
-    Type: TypeOfApplication.Webserver;
+    Type: TypeOfApplication.Express;
     uid: string;
     error?(eventdata?: any): void;
     exit?(eventdata?: any): void;
@@ -30,11 +31,3 @@ export declare class BeeWebserverApplication extends ExpressApplication {
     typeOfApplication: TypeOfApplication;
 }
 export declare let BeeBotApps: ApplicationCollection;
-/** Autorun if not started externally */
-/**setTimeout(()=>{
-    if(!BeeApplication.hasStarted) {
-        let botApp = new BeeApplication();
-        botApp.init();
-        botApp.run();
-    }
-}, 1200)*/ 

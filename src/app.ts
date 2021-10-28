@@ -5,11 +5,13 @@ import { MasterCommands } from './CmdGroups/master';
 import { SimplePerRules } from './CmdGroups/command.helper';
 import Level from 'level-ts';
 import { DBHelper } from './db.helper';
+import { EveryoneCommands } from './CmdGroups/everyone';
 import { TrustedCommands } from './CmdGroups/trusted';
 import { BobCommands } from './CmdGroups/bobjokes';
-import { Application, SafetyMode, TypeOfApplication } from 'supernode/Base/Application';
-import { ExpressApplication } from 'supernode/Base/ExpressApplication';
+import { TypeOfApplication, SafetyMode, Application } from 'supernode/Base/Application';
 import { ApplicationCollection } from 'supernode/Base/ApplicationCollection';
+import { ExpressApplication } from 'supernode/Base/ExpressApplication';
+
 
 
 export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
@@ -53,6 +55,7 @@ export class BeeApplication implements Application {
 		clientBee.on('messageCreate', async message => {
 			//console.log("message..." + (await message.content))
 			// Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
+			SimplePerRules(EveryoneCommands, message);
 			if(!SimplePerRules(MasterCommands, message))
 				SimplePerRules(TrustedCommands, message);
 		
@@ -111,23 +114,24 @@ export class BeeApplication implements Application {
 }
 
 export class BeeWebserverApplication extends ExpressApplication {
+	subdomain = "bee";
 	domain = "sayore.de";
-	Type: TypeOfApplication.Webserver;
-	uid = "BeeWebserver Application";
+	Type: TypeOfApplication.Express;
+	uid = `BeeWebserver (${this.subdomain}.${this.domain})`;
 	error?(eventdata?: any): void {
-		throw new Error('Method not implemented.');
+		
 	}
 	exit?(eventdata?: any): void {
-		throw new Error('Method not implemented.');
+		
 	}
-	needsSafeMode?: SafetyMode;
+	needsSafeMode?: SafetyMode = SafetyMode.NeedsCatch;
 
 	init(eventdata?: any): void {
 		this.app.get('/', (req, res) => {
 		res.send('Hello World!')
 		})
 	}
-	typeOfApplication = TypeOfApplication.Webserver
+	typeOfApplication = TypeOfApplication.Express
 }
 
 class _BeeBotApps extends ApplicationCollection {
@@ -144,10 +148,10 @@ class _BeeBotApps extends ApplicationCollection {
 export let BeeBotApps : ApplicationCollection = new _BeeBotApps();
 
 /** Autorun if not started externally */
-/**setTimeout(()=>{
+setTimeout(()=>{
 	if(!BeeApplication.hasStarted) {
 		let botApp = new BeeApplication();
 		botApp.init();
-		botApp.run();
+		botApp.run({});
 	}
-}, 1200)*/
+}, 1200)

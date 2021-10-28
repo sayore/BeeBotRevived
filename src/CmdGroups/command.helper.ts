@@ -17,18 +17,27 @@ export function SimplePerRules(cmds:ICommand[],msg:Discord.Message) : boolean {
         if(msg.content==v.messagecontent) {
             v.cmd(msg);
             report.executed++;
+            if(v.isHalting==true) return;
+        }
+
+        if(v.always==true) { 
+            v.cmd(msg);
+            report.executed++;
+            if(v.isHalting==true) return;
         }
 
         if(v.triggerwords!=undefined && v.triggerwords.length>=1)
         if(CheckForManyWordsCI(msg.content,v.triggerwords)) {
             v.cmd(msg);
             report.executed++;
+            if(v.isHalting==true) return;
         }
 
         if(v.triggerfunc!=undefined)
         if(v.triggerfunc(msg)) {
             v.cmd(msg);
             report.executed++;
+            if(v.isHalting==true) return;
         }
 
     }))

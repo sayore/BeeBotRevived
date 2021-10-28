@@ -1,7 +1,7 @@
 import { ICommand, TypeOfCmd } from "./icommands";
 import * as Discord from 'discord.js';
 import { clientBee } from "../app";
-import { MessageHelper } from "supernode/Discord/MessageHelper";
+import { MessageHelper } from "supernode/Discord/mod";
 
 
 export let TrustedCommands : ICommand[] = [
@@ -54,8 +54,11 @@ export let TrustedCommands : ICommand[] = [
         async cmd(msg:Discord.Message) {
             let links = [
                 "https://c.tenor.com/l5XjHcppGN0AAAAd/boop.gif",
+                "https://c.tenor.com/B1ohHuPJIpgAAAAS/anime-cuteness.gif",
                 "https://c.tenor.com/YYoFAH8B7GAAAAAd/anime-your-face-is-cute.gif",
-                "https://c.tenor.com/YowICbg6ApcAAAAC/aww-hugging.gif"
+                "https://c.tenor.com/YowICbg6ApcAAAAC/aww-hugging.gif",
+                "https://c.tenor.com/HZWeNnmcbBYAAAAS/cat-boop.gif",
+                "https://c.tenor.com/RmQElPHERIoAAAAC/boop-anime.gif"
             ]
             // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
 
@@ -64,6 +67,26 @@ export let TrustedCommands : ICommand[] = [
 				.setColor('#FFD35D')
 				.setTitle('Boop!')
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} boops ${MessageHelper.getRepliantsVisibleName(msg)}`)
+				.setImage(links[Math.floor(Math.random()*links.length)])
+			let m = await msg.reply({embeds:[exampleEmbed]});
+        }
+    },
+    {
+        prefix:true,
+        typeofcmd:TypeOfCmd.Action,
+        messagecontent:"sex",
+        async cmd(msg:Discord.Message) {
+            let links = [
+                "https://c.tenor.com/-XrLQFqn8N0AAAAC/yuri-lewd.gif", // From behind
+                "https://c.tenor.com/XCLEsDZBeBQAAAAC/kissxsis-anime.gif", //clothed, touching wiender kiss xsis
+            ]
+            // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
+
+            // Send "pong" to the same channel
+			const exampleEmbed = new Discord.MessageEmbed()
+				.setColor('#FFD35D')
+				.setTitle('Sex!')
+                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} fucks ${MessageHelper.getRepliantsVisibleName(msg)}. **moans***`)
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
         }
@@ -152,6 +175,33 @@ export let TrustedCommands : ICommand[] = [
 				.setColor('#FFD35D')
 				.setTitle('Handholding!')
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} handholds ${MessageHelper.getRepliantsVisibleName(msg)} ***blushes***`)
+				.setImage(links[Math.floor(Math.random()*links.length)])
+			let m = await msg.reply({embeds:[exampleEmbed]});
+            
+        }
+    },
+    {
+        prefix:true,
+        typeofcmd:TypeOfCmd.Action,
+        messagecontent:"pat",
+        async cmd(msg:Discord.Message) {
+            let links = [
+                "https://c.tenor.com/tYS5DBIos-UAAAAS/kyo-ani-musaigen.gif",
+                "https://c.tenor.com/EtvotzSToyMAAAAd/petra-rezero.gif",
+                "https://c.tenor.com/rc8PwWHaV9gAAAAC/headpat-patpat.gif",
+                "https://c.tenor.com/wLqFGYigJuIAAAAC/mai-sakurajima.gif",
+                "https://c.tenor.com/0XzZ4R16RaQAAAAC/anime-smile.gif",
+                "https://c.tenor.com/QAIyvivjoB4AAAAC/anime-anime-head-rub.gif",
+                "https://c.tenor.com/2oOTpioZ_j4AAAAC/pet-cute.gif",
+                "https://c.tenor.com/Vz5yn1fwv-gAAAAd/pat-anime.gif",
+            ]
+            // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
+
+            // Send "pong" to the same channel
+			const exampleEmbed = new Discord.MessageEmbed()
+				.setColor('#FFD35D')
+				.setTitle('Pats!')
+                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} pats ${MessageHelper.getRepliantsVisibleName(msg)} ***happynoises are filling the room***`)
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
             
