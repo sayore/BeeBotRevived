@@ -11,14 +11,27 @@ import { BobCommands } from './CmdGroups/bobjokes';
 import { TypeOfApplication, SafetyMode, Application } from 'supernode/Base/Application';
 import { ApplicationCollection } from 'supernode/Base/ApplicationCollection';
 import { ExpressApplication } from 'supernode/Base/ExpressApplication';
-
-
+import { Environment } from 'supernode/Base/Environment';
+import process from 'process';
 
 export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 export let db = new level('./database');
+export let EnvFile = "BeeToken.json";
 
-async function GenerealReadyAsync(e)  {
+if (!Environment.checkExists(EnvFile)) {
+	Environment.save(EnvFile, { envV:0, beeToken: "NoTokenYet", bobToken: "NoTokenYet" })
+	console.log("There was no config File yet, it has been written to: "+Environment.getEnvFilePath(EnvFile+"\nBe sure to add the Tokens there."));
+	process.exit(-1);
+}
+let Env = <{ envV:number, beeToken: string, bobToken: string }>Environment.load("BeeToken.json");
+if(Env.beeToken == "NoTokenYet") {
+	console.log("There was a config File yet, but it's missing the Tokens, find it here: "+Environment.getEnvFilePath(EnvFile+"\nBe sure to add the Tokens there."));
+	process.exit(-1);
+}
+
+
+async function GenerealReadyAsync(e) {
 	console.log(`Logged in as ${e}!`);
 	let logins = await DBHelper.getCheckd(db, "logins", 1);
 	console.log(`Logged in for the ${logins} time!`);
@@ -28,13 +41,13 @@ async function GenerealReadyAsync(e)  {
 export class BeeApplication implements Application {
 	beeToken: string;
 	bobToken: string;
-	constructor(beeToken:string,bobToken:string) {
+	constructor(beeToken: string, bobToken: string) {
 		this.beeToken = beeToken;
 		this.bobToken = bobToken;
 	}
 
 	Type = TypeOfApplication.BackgroundProcess;
-	uid="BeeBot Application";
+	uid = "BeeBot Application";
 	error?(eventdata?: any): void {
 		console.log(eventdata)
 	}
@@ -46,31 +59,31 @@ export class BeeApplication implements Application {
 	meta?: object;
 
 	static hasStarted = false;
-	db() {return db; }
+	db() { return db; }
 	init() {
-		BeeApplication.hasStarted=true;
+		BeeApplication.hasStarted = true;
 		clientBee.on('ready', GenerealReadyAsync);
 		clientBob.on('ready', GenerealReadyAsync);
-		
+
 		clientBee.on('interaction', async interaction => {
 			if (!interaction.isCommand()) return;
 			if (interaction.commandName === 'ping') {
 				await interaction.reply('Pong!');
 			}
 		});
-		
+
 		clientBee.on('messageCreate', async message => {
 			//console.log("message..." + (await message.content))
 			// Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
 			SimplePerRules(EveryoneCommands, message);
-			if(!SimplePerRules(MasterCommands, message))
+			if (!SimplePerRules(MasterCommands, message))
 				SimplePerRules(TrustedCommands, message);
-		
+
 			if (message.content.substr(0, 2) === 'b ' && message.member.roles.cache.some((a) => a.id == "854467063677976586")) {
 				if (message.content === 'b help') {
-		
+
 				}
-		
+
 				if (message.content === 'b ping') {
 					// Send "pong" to the same channel
 					const exampleEmbed = new Discord.MessageEmbed()
@@ -92,38 +105,31 @@ export class BeeApplication implements Application {
 					//	.setFooter('Some footer text here', 'https://i.imgur.com/wSTFkRM.png');
 					let m = await message.channel.send({ embeds: [exampleEmbed] });
 				}
-		
+
 				if (message.content.substr(0, 6) === 'b poll') {
 					await message.delete();
-		
+
 					let exampleEmbed = new Discord.MessageEmbed()
 						.setTitle('Question!')
 						.setAuthor(message.member.displayName)
 						.setDescription(message.content.substr(7))
-		
+
 					let m = await message.channel.send({ embeds: [exampleEmbed] })
-		
+
 					await m.react('✅')
 					await m.react('🔘')
 					m.react('❌')
 				}
 			}
 		});
-		
+
 		clientBob.on('messageCreate', async message => {
 			SimplePerRules(BobCommands, message);
 		});
-	} 
-	async run(eventdata : any) {
-		if(this.beeToken)
-		clientBee.login(this.beeToken);
-		else
-		clientBee.login(beeToken);
-		
-		if(this.bobToken)
-		clientBob.login(this.bobToken);
-		else
-		clientBob.login(bobToken);
+	}
+	async run(eventdata: any) {
+		clientBee.login(Env.beeToken);
+		clientBob.login(Env.bobToken);
 	}
 }
 
@@ -133,16 +139,16 @@ export class BeeWebserverApplication extends ExpressApplication {
 	Type: TypeOfApplication.Express;
 	uid = `BeeWebserver (${this.subdomain}.${this.domain})`;
 	error?(eventdata?: any): void {
-		
+
 	}
 	exit?(eventdata?: any): void {
-		
+
 	}
 	needsSafeMode?: SafetyMode = SafetyMode.NeedsCatch;
 
 	init(eventdata?: any): void {
 		this.app.get('/', (req, res) => {
-		res.send('Hello World!')
+			res.send('Hello World!')
 		})
 	}
 	typeOfApplication = TypeOfApplication.Express
@@ -157,19 +163,20 @@ export class _BeeBotApps extends ApplicationCollection {
 	}
 	init() {
 		this.applications = [
-			new BeeApplication(this.beeToken,this.bobToken),
+			new BeeApplication(Env.beeToken, Env.bobToken),
 			new BeeWebserverApplication(80)
 		];
 	}
 	applications: Application[];
 }
 
-export let BeeBotApps : _BeeBotApps = new _BeeBotApps();
+export let BeeBotApps: _BeeBotApps = new _BeeBotApps();
+
 
 /** Autorun if not started externally */
 setTimeout(()=>{
 	if(!BeeApplication.hasStarted) {
-		let botApp = new BeeApplication(beeToken,bobToken);
+		let botApp = new BeeApplication(Env.beeToken,Env.bobToken);
 		botApp.init();
 		botApp.run({});
 	}

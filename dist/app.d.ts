@@ -6,6 +6,7 @@ import { ExpressApplication } from 'supernode/Base/ExpressApplication';
 export declare let clientBee: Discord.Client<boolean>;
 export declare let clientBob: Discord.Client<boolean>;
 export declare let db: level<any>;
+export declare let EnvFile: string;
 export declare class BeeApplication implements Application {
     beeToken: string;
     bobToken: string;

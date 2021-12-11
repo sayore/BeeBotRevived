@@ -31,9 +31,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BeeBotApps = exports._BeeBotApps = exports.BeeWebserverApplication = exports.BeeApplication = exports.db = exports.clientBob = exports.clientBee = void 0;
+exports.BeeBotApps = exports._BeeBotApps = exports.BeeWebserverApplication = exports.BeeApplication = exports.EnvFile = exports.db = exports.clientBob = exports.clientBee = void 0;
 const Discord = __importStar(require("discord.js"));
-const env_1 = require("./env");
 const level_ts_1 = __importDefault(require("level-ts"));
 const master_1 = require("./CmdGroups/master");
 const command_helper_1 = require("./CmdGroups/command.helper");
@@ -44,9 +43,22 @@ const bobjokes_1 = require("./CmdGroups/bobjokes");
 const Application_1 = require("supernode/Base/Application");
 const ApplicationCollection_1 = require("supernode/Base/ApplicationCollection");
 const ExpressApplication_1 = require("supernode/Base/ExpressApplication");
+const Environment_1 = require("supernode/Base/Environment");
+const process_1 = __importDefault(require("process"));
 exports.clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 exports.clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 exports.db = new level_ts_1.default('./database');
+exports.EnvFile = "BeeToken.json";
+if (!Environment_1.Environment.checkExists(exports.EnvFile)) {
+    Environment_1.Environment.save(exports.EnvFile, { envV: 0, beeToken: "NoTokenYet", bobToken: "NoTokenYet" });
+    console.log("There was no config File yet, it has been written to: " + Environment_1.Environment.getEnvFilePath(exports.EnvFile + "\nBe sure to add the Tokens there."));
+    process_1.default.exit(-1);
+}
+let Env = Environment_1.Environment.load("BeeToken.json");
+if (Env.beeToken == "NoTokenYet") {
+    console.log("There was a config File yet, but it's missing the Tokens, find it here: " + Environment_1.Environment.getEnvFilePath(exports.EnvFile + "\nBe sure to add the Tokens there."));
+    process_1.default.exit(-1);
+}
 function GenerealReadyAsync(e) {
     return __awaiter(this, void 0, void 0, function* () {
         console.log(`Logged in as ${e}!`);
@@ -129,14 +141,8 @@ class BeeApplication {
     }
     run(eventdata) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.beeToken)
-                exports.clientBee.login(this.beeToken);
-            else
-                exports.clientBee.login(env_1.beeToken);
-            if (this.bobToken)
-                exports.clientBob.login(this.bobToken);
-            else
-                exports.clientBob.login(env_1.bobToken);
+            exports.clientBee.login(Env.beeToken);
+            exports.clientBob.login(Env.bobToken);
         });
     }
 }
@@ -169,7 +175,7 @@ class _BeeBotApps extends ApplicationCollection_1.ApplicationCollection {
     }
     init() {
         this.applications = [
-            new BeeApplication(this.beeToken, this.bobToken),
+            new BeeApplication(Env.beeToken, Env.bobToken),
             new BeeWebserverApplication(80)
         ];
     }
@@ -179,7 +185,7 @@ exports.BeeBotApps = new _BeeBotApps();
 /** Autorun if not started externally */
 setTimeout(() => {
     if (!BeeApplication.hasStarted) {
-        let botApp = new BeeApplication(env_1.beeToken, env_1.bobToken);
+        let botApp = new BeeApplication(Env.beeToken, Env.bobToken);
         botApp.init();
         botApp.run({});
     }

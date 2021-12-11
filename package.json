@@ -20,6 +20,6 @@
     "express": "^4.17.1",
     "level": "^7.0.1",
     "level-ts": "^2.1.0",
-    "supernode": "git@github.com:sayore/supernode.git"
+    "supernode": "github:sayore/supernode"
   }
 }
