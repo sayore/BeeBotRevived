@@ -154,7 +154,6 @@ export class BeeWebserverApplication extends ExpressApplication {
 	typeOfApplication = TypeOfApplication.Express
 }
 
-// TODO: Instead of initing manually here should be a lookup possible  so the webserver can set the applications settings.
 export class _BeeBotApps extends ApplicationCollection {
 	public beeToken: string;
 	public bobToken: string;

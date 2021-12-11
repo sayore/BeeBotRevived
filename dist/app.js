@@ -168,7 +168,6 @@ class BeeWebserverApplication extends ExpressApplication_1.ExpressApplication {
     }
 }
 exports.BeeWebserverApplication = BeeWebserverApplication;
-// TODO: Instead of initing manually here should be a lookup possible  so the webserver can set the applications settings.
 class _BeeBotApps extends ApplicationCollection_1.ApplicationCollection {
     constructor() {
         super();
