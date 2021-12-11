@@ -14,7 +14,7 @@ export function SimplePerRules(cmds:ICommand[],msg:Discord.Message) : boolean {
             
         
         if(v.messagecontent!=undefined)
-        if(msg.content==v.messagecontent) {
+        if(msg.content.toLowerCase()==v.messagecontent.toLowerCase()) {
             v.cmd(msg);
             report.executed++;
             if(v.isHalting==true) return;

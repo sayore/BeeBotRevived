@@ -16,7 +16,7 @@ function SimplePerRules(cmds, msg) {
             } //This checks for privelege for the command on a per user basis
         //console.log(v.userlimitedids)
         if (v.messagecontent != undefined)
-            if (msg.content == v.messagecontent) {
+            if (msg.content.toLowerCase() == v.messagecontent.toLowerCase()) {
                 v.cmd(msg);
                 report.executed++;
                 if (v.isHalting == true)
