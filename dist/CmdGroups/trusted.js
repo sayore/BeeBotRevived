@@ -312,6 +312,30 @@ exports.TrustedCommands = [
         }
     },
     {
+        prefix: true,
+        typeofcmd: icommands_1.TypeOfCmd.Action,
+        messagecontent: "nom",
+        cmd(msg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                let links = [
+                    "https://c.tenor.com/9dOzFGFZxnoAAAAM/bite-anime.gif",
+                    "https://c.tenor.com/djDaxKCZXpwAAAAM/chomp-cute.gif",
+                    "https://c.tenor.com/SXuvQ7XzeD0AAAAM/cake-birthday.gif",
+                    "https://c.tenor.com/NUvfL_4DmHoAAAAM/yum-cute.gif",
+                    "https://c.tenor.com/i9UwyNJiHCQAAAAM/nom-anime.gif"
+                ];
+                // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
+                // Send "pong" to the same channel
+                const exampleEmbed = new Discord.MessageEmbed()
+                    .setColor('#FFD35D')
+                    .setTitle('Nom\'d!')
+                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} noms ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}. RIP`)
+                    .setImage(links[Math.floor(Math.random() * links.length)]);
+                let m = yield msg.reply({ embeds: [exampleEmbed] });
+            });
+        }
+    },
+    {
         messagecontent: "good bee",
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
