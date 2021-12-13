@@ -25,6 +25,14 @@ export let TrustedCommands : ICommand[] = [
     },
     {
         prefix:true,
+        typeofcmd:TypeOfCmd.Information,
+        triggerwords:["I love","bee"],
+        async cmd(msg:Discord.Message) {
+            msg.reply("	☜(⌒▽⌒)☞");
+        }
+    },
+    {
+        prefix:true,
         typeofcmd:TypeOfCmd.Action,
         messagecontent:"hug",
         async cmd(msg:Discord.Message) {
