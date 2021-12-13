@@ -1,8 +1,9 @@
 import { ICommand } from "./icommands";
 import * as Discord from 'discord.js';
 import { CheckForManyWords } from "./command.helper";
-import { clientBee, db } from "../app";
+import { clientBee, db, EnvFile } from "../app";
 import { MessageHelper } from "supernode/Discord/MessageHelper";
+import { Environment } from "supernode/Base/Environment";
 
 export let MasterCommands : ICommand[] = [
     {
@@ -18,6 +19,24 @@ export let MasterCommands : ICommand[] = [
         async cmd(msg:Discord.Message){
             
             msg.reply(`${await db?"yes":"no"} uwu`);
+        }
+    },
+    {
+        userlimitedids:["562640877705756690"],
+        triggerwords:["add","channel","to","random"],
+        async cmd(msg:Discord.Message){
+            var env : any = Environment.load(EnvFile);
+            if(env.randomChannels == undefined) {
+                env.randomChannels = [msg.channelId];
+            } else {
+                if(env.randomChannels.includes(msg.channelId)) {
+                    msg.reply(`channel is already added to random ev`);
+                } else {
+                    env.randomChannels = [...msg.channelId];
+                    msg.reply(`oki uwu`);
+                }
+            }
+            Environment.save(EnvFile,env);
         }
     },
     {

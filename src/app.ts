@@ -1,5 +1,4 @@
 ﻿import * as Discord from 'discord.js';
-import { beeToken, bobToken } from './env';
 import level from 'level-ts';
 import { MasterCommands } from './CmdGroups/master';
 import { SimplePerRules } from './CmdGroups/command.helper';
@@ -13,6 +12,7 @@ import { ApplicationCollection } from 'supernode/Base/ApplicationCollection';
 import { ExpressApplication } from 'supernode/Base/ExpressApplication';
 import { Environment } from 'supernode/Base/Environment';
 import process from 'process';
+import "./CmdGroups/random";
 
 export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });

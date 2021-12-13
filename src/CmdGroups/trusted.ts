@@ -297,7 +297,8 @@ export let TrustedCommands : ICommand[] = [
 				.setTitle('Nom\'d!')
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} noms ${MessageHelper.getRepliantsVisibleName(msg)}. RIP`)
 				.setImage(links[Math.floor(Math.random()*links.length)])
-			let m = await msg.reply({embeds:[exampleEmbed]});
+                //@ts-ignore
+			let m = await msg.channel.send({embeds:[exampleEmbed]});
             
         }
     },

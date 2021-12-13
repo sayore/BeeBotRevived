@@ -12,6 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.MasterCommands = void 0;
 const app_1 = require("../app");
 const MessageHelper_1 = require("supernode/Discord/MessageHelper");
+const Environment_1 = require("supernode/Base/Environment");
 exports.MasterCommands = [
     {
         userlimitedids: ["562640877705756690"],
@@ -28,6 +29,28 @@ exports.MasterCommands = [
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 msg.reply(`${(yield app_1.db) ? "yes" : "no"} uwu`);
+            });
+        }
+    },
+    {
+        userlimitedids: ["562640877705756690"],
+        triggerwords: ["add", "channel", "to", "random"],
+        cmd(msg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                var env = Environment_1.Environment.load(app_1.EnvFile);
+                if (env.randomChannels == undefined) {
+                    env.randomChannels = [msg.channelId];
+                }
+                else {
+                    if (env.randomChannels.includes(msg.channelId)) {
+                        msg.reply(`channel is already added to random ev`);
+                    }
+                    else {
+                        env.randomChannels = [...msg.channelId];
+                        msg.reply(`oki uwu`);
+                    }
+                }
+                Environment_1.Environment.save(app_1.EnvFile, env);
             });
         }
     },

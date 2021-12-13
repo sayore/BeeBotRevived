@@ -331,7 +331,8 @@ exports.TrustedCommands = [
                     .setTitle('Nom\'d!')
                     .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} noms ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}. RIP`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
-                let m = yield msg.reply({ embeds: [exampleEmbed] });
+                //@ts-ignore
+                let m = yield msg.channel.send({ embeds: [exampleEmbed] });
             });
         }
     },
