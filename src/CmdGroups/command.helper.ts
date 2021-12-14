@@ -12,6 +12,9 @@ export function SimplePerRules(cmds:ICommand[],msg:Discord.Message) : boolean {
         { return; } //This checks for privelege for the command on a per user basis
         //console.log(v.userlimitedids)
             
+        if(v.ownerlimited!=undefined)
+        if(v.ownerlimited==true && msg.guild.ownerId!=msg.author.id)
+        { return; }
         
         if(v.messagecontent!=undefined)
         if(msg.content.toLowerCase()==v.messagecontent.toLowerCase()) {
@@ -25,6 +28,8 @@ export function SimplePerRules(cmds:ICommand[],msg:Discord.Message) : boolean {
             report.executed++;
             if(v.isHalting==true) return;
         }
+
+        
 
         if(v.triggerwords!=undefined && v.triggerwords.length>=1)
         if(CheckForManyWordsCI(msg.content,v.triggerwords)) {
