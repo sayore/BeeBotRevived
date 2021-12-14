@@ -2,6 +2,7 @@ import { ICommand, TypeOfCmd } from "./icommands";
 import * as Discord from 'discord.js';
 import { clientBee } from "../app";
 import { MessageHelper } from "supernode/Discord/mod";
+import { getRandom } from "./command.helper";
 
 
 export let TrustedCommands : ICommand[] = [
@@ -26,9 +27,9 @@ export let TrustedCommands : ICommand[] = [
     {
         prefix:true,
         typeofcmd:TypeOfCmd.Information,
-        triggerwords:["I love","bee"],
+        triggerwords:["i love","bee"],
         async cmd(msg:Discord.Message) {
-            msg.reply("	☜(⌒▽⌒)☞");
+            msg.reply(getRandom(["	☜(⌒▽⌒)☞","(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄","(〃￣ω￣〃ゞ"]));
         }
     },
     {

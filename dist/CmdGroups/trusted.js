@@ -32,6 +32,7 @@ exports.TrustedCommands = void 0;
 const icommands_1 = require("./icommands");
 const Discord = __importStar(require("discord.js"));
 const mod_1 = require("supernode/Discord/mod");
+const command_helper_1 = require("./command.helper");
 exports.TrustedCommands = [
     {
         prefix: true,
@@ -52,6 +53,16 @@ exports.TrustedCommands = [
             return __awaiter(this, void 0, void 0, function* () {
                 msg.reply("There are '" +
                     exports.TrustedCommands.filter(v => { return v.typeofcmd == icommands_1.TypeOfCmd.Action; }).map(v => { return v.messagecontent; }).join("','") + "'.");
+            });
+        }
+    },
+    {
+        prefix: true,
+        typeofcmd: icommands_1.TypeOfCmd.Information,
+        triggerwords: ["i love", "bee"],
+        cmd(msg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                msg.reply((0, command_helper_1.getRandom)(["	☜(⌒▽⌒)☞", "(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄", "(〃￣ω￣〃ゞ"]));
             });
         }
     },

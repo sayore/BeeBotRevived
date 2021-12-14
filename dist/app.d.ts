@@ -1,3 +1,4 @@
+export declare let EnvFile: string;
 import * as Discord from 'discord.js';
 import level from 'level-ts';
 import { TypeOfApplication, SafetyMode, Application } from 'supernode/Base/Application';
@@ -7,7 +8,6 @@ import "./CmdGroups/random";
 export declare let clientBee: Discord.Client<boolean>;
 export declare let clientBob: Discord.Client<boolean>;
 export declare let db: level<any>;
-export declare let EnvFile: string;
 export declare class BeeApplication implements Application {
     beeToken: string;
     bobToken: string;

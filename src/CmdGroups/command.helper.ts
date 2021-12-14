@@ -63,3 +63,7 @@ export function CheckForManyWordsCI(message:string, words: string[]) {
     }
     return true;
 }
+
+export function getRandom<T>(arr:T[]) : T {
+    return arr[Math.floor(Math.random()*arr.length)];
+}

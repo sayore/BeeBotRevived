@@ -31,7 +31,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.BeeBotApps = exports._BeeBotApps = exports.BeeWebserverApplication = exports.BeeApplication = exports.EnvFile = exports.db = exports.clientBob = exports.clientBee = void 0;
+exports.BeeBotApps = exports._BeeBotApps = exports.BeeWebserverApplication = exports.BeeApplication = exports.db = exports.clientBob = exports.clientBee = exports.EnvFile = void 0;
+exports.EnvFile = "BeeToken.json";
 const Discord = __importStar(require("discord.js"));
 const level_ts_1 = __importDefault(require("level-ts"));
 const master_1 = require("./CmdGroups/master");
@@ -49,7 +50,6 @@ require("./CmdGroups/random");
 exports.clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 exports.clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 exports.db = new level_ts_1.default('./database');
-exports.EnvFile = "BeeToken.json";
 if (!Environment_1.Environment.checkExists(exports.EnvFile)) {
     Environment_1.Environment.save(exports.EnvFile, { envV: 0, beeToken: "NoTokenYet", bobToken: "NoTokenYet" });
     console.log("There was no config File yet, it has been written to: " + Environment_1.Environment.getEnvFilePath(exports.EnvFile + "\nBe sure to add the Tokens there."));

@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.CheckForManyWordsCI = exports.CheckForManyWords = exports.SimplePerRules = void 0;
+exports.getRandom = exports.CheckForManyWordsCI = exports.CheckForManyWords = exports.SimplePerRules = void 0;
 const app_1 = require("../app");
 const db_helper_1 = require("../db.helper");
 function SimplePerRules(cmds, msg) {
@@ -68,4 +68,8 @@ function CheckForManyWordsCI(message, words) {
     return true;
 }
 exports.CheckForManyWordsCI = CheckForManyWordsCI;
+function getRandom(arr) {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
+exports.getRandom = getRandom;
 //# sourceMappingURL=command.helper.js.map

@@ -1,4 +1,5 @@
-﻿import * as Discord from 'discord.js';
+﻿export let EnvFile = "BeeToken.json";
+import * as Discord from 'discord.js';
 import level from 'level-ts';
 import { MasterCommands } from './CmdGroups/master';
 import { SimplePerRules } from './CmdGroups/command.helper';
@@ -17,7 +18,6 @@ import "./CmdGroups/random";
 export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 export let db = new level('./database');
-export let EnvFile = "BeeToken.json";
 
 if (!Environment.checkExists(EnvFile)) {
 	Environment.save(EnvFile, { envV:0, beeToken: "NoTokenYet", bobToken: "NoTokenYet" })
