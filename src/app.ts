@@ -14,10 +14,12 @@ import { ExpressApplication } from 'supernode/Base/ExpressApplication';
 import { Environment } from 'supernode/Base/Environment';
 import process from 'process';
 import "./CmdGroups/random";
+import { RandomEvents } from './CmdGroups/random';
 
 export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 export let db = new level('./database');
+export let randomEvents = new RandomEvents();
 
 if (!Environment.checkExists(EnvFile)) {
 	Environment.save(EnvFile, { envV:0, beeToken: "NoTokenYet", bobToken: "NoTokenYet" })
@@ -31,11 +33,12 @@ if(Env.beeToken == "NoTokenYet") {
 }
 
 
-async function GenerealReadyAsync(e) {
-	console.log(`Logged in as ${e}!`);
+async function GenerealReadyAsync(e:Discord.Client) {
+	console.log(`Logged in as ${e.user.tag}!`);
+	
 	let logins = await DBHelper.getCheckd(db, "logins", 1);
-	console.log(`Logged in for the ${logins} time!`);
 	await db.put('logins', ++logins);
+	randomEvents.start();
 }
 
 export class BeeApplication implements Application {

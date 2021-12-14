@@ -5,9 +5,11 @@ import { TypeOfApplication, SafetyMode, Application } from 'supernode/Base/Appli
 import { ApplicationCollection } from 'supernode/Base/ApplicationCollection';
 import { ExpressApplication } from 'supernode/Base/ExpressApplication';
 import "./CmdGroups/random";
+import { RandomEvents } from './CmdGroups/random';
 export declare let clientBee: Discord.Client<boolean>;
 export declare let clientBob: Discord.Client<boolean>;
 export declare let db: level<any>;
+export declare let randomEvents: RandomEvents;
 export declare class BeeApplication implements Application {
     beeToken: string;
     bobToken: string;

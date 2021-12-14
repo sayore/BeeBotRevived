@@ -15,6 +15,10 @@ function SimplePerRules(cmds, msg) {
                 return;
             } //This checks for privelege for the command on a per user basis
         //console.log(v.userlimitedids)
+        if (v.ownerlimited != undefined)
+            if (v.ownerlimited == true && msg.guild.ownerId != msg.author.id) {
+                return;
+            }
         if (v.messagecontent != undefined)
             if (msg.content.toLowerCase() == v.messagecontent.toLowerCase()) {
                 v.cmd(msg);

@@ -15,7 +15,7 @@ const MessageHelper_1 = require("supernode/Discord/MessageHelper");
 const Environment_1 = require("supernode/Base/Environment");
 exports.MasterCommands = [
     {
-        userlimitedids: ["562640877705756690"],
+        ownerlimited: true,
         messagecontent: "hello bee",
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -24,7 +24,7 @@ exports.MasterCommands = [
         }
     },
     {
-        userlimitedids: ["562640877705756690"],
+        ownerlimited: true,
         triggerwords: ["bee", "access", "can", "database", "?"],
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -33,7 +33,7 @@ exports.MasterCommands = [
         }
     },
     {
-        userlimitedids: ["562640877705756690"],
+        ownerlimited: true,
         triggerwords: ["add", "channel", "to", "random"],
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -75,7 +75,7 @@ exports.MasterCommands = [
         }
     },
     {
-        userlimitedids: ["562640877705756690"],
+        ownerlimited: true,
         messagecontent: "good morning bee",
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -84,7 +84,7 @@ exports.MasterCommands = [
         }
     },
     {
-        userlimitedids: ["562640877705756690"],
+        ownerlimited: true,
         triggerwords: ["how", "many", "last", "message"],
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -98,7 +98,7 @@ exports.MasterCommands = [
         }
     },
     {
-        userlimitedids: ["562640877705756690"],
+        ownerlimited: true,
         triggerwords: ["who", "master", "is", "bee"],
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -109,7 +109,7 @@ exports.MasterCommands = [
         }
     },
     {
-        userlimitedids: ["562640877705756690"],
+        ownerlimited: true,
         triggerwords: ["bee", "kick", "pleb"],
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -131,7 +131,7 @@ exports.MasterCommands = [
         }
     },
     {
-        userlimitedids: ["562640877705756690"],
+        ownerlimited: true,
         messagecontent: "bee only listens to me",
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -140,7 +140,7 @@ exports.MasterCommands = [
         }
     },
     {
-        userlimitedids: ["562640877705756690"],
+        ownerlimited: true,
         messagecontent: "good bee",
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -149,7 +149,7 @@ exports.MasterCommands = [
         }
     },
     {
-        userlimitedids: ["562640877705756690"],
+        ownerlimited: true,
         triggerwords: ["stfu", "bee"],
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -158,7 +158,7 @@ exports.MasterCommands = [
         }
     },
     {
-        userlimitedids: ["562640877705756690"],
+        ownerlimited: true,
         triggerwords: ["bee", "understood", "me"],
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {

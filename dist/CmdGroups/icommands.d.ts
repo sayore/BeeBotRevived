@@ -1,6 +1,7 @@
 import * as Discord from 'discord.js';
 export interface ICommand {
     prefix?: boolean;
+    ownerlimited?: boolean;
     userlimitedids?: string[];
     grouplimitedids?: string[];
     messagecontent?: string;

@@ -7,14 +7,14 @@ import { Environment } from "supernode/Base/Environment";
 
 export let MasterCommands : ICommand[] = [
     {
-        userlimitedids:["562640877705756690"],
+        ownerlimited:true,
         messagecontent:"hello bee",
         async cmd(msg:Discord.Message){
             msg.reply("Hi master uwu");
         }
     },
     {
-        userlimitedids:["562640877705756690"],
+        ownerlimited:true,
         triggerwords:["bee","access","can","database","?"],
         async cmd(msg:Discord.Message){
             
@@ -22,7 +22,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        userlimitedids:["562640877705756690"],
+        ownerlimited:true,
         triggerwords:["add","channel","to","random"],
         async cmd(msg:Discord.Message){
             var env : any = Environment.load(EnvFile);
@@ -59,14 +59,14 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        userlimitedids:["562640877705756690"],
+        ownerlimited:true,
         messagecontent:"good morning bee",
         async cmd(msg:Discord.Message){
             msg.reply("good morning master ʕ ᵔ//ᴥ/ᵔʔ");
         }
     },
     {
-        userlimitedids:["562640877705756690"],
+        ownerlimited:true,
         triggerwords:["how","many","last","message"],
         async cmd(msg:Discord.Message){
             setTimeout(async()=>{
@@ -78,7 +78,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        userlimitedids:["562640877705756690"],
+        ownerlimited:true,
         triggerwords:["who","master","is","bee"],
         async cmd(msg:Discord.Message){
             setTimeout(async()=>{
@@ -87,7 +87,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        userlimitedids:["562640877705756690"],
+        ownerlimited:true,
         triggerwords:["bee","kick","pleb"],
         async cmd(msg:Discord.Message){
             setTimeout(async()=>{
@@ -107,28 +107,28 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        userlimitedids:["562640877705756690"],
+        ownerlimited:true,
         messagecontent:"bee only listens to me",
         async cmd(msg:Discord.Message){
             msg.reply("thats right, i only listen to my master uwu (except for normal commands)");
         }
     },
     {
-        userlimitedids:["562640877705756690"],
+        ownerlimited:true,
         messagecontent:"good bee",
         async cmd(msg:Discord.Message){
             msg.reply("yay \(◦'⌣'◦)/.");
         }
     },
     {
-        userlimitedids:["562640877705756690"],
+        ownerlimited:true,
         triggerwords:["stfu","bee"],
         async cmd(msg:Discord.Message){
             msg.reply("ok ʕノ)ᴥ(ヾʔ");
         }
     },
     {
-        userlimitedids:["562640877705756690"],
+        ownerlimited:true,
         triggerwords:["bee","understood","me"],
         async cmd(msg:Discord.Message){
             msg.reply("yea i think so (⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄");
