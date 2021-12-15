@@ -20,7 +20,7 @@ exports.EveryoneCommands = [
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 yield db_helper_1.DBHelper.increase(app_1.db, "user" + msg.member.id + ".msgs", 1);
-                console.log(yield app_1.db.get("user" + msg.member.id + ".msgs"));
+                //Logging.log(await db.get("user"+msg.member.id+".msgs"))
             });
         }
     }

@@ -11,15 +11,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RandomEvents = void 0;
 const Environment_1 = require("supernode/Base/Environment");
+const Logging_1 = require("supernode/Base/Logging");
 const mod_1 = require("supernode/Math/mod");
 const app_1 = require("../app");
 const command_helper_1 = require("./command.helper");
 class RandomEvents {
     constructor() {
-        this.actions = [];
         this.crnttimeout = undefined;
         this.env = Environment_1.Environment.load(app_1.EnvFile);
         this.sentencesBee = [];
+        this.started = false;
         this.sentencesBee = [
             { val: "*looks around for adventure*", chance: 3 },
             { val: "has someone seen the really nice yellow flower around?", chance: 2 },
@@ -95,17 +96,20 @@ class RandomEvents {
             { val: "yes i think so", chance: 1 },
             { val: "bee confident", chance: 1 },
         ];
-        this.actions.push(() => __awaiter(this, void 0, void 0, function* () {
+        //Logging.log(this.env.randomChannels[Math.floor(this.env.randomChannels.length * Math.random())])
+        RandomEvents.actions.push(() => __awaiter(this, void 0, void 0, function* () {
             var targetChannelId = this.env.randomChannels[Math.floor(this.env.randomChannels.length * Math.random())];
             var channel = yield app_1.clientBee.channels.fetch(targetChannelId);
             channel.send(mod_1.Chance.random(this.sentencesBee).val);
         }));
     }
     randomAction() {
+        //Logging.log(this.randomAction) 
         // Execute a random function in the possible "actions" array
-        (0, command_helper_1.getRandom)(this.actions)();
+        (0, command_helper_1.getRandom)(RandomEvents.actions)();
         // calculate the next event's moment
-        let nextAction = 60 * 60 * 1000 + Math.random() * 180 * 60 * 1000;
+        let nextAction = 15 * 60 * 1000 + Math.random() * 120 * 60 * 1000;
+        //let nextAction = 0.5 * 60 * 1000 //+ Math.random() * 30 * 60 * 1000;
         // create the timestamp for the next event to save
         let timestampNextAction = new Date().getTime() + nextAction;
         // Save the next random event into the server's config
@@ -116,19 +120,26 @@ class RandomEvents {
         if (this.crnttimeout != undefined)
             clearTimeout(this.crnttimeout);
         // Set the timeout for the next event.
-        this.crnttimeout = setTimeout(this.randomAction, nextAction);
+        this.crnttimeout = setTimeout(() => this.randomAction(), nextAction);
+        Logging_1.Logging.log("Next action is in " + (nextAction / 1000 / 60) + " min.");
     }
     start() {
+        if (this.started)
+            return;
+        this.started = true;
         if (this.env.timestampNextAction)
             var nextAction = this.env.timestampNextAction - new Date().getTime();
+        //Immediately trigger the next random Event.
+        //nextAction=-99;
         // If timestamp has already passed, execute the random action immeditately.
         if (nextAction < 0)
             this.randomAction();
         else { // If Timeout is not been passed, set the timerout for the next action.
-            console.log("Next action is in " + (nextAction / 1000 / 60) + " min.");
+            Logging_1.Logging.log("Next action is in " + (nextAction / 1000 / 60) + " min.");
             this.crnttimeout = setTimeout(this.randomAction, nextAction);
         }
     }
 }
 exports.RandomEvents = RandomEvents;
+RandomEvents.actions = [];
 //# sourceMappingURL=random.js.map

@@ -2,7 +2,7 @@
 import * as Discord from 'discord.js';
 import level from 'level-ts';
 import { MasterCommands } from './CmdGroups/master';
-import { SimplePerRules } from './CmdGroups/command.helper';
+import { ResultReport, SimplePerRules } from './CmdGroups/command.helper';
 import Level from 'level-ts';
 import { DBHelper } from './db.helper';
 import { EveryoneCommands } from './CmdGroups/everyone';
@@ -15,6 +15,7 @@ import { Environment } from 'supernode/Base/Environment';
 import process from 'process';
 import "./CmdGroups/random";
 import { RandomEvents } from './CmdGroups/random';
+import { Logging } from 'supernode/Base/Logging';
 
 export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
@@ -22,20 +23,20 @@ export let db = new level('./database');
 export let randomEvents = new RandomEvents();
 
 if (!Environment.checkExists(EnvFile)) {
-	Environment.save(EnvFile, { envV:0, beeToken: "NoTokenYet", bobToken: "NoTokenYet" })
-	console.log("There was no config File yet, it has been written to: "+Environment.getEnvFilePath(EnvFile+"\nBe sure to add the Tokens there."));
+	Environment.save(EnvFile, { envV: 0, beeToken: "NoTokenYet", bobToken: "NoTokenYet" })
+	Logging.log("There was no config File yet, it has been written to: " + Environment.getEnvFilePath(EnvFile + "\nBe sure to add the Tokens there."));
 	process.exit(-1);
 }
-let Env = <{ envV:number, beeToken: string, bobToken: string }>Environment.load("BeeToken.json");
-if(Env.beeToken == "NoTokenYet") {
-	console.log("There was a config File yet, but it's missing the Tokens, find it here: "+Environment.getEnvFilePath(EnvFile+"\nBe sure to add the Tokens there."));
+let Env = <{ envV: number, beeToken: string, bobToken: string }>Environment.load("BeeToken.json");
+if (Env.beeToken == "NoTokenYet") {
+	Logging.log("There was a config File yet, but it's missing the Tokens, find it here: " + Environment.getEnvFilePath(EnvFile + "\nBe sure to add the Tokens there."));
 	process.exit(-1);
 }
 
 
-async function GenerealReadyAsync(e:Discord.Client) {
-	console.log(`Logged in as ${e.user.tag}!`);
-	
+async function GenerealReadyAsync(e: Discord.Client) {
+	Logging.log(`Logged in as ${e.user.tag}!`);
+
 	let logins = await DBHelper.getCheckd(db, "logins", 1);
 	await db.put('logins', ++logins);
 	randomEvents.start();
@@ -52,10 +53,10 @@ export class BeeApplication implements Application {
 	Type = TypeOfApplication.BackgroundProcess;
 	uid = "BeeBot Application";
 	error?(eventdata?: any): void {
-		console.log(eventdata)
+		Logging.log(eventdata)
 	}
 	exit?(eventdata?: any): void {
-		console.log(eventdata)
+		Logging.log(eventdata)
 	}
 	typeOfApplication?: TypeOfApplication;
 	needsSafeMode?: SafetyMode;
@@ -76,11 +77,14 @@ export class BeeApplication implements Application {
 		});
 
 		clientBee.on('messageCreate', async message => {
-			//console.log("message..." + (await message.content))
+			//Logging.log("message..." + (await message.content))
 			// Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
-			SimplePerRules(EveryoneCommands, message);
-			if (!SimplePerRules(MasterCommands, message))
-				SimplePerRules(TrustedCommands, message);
+			var resFullreport = new ResultReport(false,false,0,0)
+			resFullreport.add(SimplePerRules(EveryoneCommands, message));
+			resFullreport.add(SimplePerRules(MasterCommands, message))
+			resFullreport.add(SimplePerRules(TrustedCommands, message));
+	
+			resFullreport.report()
 
 			if (message.content.substr(0, 2) === 'b ' && message.member.roles.cache.some((a) => a.id == "854467063677976586")) {
 				if (message.content === 'b help') {
@@ -176,9 +180,9 @@ export let BeeBotApps: _BeeBotApps = new _BeeBotApps();
 
 
 /** Autorun if not started externally */
-setTimeout(()=>{
-	if(!BeeApplication.hasStarted) {
-		let botApp = new BeeApplication(Env.beeToken,Env.bobToken);
+setTimeout(() => {
+	if (!BeeApplication.hasStarted) {
+		let botApp = new BeeApplication(Env.beeToken, Env.bobToken);
 		botApp.init();
 		botApp.run({});
 	}

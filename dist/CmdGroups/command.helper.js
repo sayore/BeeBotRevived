@@ -1,20 +1,43 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getRandom = exports.CheckForManyWordsCI = exports.CheckForManyWords = exports.SimplePerRules = void 0;
+exports.getRandom = exports.CheckForManyWordsCI = exports.CheckForManyWords = exports.SimplePerRules = exports.ResultReport = void 0;
+const Logging_1 = require("supernode/Base/Logging");
 const app_1 = require("../app");
 const db_helper_1 = require("../db.helper");
-function SimplePerRules(cmds, msg) {
+class ResultReport {
+    constructor(executed, halting = false, scanned, executedNum) {
+        this.executed = executed;
+        this.halting = halting;
+        this.scanned = scanned;
+        this.executedNum = executedNum;
+    }
+    add(resrep) {
+        this.executed = resrep.executed || this.executed;
+        this.halting = resrep.halting || this.halting;
+        this.scanned += resrep.scanned;
+        this.executedNum += resrep.executedNum;
+        return this;
+    }
+    report() {
+        Logging_1.Logging.log(`Scanned ${this.scanned} commands. ${this.executedNum} matched and executed(=>${this.executed}).`, "Reporter");
+    }
+}
+exports.ResultReport = ResultReport;
+function SimplePerRules(cmds, msg, reports) {
     if (msg.author.id == "732377258857070602") {
-        console.log("This is me :shyduck:");
+        Logging_1.Logging.log("This is me :shyduck:");
         return;
     } // This is Bee himself
-    let report = { executed: 0, errors: [] };
+    if (reports)
+        if (reports.halting)
+            return;
+    let report = { executed: 0, errors: [], halting: false };
     cmds.forEach((v => {
         if (v.userlimitedids != undefined)
             if (v.userlimitedids.indexOf(msg.author.id) == -1) {
                 return;
             } //This checks for privelege for the command on a per user basis
-        //console.log(v.userlimitedids)
+        //Logging.log(v.userlimitedids)
         if (v.ownerlimited != undefined)
             if (v.ownerlimited == true && msg.guild.ownerId != msg.author.id) {
                 return;
@@ -23,33 +46,40 @@ function SimplePerRules(cmds, msg) {
             if (msg.content.toLowerCase() == v.messagecontent.toLowerCase()) {
                 v.cmd(msg);
                 report.executed++;
-                if (v.isHalting == true)
+                if (v.isHalting == true) {
+                    report.halting = true;
                     return;
+                }
             }
         if (v.always == true) {
             v.cmd(msg);
             report.executed++;
-            if (v.isHalting == true)
+            if (v.isHalting == true) {
+                report.halting = true;
                 return;
+            }
         }
         if (v.triggerwords != undefined && v.triggerwords.length >= 1)
             if (CheckForManyWordsCI(msg.content, v.triggerwords)) {
                 v.cmd(msg);
                 report.executed++;
-                if (v.isHalting == true)
+                if (v.isHalting == true) {
+                    report.halting = true;
                     return;
+                }
             }
         if (v.triggerfunc != undefined)
             if (v.triggerfunc(msg)) {
                 v.cmd(msg);
                 report.executed++;
-                if (v.isHalting == true)
+                if (v.isHalting == true) {
+                    report.halting = true;
                     return;
+                }
             }
     }));
-    console.log(`Scanned ${cmds.length} commands. ${report.executed} matched and executed.`);
     db_helper_1.DBHelper.increase(app_1.db, "msg_since_online");
-    return report.executed == 1;
+    return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
 }
 exports.SimplePerRules = SimplePerRules;
 function CheckForManyWords(message, words) {

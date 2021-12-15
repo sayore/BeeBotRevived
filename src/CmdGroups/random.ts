@@ -1,11 +1,12 @@
 import { TextChannel } from "discord.js/typings/index.js";
 import { Environment } from "supernode/Base/Environment";
+import { Logging } from "supernode/Base/Logging";
 import { Chance, Chanceable } from "supernode/Math/mod";
 import { clientBee, EnvFile } from "../app";
 import { getRandom } from "./command.helper";
 
 export class RandomEvents {
-    actions = [];
+    static actions = [];
     crnttimeout = undefined;
     env: any = Environment.load(EnvFile);
     sentencesBee: Chanceable<string>[] = []
@@ -85,19 +86,22 @@ export class RandomEvents {
             { val: "yes i think so", chance: 1 },
             { val: "bee confident", chance: 1 },
         ];
-        this.actions.push(async () => {
+        //Logging.log(this.env.randomChannels[Math.floor(this.env.randomChannels.length * Math.random())])
+        RandomEvents.actions.push(async () => {
             var targetChannelId = this.env.randomChannels[Math.floor(this.env.randomChannels.length * Math.random())];
             var channel = await clientBee.channels.fetch(targetChannelId);
-
+            
             (channel as TextChannel).send(Chance.random(this.sentencesBee).val);
         })
     }
     randomAction() {
+        //Logging.log(this.randomAction) 
         // Execute a random function in the possible "actions" array
-        getRandom(this.actions)();
+        getRandom(RandomEvents.actions)();
 
         // calculate the next event's moment
-        let nextAction = 60 * 60 * 1000 + Math.random() * 180 * 60 * 1000;
+        let nextAction = 15 * 60 * 1000 + Math.random() * 120 * 60 * 1000;
+        //let nextAction = 0.5 * 60 * 1000 //+ Math.random() * 30 * 60 * 1000;
         // create the timestamp for the next event to save
         let timestampNextAction = new Date().getTime() + nextAction;
         // Save the next random event into the server's config
@@ -110,17 +114,26 @@ export class RandomEvents {
             clearTimeout(this.crnttimeout);
 
         // Set the timeout for the next event.
-        this.crnttimeout = setTimeout(this.randomAction, nextAction)
+        this.crnttimeout = setTimeout(()=>this.randomAction(), nextAction)
+
+        Logging.log("Next action is in " + (nextAction / 1000 / 60) + " min."); 
     }
+    started = false;
     start() {
+        if(this.started) return;
+        this.started = true;
+
         if (this.env.timestampNextAction)
             var nextAction = this.env.timestampNextAction - new Date().getTime()
+
+        //Immediately trigger the next random Event.
+        //nextAction=-99;
 
         // If timestamp has already passed, execute the random action immeditately.
         if (nextAction < 0)
             this.randomAction();
         else { // If Timeout is not been passed, set the timerout for the next action.
-            console.log("Next action is in " + (nextAction / 1000 / 60) + " min.");
+            Logging.log("Next action is in " + (nextAction / 1000 / 60) + " min.");
             this.crnttimeout = setTimeout(this.randomAction, nextAction)
         }
     }

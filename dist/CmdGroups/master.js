@@ -13,6 +13,7 @@ exports.MasterCommands = void 0;
 const app_1 = require("../app");
 const MessageHelper_1 = require("supernode/Discord/MessageHelper");
 const Environment_1 = require("supernode/Base/Environment");
+const Logging_1 = require("supernode/Base/Logging");
 exports.MasterCommands = [
     {
         ownerlimited: true,
@@ -29,6 +30,16 @@ exports.MasterCommands = [
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 msg.reply(`${(yield app_1.db) ? "yes" : "no"} uwu`);
+            });
+        }
+    },
+    {
+        ownerlimited: true,
+        triggerwords: ["bee", "event", "now"],
+        cmd(msg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                msg.delete();
+                app_1.randomEvents.randomAction();
             });
         }
     },
@@ -58,10 +69,10 @@ exports.MasterCommands = [
         triggerfunc: (msg) => {
             MessageHelper_1.MessageHelper.getRepliantsVisibleName(msg);
             if (msg.content.toString().indexOf(' ') === -1 && msg.content.toString().startsWith('<') && msg.content.toString().endsWith('>') && msg.content.toString().toLowerCase().indexOf('pat') !== -1) {
-                console.log("A" + msg.mentions);
-                console.log(MessageHelper_1.MessageHelper.isRepliant(msg, app_1.clientBee.user.id));
-                console.log(MessageHelper_1.MessageHelper.hasRepliant(msg));
-                console.log(msg);
+                Logging_1.Logging.log("A" + msg.mentions);
+                Logging_1.Logging.log(MessageHelper_1.MessageHelper.isRepliant(msg, app_1.clientBee.user.id));
+                Logging_1.Logging.log(MessageHelper_1.MessageHelper.hasRepliant(msg));
+                Logging_1.Logging.log(msg);
                 if (MessageHelper_1.MessageHelper.isRepliant(msg, app_1.clientBee.user.id)) {
                     return true;
                 }

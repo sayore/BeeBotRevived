@@ -1,9 +1,10 @@
 import { ICommand } from "./icommands";
 import * as Discord from 'discord.js';
 import { CheckForManyWords } from "./command.helper";
-import { clientBee, db, EnvFile } from "../app";
+import { clientBee, db, EnvFile, randomEvents } from "../app";
 import { MessageHelper } from "supernode/Discord/MessageHelper";
 import { Environment } from "supernode/Base/Environment";
+import { Logging } from "supernode/Base/Logging";
 
 export let MasterCommands : ICommand[] = [
     {
@@ -19,6 +20,14 @@ export let MasterCommands : ICommand[] = [
         async cmd(msg:Discord.Message){
             
             msg.reply(`${await db?"yes":"no"} uwu`);
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["bee","event","now"],
+        async cmd(msg:Discord.Message){
+            msg.delete();
+            randomEvents.randomAction();
         }
     },
     {
@@ -44,10 +53,10 @@ export let MasterCommands : ICommand[] = [
             MessageHelper.getRepliantsVisibleName(msg)
             if(msg.content.toString().indexOf(' ')===-1 && msg.content.toString().startsWith('<')  && msg.content.toString().endsWith('>') && msg.content.toString().toLowerCase().indexOf('pat')!==-1)
             {
-                console.log("A"+ msg.mentions)
-                console.log(MessageHelper.isRepliant(msg, clientBee.user.id))
-                console.log(MessageHelper.hasRepliant(msg))
-                console.log(msg)
+                Logging.log("A"+ msg.mentions)
+                Logging.log(MessageHelper.isRepliant(msg, clientBee.user.id))
+                Logging.log(MessageHelper.hasRepliant(msg))
+                Logging.log(msg)
                 if(MessageHelper.isRepliant(msg, clientBee.user.id)) {
                     return true;
                 }

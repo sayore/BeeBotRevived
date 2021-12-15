@@ -48,23 +48,24 @@ const Environment_1 = require("supernode/Base/Environment");
 const process_1 = __importDefault(require("process"));
 require("./CmdGroups/random");
 const random_1 = require("./CmdGroups/random");
+const Logging_1 = require("supernode/Base/Logging");
 exports.clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 exports.clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 exports.db = new level_ts_1.default('./database');
 exports.randomEvents = new random_1.RandomEvents();
 if (!Environment_1.Environment.checkExists(exports.EnvFile)) {
     Environment_1.Environment.save(exports.EnvFile, { envV: 0, beeToken: "NoTokenYet", bobToken: "NoTokenYet" });
-    console.log("There was no config File yet, it has been written to: " + Environment_1.Environment.getEnvFilePath(exports.EnvFile + "\nBe sure to add the Tokens there."));
+    Logging_1.Logging.log("There was no config File yet, it has been written to: " + Environment_1.Environment.getEnvFilePath(exports.EnvFile + "\nBe sure to add the Tokens there."));
     process_1.default.exit(-1);
 }
 let Env = Environment_1.Environment.load("BeeToken.json");
 if (Env.beeToken == "NoTokenYet") {
-    console.log("There was a config File yet, but it's missing the Tokens, find it here: " + Environment_1.Environment.getEnvFilePath(exports.EnvFile + "\nBe sure to add the Tokens there."));
+    Logging_1.Logging.log("There was a config File yet, but it's missing the Tokens, find it here: " + Environment_1.Environment.getEnvFilePath(exports.EnvFile + "\nBe sure to add the Tokens there."));
     process_1.default.exit(-1);
 }
 function GenerealReadyAsync(e) {
     return __awaiter(this, void 0, void 0, function* () {
-        console.log(`Logged in as ${e.user.tag}!`);
+        Logging_1.Logging.log(`Logged in as ${e.user.tag}!`);
         let logins = yield db_helper_1.DBHelper.getCheckd(exports.db, "logins", 1);
         yield exports.db.put('logins', ++logins);
         exports.randomEvents.start();
@@ -78,10 +79,10 @@ class BeeApplication {
         this.bobToken = bobToken;
     }
     error(eventdata) {
-        console.log(eventdata);
+        Logging_1.Logging.log(eventdata);
     }
     exit(eventdata) {
-        console.log(eventdata);
+        Logging_1.Logging.log(eventdata);
     }
     db() { return exports.db; }
     init() {
@@ -96,11 +97,13 @@ class BeeApplication {
             }
         }));
         exports.clientBee.on('messageCreate', (message) => __awaiter(this, void 0, void 0, function* () {
-            //console.log("message..." + (await message.content))
+            //Logging.log("message..." + (await message.content))
             // Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
-            (0, command_helper_1.SimplePerRules)(everyone_1.EveryoneCommands, message);
-            if (!(0, command_helper_1.SimplePerRules)(master_1.MasterCommands, message))
-                (0, command_helper_1.SimplePerRules)(trusted_1.TrustedCommands, message);
+            var resFullreport = new command_helper_1.ResultReport(false, false, 0, 0);
+            resFullreport.add((0, command_helper_1.SimplePerRules)(everyone_1.EveryoneCommands, message));
+            resFullreport.add((0, command_helper_1.SimplePerRules)(master_1.MasterCommands, message));
+            resFullreport.add((0, command_helper_1.SimplePerRules)(trusted_1.TrustedCommands, message));
+            resFullreport.report();
             if (message.content.substr(0, 2) === 'b ' && message.member.roles.cache.some((a) => a.id == "854467063677976586")) {
                 if (message.content === 'b help') {
                 }
