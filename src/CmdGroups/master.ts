@@ -39,10 +39,11 @@ export let MasterCommands : ICommand[] = [
                 env.randomChannels = [msg.channelId];
             } else {
                 if(env.randomChannels.includes(msg.channelId)) {
-                    msg.reply(`channel is already added to random ev`);
+                    let myReply= msg.reply(`channel is already added to random ev`);
+                    setTimeout(async()=>{msg.delete();(await myReply).delete()},3500);
                 } else {
-                    env.randomChannels = [...msg.channelId];
-                    msg.reply(`oki uwu`);
+                    env.randomChannels.push(msg.channelId);
+                    msg.delete();
                 }
             }
             Environment.save(EnvFile,env);

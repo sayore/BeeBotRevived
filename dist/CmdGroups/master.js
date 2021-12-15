@@ -54,11 +54,12 @@ exports.MasterCommands = [
                 }
                 else {
                     if (env.randomChannels.includes(msg.channelId)) {
-                        msg.reply(`channel is already added to random ev`);
+                        let myReply = msg.reply(`channel is already added to random ev`);
+                        setTimeout(() => __awaiter(this, void 0, void 0, function* () { msg.delete(); (yield myReply).delete(); }), 3500);
                     }
                     else {
-                        env.randomChannels = [...msg.channelId];
-                        msg.reply(`oki uwu`);
+                        env.randomChannels.push(msg.channelId);
+                        msg.delete();
                     }
                 }
                 Environment_1.Environment.save(app_1.EnvFile, env);
