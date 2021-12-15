@@ -24,14 +24,14 @@ class ResultReport {
 }
 exports.ResultReport = ResultReport;
 function SimplePerRules(cmds, msg, reports) {
+    let report = { executed: 0, errors: [], halting: false };
     if (msg.author.id == "732377258857070602") {
         Logging_1.Logging.log("This is me :shyduck:");
-        return;
+        return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
     } // This is Bee himself
     if (reports)
         if (reports.halting)
-            return;
-    let report = { executed: 0, errors: [], halting: false };
+            return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
     cmds.forEach((v => {
         if (v.userlimitedids != undefined)
             if (v.userlimitedids.indexOf(msg.author.id) == -1) {
@@ -48,7 +48,7 @@ function SimplePerRules(cmds, msg, reports) {
                 report.executed++;
                 if (v.isHalting == true) {
                     report.halting = true;
-                    return;
+                    return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
                 }
             }
         if (v.always == true) {
@@ -56,7 +56,7 @@ function SimplePerRules(cmds, msg, reports) {
             report.executed++;
             if (v.isHalting == true) {
                 report.halting = true;
-                return;
+                return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
             }
         }
         if (v.triggerwords != undefined && v.triggerwords.length >= 1)
@@ -65,7 +65,7 @@ function SimplePerRules(cmds, msg, reports) {
                 report.executed++;
                 if (v.isHalting == true) {
                     report.halting = true;
-                    return;
+                    return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
                 }
             }
         if (v.triggerfunc != undefined)
@@ -74,7 +74,7 @@ function SimplePerRules(cmds, msg, reports) {
                 report.executed++;
                 if (v.isHalting == true) {
                     report.halting = true;
-                    return;
+                    return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
                 }
             }
     }));

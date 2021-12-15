@@ -26,9 +26,9 @@ export class ResultReport {
 }
 
 export function SimplePerRules(cmds:ICommand[],msg:Discord.Message, reports?:ResultReport) : ResultReport {
-    if(msg.author.id == "732377258857070602") { Logging.log("This is me :shyduck:"); return;} // This is Bee himself
-    if(reports) if(reports.halting) return;
     let report = {executed:0, errors:[], halting:false} 
+    if(msg.author.id == "732377258857070602") { Logging.log("This is me :shyduck:"); return new ResultReport(report.executed==1, report.halting, cmds.length, report.executed);} // This is Bee himself
+    if(reports) if(reports.halting) return new ResultReport(report.executed==1, report.halting, cmds.length, report.executed);
     cmds.forEach((v=>{
         if(v.userlimitedids!=undefined )
         if(v.userlimitedids.indexOf(msg.author.id) == -1) 
@@ -43,27 +43,27 @@ export function SimplePerRules(cmds:ICommand[],msg:Discord.Message, reports?:Res
         if(msg.content.toLowerCase()==v.messagecontent.toLowerCase()) {
             v.cmd(msg);
             report.executed++;
-            if(v.isHalting==true) {report.halting=true; return;}
+            if(v.isHalting==true) {report.halting=true; return new ResultReport(report.executed==1, report.halting, cmds.length, report.executed);}
         }
 
         if(v.always==true) { 
             v.cmd(msg);
             report.executed++;
-            if(v.isHalting==true) {report.halting=true; return;}
+            if(v.isHalting==true) {report.halting=true; return new ResultReport(report.executed==1, report.halting, cmds.length, report.executed);}
         }
 
         if(v.triggerwords!=undefined && v.triggerwords.length>=1)
         if(CheckForManyWordsCI(msg.content,v.triggerwords)) {
             v.cmd(msg);
             report.executed++;
-            if(v.isHalting==true) {report.halting=true; return;}
+            if(v.isHalting==true) {report.halting=true; return new ResultReport(report.executed==1, report.halting, cmds.length, report.executed);}
         }
 
         if(v.triggerfunc!=undefined)
         if(v.triggerfunc(msg)) {
             v.cmd(msg);
             report.executed++;
-            if(v.isHalting==true) {report.halting=true; return;}
+            if(v.isHalting==true) {report.halting=true; return new ResultReport(report.executed==1, report.halting, cmds.length, report.executed);}
         }
     }))
     DBHelper.increase(db,"msg_since_online");
