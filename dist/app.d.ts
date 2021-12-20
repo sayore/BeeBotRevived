@@ -4,7 +4,6 @@ import level from 'level-ts';
 import { TypeOfApplication, SafetyMode, Application } from 'supernode/Base/Application';
 import { ApplicationCollection } from 'supernode/Base/ApplicationCollection';
 import { ExpressApplication } from 'supernode/Base/ExpressApplication';
-import "./CmdGroups/random";
 import { RandomEvents } from './CmdGroups/random';
 export declare let clientBee: Discord.Client<boolean>;
 export declare let clientBob: Discord.Client<boolean>;

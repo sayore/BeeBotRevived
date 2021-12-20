@@ -1,10 +1,11 @@
 import { ICommand } from "./icommands";
 import * as Discord from 'discord.js';
-import { CheckForManyWords } from "./command.helper";
+import { CheckForManyWords, getUser, iterateSortedFilter, RPG, setUser, Userdata } from "./command.helper";
 import { clientBee, db, EnvFile, randomEvents } from "../app";
 import { MessageHelper } from "supernode/Discord/MessageHelper";
 import { Environment } from "supernode/Base/Environment";
 import { Logging } from "supernode/Base/Logging";
+import _ from "lodash";
 
 export let MasterCommands : ICommand[] = [
     {
@@ -28,6 +29,86 @@ export let MasterCommands : ICommand[] = [
         async cmd(msg:Discord.Message){
             msg.delete();
             randomEvents.randomAction();
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["bee","stats"],
+        async cmd(msg:Discord.Message){
+            console.log(msg.content)
+            msg.delete();
+            let userdata=await getUser(msg.member.id);
+            msg.channel.send(JSON.stringify(userdata));
+            await setUser(msg.member.id,userdata);
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["bee","most","money"],
+        async cmd(msg:Discord.Message){
+            console.log(msg.content)
+            msg.delete();
+            let toplist= await db.iterateFilter((v) => { return (!!v.rpg?.money); });
+            
+            toplist = await toplist.sort((a, b) => {
+                if(a.rpg.money == b.rpg.money) return 0;
+                return a.rpg.money < b.rpg.money ? 1 : -1;
+            })
+            //msg.channel.send(JSON.stringify(toplist)); 
+            let sToplist = "";
+            
+            for (let i = 0; i < toplist.length; i++) {
+                const v = toplist[i];
+                let membername = await msg.guild.members.fetch({user:v.id})
+                sToplist+=`\` ${(Math.floor(v.rpg.money).toString()+" $").padEnd(15," ")} ${membername.displayName.padEnd(40," ")} \`\n`;
+            }
+            
+            msg.channel.send(sToplist); 
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["bee","most","exp"],
+        async cmd(msg:Discord.Message){
+            console.log(msg.content)
+            msg.delete();
+            let toplist= <Userdata[]>(await db.iterateFilter((v) => { return (!!v.rpg); }));
+            
+            // Loads RPG functions, without this, no "allExp()"
+            for (let i = 0; i < toplist.length; i++) {
+                toplist[i].rpg = toplist[i].rpg = <RPG>_.assignIn(new RPG(), toplist[i].rpg);;
+            }
+
+            toplist = await toplist.sort((a, b) => {
+                let axp = a.rpg.allExp();
+                let bxp = b.rpg.allExp();
+                if(axp == bxp) return 0;
+                return axp < bxp ? 1 : -1;
+            })
+            //msg.channel.send(JSON.stringify(toplist)); 
+            let sToplist = "";
+            
+            for (let i = 0; i < toplist.length; i++) {
+                const v = toplist[i];
+                let membername = await msg.guild.members.fetch({user:v.id})
+                sToplist+=`\` ${(Math.floor(v.rpg.allExp()).toString()+" EXP").padEnd(15," ")} ${membername.displayName.padEnd(40," ")} \`\n`;
+            }
+            
+            msg.channel.send(sToplist); 
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["bee","db"],
+        async cmd(msg:Discord.Message){
+            console.log(msg.content)
+            msg.delete();
+            const iterator = db.iterate({ });
+            // ? iterator.seek(...); // You can first seek if you'd like.
+            for await (const { key, value } of iterator) {
+                msg.channel.send(key+":"+ value); // Useable, readable and fast!
+            } // If the end of the iterable is reached, iterator.end() is callend.
+            await iterator.end();            
         }
     },
     {

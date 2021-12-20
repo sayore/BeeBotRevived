@@ -31,8 +31,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.TrustedCommands = void 0;
 const icommands_1 = require("./icommands");
 const Discord = __importStar(require("discord.js"));
+const app_1 = require("../app");
 const mod_1 = require("supernode/Discord/mod");
 const command_helper_1 = require("./command.helper");
+const db_helper_1 = require("../db.helper");
 exports.TrustedCommands = [
     {
         prefix: true,
@@ -87,6 +89,10 @@ exports.TrustedCommands = [
                     .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} hugs ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
+                var action = "hug";
+                db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+                if (msg.mentions)
+                    db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
             });
         }
     },
@@ -112,6 +118,10 @@ exports.TrustedCommands = [
                     .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} boops ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
+                var action = "boop";
+                db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+                if (msg.mentions)
+                    db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
             });
         }
     },
@@ -133,6 +143,10 @@ exports.TrustedCommands = [
                     .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} fucks ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}. **moans***`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
+                var action = "sex";
+                db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+                if (msg.mentions)
+                    db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
             });
         }
     },
@@ -156,6 +170,10 @@ exports.TrustedCommands = [
                     .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} kisses ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
+                var action = "kiss";
+                db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+                if (msg.mentions)
+                    db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
             });
         }
     },
@@ -177,6 +195,10 @@ exports.TrustedCommands = [
                     .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} kisses ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
+                var action = "kiss cheeck";
+                db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+                if (msg.mentions)
+                    db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
             });
         }
     },
@@ -200,6 +222,10 @@ exports.TrustedCommands = [
                     .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} cuddles ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
+                var action = "cuddle";
+                db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+                if (msg.mentions)
+                    db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
             });
         }
     },
@@ -222,6 +248,10 @@ exports.TrustedCommands = [
                     .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} handholds ${mod_1.MessageHelper.getRepliantsVisibleName(msg)} ***blushes***`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
+                var action = "holdhand";
+                db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+                if (msg.mentions)
+                    db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
             });
         }
     },
@@ -249,6 +279,10 @@ exports.TrustedCommands = [
                     .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} pats ${mod_1.MessageHelper.getRepliantsVisibleName(msg)} ***happynoises are filling the room***`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
+                var action = "pat";
+                db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+                if (msg.mentions)
+                    db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
             });
         }
     },
@@ -271,6 +305,10 @@ exports.TrustedCommands = [
                     .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} hides ${(mod_1.MessageHelper.hasRepliant(msg) ? "from " + mod_1.MessageHelper.getRepliantsVisibleName(msg) + "!!!" : "!!!")}`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
+                var action = "hide";
+                db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+                if (msg.mentions)
+                    db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
             });
         }
     },
@@ -295,6 +333,10 @@ exports.TrustedCommands = [
                     .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} blushes.`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
+                var action = "blush";
+                db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+                if (msg.mentions)
+                    db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
             });
         }
     },
@@ -319,6 +361,10 @@ exports.TrustedCommands = [
                     .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} loves ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}.`)
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 let m = yield msg.reply({ embeds: [exampleEmbed] });
+                var action = "love";
+                db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+                if (msg.mentions)
+                    db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
             });
         }
     },
@@ -344,6 +390,10 @@ exports.TrustedCommands = [
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 //@ts-ignore
                 let m = yield msg.channel.send({ embeds: [exampleEmbed] });
+                var action = "nom";
+                db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+                if (msg.mentions)
+                    db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
             });
         }
     },
@@ -352,6 +402,10 @@ exports.TrustedCommands = [
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 msg.reply("yay \(◦'⌣'◦)/.");
+                var action = "goodbee";
+                db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+                if (msg.mentions)
+                    db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
             });
         }
     },

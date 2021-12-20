@@ -1,4 +1,17 @@
 ﻿export let EnvFile = "BeeToken.json";
+import { Logging } from 'supernode/Base/Logging';
+import { Environment } from 'supernode/Base/Environment';
+import process from 'process';
+if (!Environment.checkExists(EnvFile)) {
+	Environment.save(EnvFile, { envV: 0, beeToken: "NoTokenYet", bobToken: "NoTokenYet" })
+	Logging.log("There was no config File yet, it has been written to: " + Environment.getEnvFilePath(EnvFile + "\nBe sure to add the Tokens there."));
+	process.exit(-1);
+}
+let Env = <{ envV: number, beeToken: string, bobToken: string }>Environment.load("BeeToken.json");
+if (Env.beeToken == "NoTokenYet") {
+	Logging.log("There was a config File yet, but it's missing the Tokens, find it here: " + Environment.getEnvFilePath(EnvFile + "\nBe sure to add the Tokens there."));
+	process.exit(-1);
+}
 import * as Discord from 'discord.js';
 import level from 'level-ts';
 import { MasterCommands } from './CmdGroups/master';
@@ -11,27 +24,16 @@ import { BobCommands } from './CmdGroups/bobjokes';
 import { TypeOfApplication, SafetyMode, Application } from 'supernode/Base/Application';
 import { ApplicationCollection } from 'supernode/Base/ApplicationCollection';
 import { ExpressApplication } from 'supernode/Base/ExpressApplication';
-import { Environment } from 'supernode/Base/Environment';
-import process from 'process';
-import "./CmdGroups/random";
+
 import { RandomEvents } from './CmdGroups/random';
-import { Logging } from 'supernode/Base/Logging';
+
 
 export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 export let db = new level('./database');
 export let randomEvents = new RandomEvents();
 
-if (!Environment.checkExists(EnvFile)) {
-	Environment.save(EnvFile, { envV: 0, beeToken: "NoTokenYet", bobToken: "NoTokenYet" })
-	Logging.log("There was no config File yet, it has been written to: " + Environment.getEnvFilePath(EnvFile + "\nBe sure to add the Tokens there."));
-	process.exit(-1);
-}
-let Env = <{ envV: number, beeToken: string, bobToken: string }>Environment.load("BeeToken.json");
-if (Env.beeToken == "NoTokenYet") {
-	Logging.log("There was a config File yet, but it's missing the Tokens, find it here: " + Environment.getEnvFilePath(EnvFile + "\nBe sure to add the Tokens there."));
-	process.exit(-1);
-}
+
 
 
 async function GenerealReadyAsync(e: Discord.Client) {

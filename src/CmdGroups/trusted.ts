@@ -1,8 +1,9 @@
 import { ICommand, TypeOfCmd } from "./icommands";
 import * as Discord from 'discord.js';
-import { clientBee } from "../app";
+import { clientBee, db } from "../app";
 import { MessageHelper } from "supernode/Discord/mod";
 import { getRandom } from "./command.helper";
+import { DBHelper } from "../db.helper";
 
 
 export let TrustedCommands : ICommand[] = [
@@ -53,7 +54,11 @@ export let TrustedCommands : ICommand[] = [
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} hugs ${MessageHelper.getRepliantsVisibleName(msg)}`)
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
-            
+
+            var action = "hug";
+            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
+            if(msg.mentions)
+                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
         }
     },
     {
@@ -78,6 +83,11 @@ export let TrustedCommands : ICommand[] = [
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} boops ${MessageHelper.getRepliantsVisibleName(msg)}`)
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
+            
+            var action = "boop";
+            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
+            if(msg.mentions)
+                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
         }
     },
     {
@@ -98,6 +108,11 @@ export let TrustedCommands : ICommand[] = [
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} fucks ${MessageHelper.getRepliantsVisibleName(msg)}. **moans***`)
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
+
+            var action = "sex";
+            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
+            if(msg.mentions)
+                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
         }
     },
     {
@@ -121,6 +136,10 @@ export let TrustedCommands : ICommand[] = [
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
             
+            var action = "kiss";
+            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
+            if(msg.mentions)
+                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
         }
     },
     {
@@ -142,6 +161,10 @@ export let TrustedCommands : ICommand[] = [
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
             
+            var action = "kiss cheeck";
+            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
+            if(msg.mentions)
+                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
         }
     },
     {
@@ -165,6 +188,10 @@ export let TrustedCommands : ICommand[] = [
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
             
+            var action = "cuddle";
+            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
+            if(msg.mentions)
+                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
         }
     },
     {
@@ -187,6 +214,10 @@ export let TrustedCommands : ICommand[] = [
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
             
+            var action = "holdhand";
+            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
+            if(msg.mentions)
+                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
         }
     },
     {
@@ -214,6 +245,10 @@ export let TrustedCommands : ICommand[] = [
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
             
+            var action = "pat";
+            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
+            if(msg.mentions)
+                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
         }
     },
     {
@@ -236,6 +271,10 @@ export let TrustedCommands : ICommand[] = [
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
             
+            var action = "hide";
+            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
+            if(msg.mentions)
+                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
         }
     },
     {
@@ -260,6 +299,10 @@ export let TrustedCommands : ICommand[] = [
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
             
+            var action = "blush";
+            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
+            if(msg.mentions)
+                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
         }
     },
     {
@@ -284,6 +327,10 @@ export let TrustedCommands : ICommand[] = [
 				.setImage(links[Math.floor(Math.random()*links.length)])
 			let m = await msg.reply({embeds:[exampleEmbed]});
             
+            var action = "love";
+            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
+            if(msg.mentions)
+                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
         }
     },
     {
@@ -309,12 +356,21 @@ export let TrustedCommands : ICommand[] = [
                 //@ts-ignore
 			let m = await msg.channel.send({embeds:[exampleEmbed]});
             
+            var action = "nom";
+            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
+            if(msg.mentions)
+                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
         }
     },
     {
         messagecontent:"good bee",
         async cmd(msg:Discord.Message){
             msg.reply("yay \(◦'⌣'◦)/.");
+
+            var action = "goodbee";
+            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
+            if(msg.mentions)
+                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
         }
     },
 ]

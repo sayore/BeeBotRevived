@@ -1,6 +1,6 @@
 import { TextChannel } from "discord.js/typings/index.js";
 import { Environment } from "supernode/Base/Environment";
-import { Logging } from "supernode/Base/Logging";
+import { Logging, LogLevel } from "supernode/Base/Logging";
 import { Chance, Chanceable } from "supernode/Math/mod";
 import { clientBee, EnvFile } from "../app";
 import { getRandom } from "./command.helper";
@@ -9,9 +9,9 @@ export class RandomEvents {
     static actions = [];
     crnttimeout = undefined;
     env: any = Environment.load(EnvFile);
-    sentencesBee: Chanceable<string>[] = []
+    static sentencesBee: Chanceable<string>[] = []
     constructor() {
-        this.sentencesBee = [
+        RandomEvents.sentencesBee = [
             { val: "*looks around for adventure*", chance: 3 },
             { val: "has someone seen the really nice yellow flower around?", chance: 2 },
             { val: "i think bob's jokes are terrible (ㆆ _ ㆆ)", chance: 5 },
@@ -86,12 +86,18 @@ export class RandomEvents {
             { val: "yes i think so", chance: 1 },
             { val: "bee confident", chance: 1 },
         ];
+
         //Logging.log(this.env.randomChannels[Math.floor(this.env.randomChannels.length * Math.random())])
         RandomEvents.actions.push(async () => {
-            var targetChannelId = this.env.randomChannels[Math.floor(this.env.randomChannels.length * Math.random())];
-            var channel = await clientBee.channels.fetch(targetChannelId);
-            
-            (channel as TextChannel).send(Chance.random(this.sentencesBee).val);
+            if (this.env.randomChannels) {
+                var targetChannelId = this.env.randomChannels[Math.floor(this.env.randomChannels.length * Math.random())];
+                var channel = await clientBee.channels.fetch(targetChannelId);
+
+                (channel as TextChannel).send(Chance.random(RandomEvents.sentencesBee).val);
+            }
+            else {
+                Logging.log("There is no channel registred for random message events!", LogLevel.Report)
+            }
         })
     }
     randomAction() {
@@ -114,19 +120,19 @@ export class RandomEvents {
             clearTimeout(this.crnttimeout);
 
         // Set the timeout for the next event.
-        this.crnttimeout = setTimeout(()=>this.randomAction(), nextAction)
+        this.crnttimeout = setTimeout(() => this.randomAction(), nextAction)
 
-        Logging.log("Next action is in " + (nextAction / 1000 / 60) + " min."); 
+        Logging.log("Next action is in " + (nextAction / 1000 / 60) + " min.");
     }
     started = false;
     start() {
-        if(this.started) return;
+        if (this.started) return;
         this.started = true;
 
         if (this.env.timestampNextAction)
             var nextAction = this.env.timestampNextAction - new Date().getTime()
 
-        //Immediately trigger the next random Event.
+        //DEBUG:Immediately trigger the next random Event.
         //nextAction=-99;
 
         // If timestamp has already passed, execute the random action immeditately.

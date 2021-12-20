@@ -33,6 +33,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.BeeBotApps = exports._BeeBotApps = exports.BeeWebserverApplication = exports.BeeApplication = exports.randomEvents = exports.db = exports.clientBob = exports.clientBee = exports.EnvFile = void 0;
 exports.EnvFile = "BeeToken.json";
+const Logging_1 = require("supernode/Base/Logging");
+const Environment_1 = require("supernode/Base/Environment");
+const process_1 = __importDefault(require("process"));
+if (!Environment_1.Environment.checkExists(exports.EnvFile)) {
+    Environment_1.Environment.save(exports.EnvFile, { envV: 0, beeToken: "NoTokenYet", bobToken: "NoTokenYet" });
+    Logging_1.Logging.log("There was no config File yet, it has been written to: " + Environment_1.Environment.getEnvFilePath(exports.EnvFile + "\nBe sure to add the Tokens there."));
+    process_1.default.exit(-1);
+}
+let Env = Environment_1.Environment.load("BeeToken.json");
+if (Env.beeToken == "NoTokenYet") {
+    Logging_1.Logging.log("There was a config File yet, but it's missing the Tokens, find it here: " + Environment_1.Environment.getEnvFilePath(exports.EnvFile + "\nBe sure to add the Tokens there."));
+    process_1.default.exit(-1);
+}
 const Discord = __importStar(require("discord.js"));
 const level_ts_1 = __importDefault(require("level-ts"));
 const master_1 = require("./CmdGroups/master");
@@ -44,25 +57,11 @@ const bobjokes_1 = require("./CmdGroups/bobjokes");
 const Application_1 = require("supernode/Base/Application");
 const ApplicationCollection_1 = require("supernode/Base/ApplicationCollection");
 const ExpressApplication_1 = require("supernode/Base/ExpressApplication");
-const Environment_1 = require("supernode/Base/Environment");
-const process_1 = __importDefault(require("process"));
-require("./CmdGroups/random");
 const random_1 = require("./CmdGroups/random");
-const Logging_1 = require("supernode/Base/Logging");
 exports.clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 exports.clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
 exports.db = new level_ts_1.default('./database');
 exports.randomEvents = new random_1.RandomEvents();
-if (!Environment_1.Environment.checkExists(exports.EnvFile)) {
-    Environment_1.Environment.save(exports.EnvFile, { envV: 0, beeToken: "NoTokenYet", bobToken: "NoTokenYet" });
-    Logging_1.Logging.log("There was no config File yet, it has been written to: " + Environment_1.Environment.getEnvFilePath(exports.EnvFile + "\nBe sure to add the Tokens there."));
-    process_1.default.exit(-1);
-}
-let Env = Environment_1.Environment.load("BeeToken.json");
-if (Env.beeToken == "NoTokenYet") {
-    Logging_1.Logging.log("There was a config File yet, but it's missing the Tokens, find it here: " + Environment_1.Environment.getEnvFilePath(exports.EnvFile + "\nBe sure to add the Tokens there."));
-    process_1.default.exit(-1);
-}
 function GenerealReadyAsync(e) {
     return __awaiter(this, void 0, void 0, function* () {
         Logging_1.Logging.log(`Logged in as ${e.user.tag}!`);

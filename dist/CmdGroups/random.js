@@ -19,9 +19,8 @@ class RandomEvents {
     constructor() {
         this.crnttimeout = undefined;
         this.env = Environment_1.Environment.load(app_1.EnvFile);
-        this.sentencesBee = [];
         this.started = false;
-        this.sentencesBee = [
+        RandomEvents.sentencesBee = [
             { val: "*looks around for adventure*", chance: 3 },
             { val: "has someone seen the really nice yellow flower around?", chance: 2 },
             { val: "i think bob's jokes are terrible (ㆆ _ ㆆ)", chance: 5 },
@@ -98,9 +97,14 @@ class RandomEvents {
         ];
         //Logging.log(this.env.randomChannels[Math.floor(this.env.randomChannels.length * Math.random())])
         RandomEvents.actions.push(() => __awaiter(this, void 0, void 0, function* () {
-            var targetChannelId = this.env.randomChannels[Math.floor(this.env.randomChannels.length * Math.random())];
-            var channel = yield app_1.clientBee.channels.fetch(targetChannelId);
-            channel.send(mod_1.Chance.random(this.sentencesBee).val);
+            if (this.env.randomChannels) {
+                var targetChannelId = this.env.randomChannels[Math.floor(this.env.randomChannels.length * Math.random())];
+                var channel = yield app_1.clientBee.channels.fetch(targetChannelId);
+                channel.send(mod_1.Chance.random(RandomEvents.sentencesBee).val);
+            }
+            else {
+                Logging_1.Logging.log("There is no channel registred for random message events!", Logging_1.LogLevel.Report);
+            }
         }));
     }
     randomAction() {
@@ -129,7 +133,7 @@ class RandomEvents {
         this.started = true;
         if (this.env.timestampNextAction)
             var nextAction = this.env.timestampNextAction - new Date().getTime();
-        //Immediately trigger the next random Event.
+        //DEBUG:Immediately trigger the next random Event.
         //nextAction=-99;
         // If timestamp has already passed, execute the random action immeditately.
         if (nextAction < 0)
@@ -142,4 +146,5 @@ class RandomEvents {
 }
 exports.RandomEvents = RandomEvents;
 RandomEvents.actions = [];
+RandomEvents.sentencesBee = [];
 //# sourceMappingURL=random.js.map

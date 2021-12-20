@@ -12,14 +12,40 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EveryoneCommands = void 0;
 const icommands_1 = require("./icommands");
 const app_1 = require("../app");
-const db_helper_1 = require("../db.helper");
+const command_helper_1 = require("./command.helper");
+//import { getUser, setUser } from "./command.helper";
+var randomUserIdCache = [];
 exports.EveryoneCommands = [
     {
         typeofcmd: icommands_1.TypeOfCmd.Information,
         always: true,
-        cmd(msg) {
+        cmd(msg, userdata) {
             return __awaiter(this, void 0, void 0, function* () {
-                yield db_helper_1.DBHelper.increase(app_1.db, "user" + msg.member.id + ".msgs", 1);
+                //console.log("Uhm")
+                //console.log(JSON.stringify(userdata))
+                if (yield app_1.db.exists("user" + msg.member.id + "::msgs")) {
+                    let msgs = yield app_1.db.get("user" + msg.member.id + "::msgs");
+                    userdata.msgs += msgs;
+                    userdata.rpg.addExp(userdata.msgs * 15);
+                    yield app_1.db.del("user" + msg.member.id + "::msgs");
+                }
+                if (yield app_1.db.exists("user" + msg.member.id + ".msgs")) {
+                    let msgs = yield app_1.db.get("user" + msg.member.id + ".msgs");
+                    userdata.msgs += msgs;
+                    userdata.rpg.addExp(userdata.msgs * 15);
+                    yield app_1.db.del("user" + msg.member.id + ".msgs");
+                }
+                /** Always add to the msg count */
+                userdata.msgs++;
+                /** Filter out all users that have passed the 5s mark from the cache */
+                randomUserIdCache = randomUserIdCache.filter(e => Date.now() - e.time < 5000);
+                var cachedUser = randomUserIdCache.find(e => e.id == userdata.id);
+                /** If the user isn't in the list, set a new timer, and also add EXP */
+                if (!cachedUser) {
+                    userdata.rpg.addExp(7 * Math.random());
+                    randomUserIdCache.push({ id: userdata.id, time: Date.now() });
+                }
+                (0, command_helper_1.setUser)(msg.member.id, userdata);
                 //Logging.log(await db.get("user"+msg.member.id+".msgs"))
             });
         }
