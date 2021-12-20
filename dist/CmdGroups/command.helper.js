@@ -182,6 +182,7 @@ exports.RPG = RPG;
 class Userdata {
     constructor() {
         this.msgs = 10;
+        this.rpg = new RPG();
     }
     test() {
         //console.log("Test Executed")

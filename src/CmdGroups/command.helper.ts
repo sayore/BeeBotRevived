@@ -155,7 +155,7 @@ export class Userdata {
     id: string;
     tag: string;
     msgs: number = 10;
-    rpg: RPG;
+    rpg: RPG = new RPG();
     constructor() {
 
     }
