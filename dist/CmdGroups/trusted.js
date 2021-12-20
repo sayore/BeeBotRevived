@@ -35,6 +35,7 @@ const app_1 = require("../app");
 const mod_1 = require("supernode/Discord/mod");
 const command_helper_1 = require("./command.helper");
 const db_helper_1 = require("../db.helper");
+const discord_js_1 = require("discord.js");
 exports.TrustedCommands = [
     {
         prefix: true,
@@ -406,6 +407,34 @@ exports.TrustedCommands = [
                 db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
                 if (msg.mentions)
                     db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
+            });
+        }
+    },
+    {
+        prefix: true,
+        typeofcmd: icommands_1.TypeOfCmd.Action,
+        messagecontent: "marry",
+        cmd(msg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                let links = [
+                    "https://c.tenor.com/aJjnVhJ1k_0AAAAd/melamar-geisha.gif",
+                    "https://c.tenor.com/NK-CNqOr5TwAAAAC/hu-tao-marry.gif",
+                    "https://c.tenor.com/IcwN28AtBVgAAAAC/marry-me-anime.gif"
+                ];
+                const exampleEmbed = new Discord.MessageEmbed()
+                    .setColor('#FFD35D')
+                    .setTitle('Love is in the air!')
+                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} proposes to ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}.`)
+                    .setImage(links[Math.floor(Math.random() * links.length)]);
+                const row = new discord_js_1.MessageActionRow()
+                    .addComponents(new discord_js_1.MessageButton()
+                    .setCustomId('accept')
+                    .setLabel('I DO!')
+                    .setStyle('SUCCESS')).addComponents(new discord_js_1.MessageButton()
+                    .setCustomId('reject')
+                    .setLabel('Reject')
+                    .setStyle('DANGER'));
+                msg.reply({ embeds: [exampleEmbed], components: [row] });
             });
         }
     },

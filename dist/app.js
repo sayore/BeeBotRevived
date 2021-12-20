@@ -58,6 +58,7 @@ const Application_1 = require("supernode/Base/Application");
 const ApplicationCollection_1 = require("supernode/Base/ApplicationCollection");
 const ExpressApplication_1 = require("supernode/Base/ExpressApplication");
 const random_1 = require("./CmdGroups/random");
+const mod_1 = require("supernode/Discord/mod");
 exports.clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 exports.clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 exports.db = new level_ts_1.default('./database');
@@ -69,6 +70,20 @@ function GenerealReadyAsync(e) {
         yield exports.db.put('logins', ++logins);
         exports.randomEvents.start();
     });
+}
+class MarrigeHelper {
+    constructor(json) {
+        this.jsonObj = json;
+    }
+    addData(uuid) {
+        if (!!this.jsonObj["MarrigeID"]) {
+            return false;
+        }
+        else {
+            this.jsonObj.MarrigeID = uuid;
+            return this.jsonObj;
+        }
+    }
 }
 class BeeApplication {
     constructor(beeToken, bobToken) {
@@ -138,6 +153,66 @@ class BeeApplication {
                     yield m.react('🔘');
                     m.react('❌');
                 }
+            }
+        }));
+        exports.clientBee.on('interactionCreate', (interaction) => __awaiter(this, void 0, void 0, function* () {
+            var _a;
+            if (!interaction.isButton())
+                return;
+            var msg = interaction.message;
+            const repliedTo = yield msg.channel.messages.fetch(msg.reference.messageId);
+            const otherPerson = yield repliedTo.channel.messages.fetch(repliedTo.reference.messageId);
+            // console.log(msg.mentions);
+            // console.log("got here ..");
+            var UID = (((_a = msg.mentions) === null || _a === void 0 ? void 0 : _a.repliedUser) ?
+                (msg.mentions.repliedUser.id ?
+                    msg.mentions.repliedUser.id
+                    : msg.mentions.repliedUser.tag)
+                : "noone?");
+            console.log(UID);
+            console.log(interaction.user.id);
+            if (otherPerson.author.id == interaction.user.id) {
+                if (interaction.component.customId == "accept") {
+                    let links = [
+                        "https://c.tenor.com/gj75w2kkqngAAAAC/tonikaku-kawaii-tonikaku.gif",
+                        "https://c.tenor.com/kftblVYVuSsAAAAC/anime-incest.gif",
+                        "https://c.tenor.com/3OYmSePDSVUAAAAC/black-clover-licht.gif"
+                    ];
+                    const exampleEmbed = new Discord.MessageEmbed()
+                        .setColor('#00FF00')
+                        .setTitle('Love is in the air!')
+                        .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(repliedTo)} is now married to ${mod_1.MessageHelper.getSendersVisibleName(otherPerson)}.`)
+                        .setImage(links[Math.floor(Math.random() * links.length)]);
+                    var asker = yield exports.db.get(`user${repliedTo.author.id}`);
+                    var recv = yield exports.db.get(`user${otherPerson.author.id}`);
+                    var askObj = new MarrigeHelper(asker);
+                    var recObj = new MarrigeHelper(recv);
+                    var newAskData = askObj.addData(otherPerson.author.id);
+                    var newRecData = recObj.addData(repliedTo.author.id);
+                    if (newAskData == false || newRecData == false) {
+                        yield interaction.reply({ content: "user is already married ...", ephemeral: true });
+                        return;
+                    }
+                    else {
+                        yield exports.db.put(`user${repliedTo.author.id}`, newAskData);
+                        yield exports.db.put(`user${otherPerson.author.id}`, newRecData);
+                    }
+                    yield msg.edit({ embeds: [exampleEmbed], components: [] });
+                }
+                else if (interaction.component.customId == "reject") {
+                    let links = [
+                        "https://c.tenor.com/lWwk7j4-_QIAAAAC/oreimo-anime.gif"
+                    ];
+                    const exampleEmbed = new Discord.MessageEmbed()
+                        .setColor('#FF0000')
+                        .setTitle('Love is not in the air...')
+                        .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(otherPerson)} is just rejected ${mod_1.MessageHelper.getSendersVisibleName(repliedTo)}.....`)
+                        .setImage(links[Math.floor(Math.random() * links.length)]);
+                    yield msg.edit({ embeds: [exampleEmbed], components: [] });
+                }
+            }
+            else {
+                yield interaction.reply({ content: "you were not asked", ephemeral: true });
             }
         }));
         exports.clientBob.on('messageCreate', (message) => __awaiter(this, void 0, void 0, function* () {

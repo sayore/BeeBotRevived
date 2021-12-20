@@ -4,6 +4,7 @@ import { clientBee, db } from "../app";
 import { MessageHelper } from "supernode/Discord/mod";
 import { getRandom } from "./command.helper";
 import { DBHelper } from "../db.helper";
+import { MessageActionRow, MessageButton } from "discord.js";
 
 
 export let TrustedCommands : ICommand[] = [
@@ -371,6 +372,41 @@ export let TrustedCommands : ICommand[] = [
             DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
             if(msg.mentions)
                 DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
+        }
+    },
+    
+    {
+        prefix:true,
+        typeofcmd:TypeOfCmd.Action,
+        messagecontent:"marry",
+        async cmd(msg:Discord.Message) {
+
+            let links = [
+                "https://c.tenor.com/aJjnVhJ1k_0AAAAd/melamar-geisha.gif",
+                "https://c.tenor.com/NK-CNqOr5TwAAAAC/hu-tao-marry.gif",
+                "https://c.tenor.com/IcwN28AtBVgAAAAC/marry-me-anime.gif"
+            ]
+    
+            const exampleEmbed = new Discord.MessageEmbed()
+                .setColor('#FFD35D')
+                .setTitle('Love is in the air!')
+                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} proposes to ${MessageHelper.getRepliantsVisibleName(msg)}.`)
+                .setImage(links[Math.floor(Math.random()*links.length)])
+
+            const row = new MessageActionRow()
+			.addComponents(
+				new MessageButton()
+					.setCustomId('accept')
+					.setLabel('I DO!')
+					.setStyle('SUCCESS'),
+			).addComponents(
+				new MessageButton()
+					.setCustomId('reject')
+					.setLabel('Reject')
+					.setStyle('DANGER'),
+			);
+            msg.reply({ embeds: [exampleEmbed], components: [row] });
+            
         }
     },
 ]
