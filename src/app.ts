@@ -28,8 +28,8 @@ import { ExpressApplication } from 'supernode/Base/ExpressApplication';
 import { RandomEvents } from './CmdGroups/random';
 
 
-export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
-export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
+export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
+export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 export let db = new level('./database');
 export let randomEvents = new RandomEvents();
 

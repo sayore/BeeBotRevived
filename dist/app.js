@@ -58,8 +58,8 @@ const Application_1 = require("supernode/Base/Application");
 const ApplicationCollection_1 = require("supernode/Base/ApplicationCollection");
 const ExpressApplication_1 = require("supernode/Base/ExpressApplication");
 const random_1 = require("./CmdGroups/random");
-exports.clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
-exports.clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "DIRECT_MESSAGES"] });
+exports.clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
+exports.clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 exports.db = new level_ts_1.default('./database');
 exports.randomEvents = new random_1.RandomEvents();
 function GenerealReadyAsync(e) {
