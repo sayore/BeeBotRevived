@@ -87,7 +87,7 @@ class RandomEvents {
             { val: "jingle bells jingle bells ~", chance: 1 },
             { val: "christmas time baby", chance: 1 },
             { val: "christmas time baby", chance: 1 },
-            { val: "@Sayo Luyosana#0001 add more features to me! AAAAAA", chance: 10 },
+            { val: "<@562640877705756690> add more features to me! AAAAAA", chance: 10 },
             { val: "everybody give me your money *collects taxes*", chance: 1 },
             { val: "uwu", chance: 10 },
             { val: "owo", chance: 10 },
