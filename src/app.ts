@@ -26,6 +26,7 @@ import { ApplicationCollection } from 'supernode/Base/ApplicationCollection';
 import { ExpressApplication } from 'supernode/Base/ExpressApplication';
 
 import { RandomEvents } from './CmdGroups/random';
+import { MessageHelper } from 'supernode/Discord/mod';
 
 
 export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
@@ -42,6 +43,27 @@ async function GenerealReadyAsync(e: Discord.Client) {
 	let logins = await DBHelper.getCheckd(db, "logins", 1);
 	await db.put('logins', ++logins);
 	randomEvents.start();
+}
+
+
+class MarrigeHelper{
+
+	jsonObj: any;
+	constructor(json:any) {
+		this.jsonObj = json;
+	}
+
+	addData(uuid:string){
+
+		if(!!this.jsonObj["MarrigeID"]){
+			return false;
+		}else{
+			this.jsonObj.MarrigeID = uuid;
+			return this.jsonObj;
+		}
+
+	}
+
 }
 
 export class BeeApplication implements Application {
@@ -132,9 +154,86 @@ export class BeeApplication implements Application {
 			}
 		});
 
+		clientBee.on('interactionCreate', async interaction => {
+
+			if (!interaction.isButton()) return;
+
+			var msg = <Discord.Message>interaction.message; 
+			const repliedTo = await msg.channel.messages.fetch(msg.reference.messageId);
+			const otherPerson = await repliedTo.channel.messages.fetch(repliedTo.reference.messageId);
+			// console.log(msg.mentions);
+			// console.log("got here ..");
+			var UID = (msg.mentions?.repliedUser?
+				(msg.mentions.repliedUser.id?
+					msg.mentions.repliedUser.id
+					:msg.mentions.repliedUser.tag)
+				:"noone?")
+
+			console.log(UID);
+			console.log(interaction.user.id);
+
+			if(otherPerson.author.id == interaction.user.id){
+
+				if(interaction.component.customId == "accept"){
+
+					let links = [
+						"https://c.tenor.com/gj75w2kkqngAAAAC/tonikaku-kawaii-tonikaku.gif",
+						"https://c.tenor.com/kftblVYVuSsAAAAC/anime-incest.gif",
+						"https://c.tenor.com/3OYmSePDSVUAAAAC/black-clover-licht.gif"
+					]
+			
+					const exampleEmbed = new Discord.MessageEmbed()
+						.setColor('#00FF00')
+						.setTitle('Love is in the air!')
+						.setDescription(`${MessageHelper.getSendersVisibleName(repliedTo)} is now married to ${MessageHelper.getSendersVisibleName(otherPerson)}.`)
+						.setImage(links[Math.floor(Math.random()*links.length)])
+					
+					var asker = await db.get(`user${repliedTo.author.id}`);
+					var recv = await db.get(`user${otherPerson.author.id}`);
+
+					var askObj = new MarrigeHelper(asker);
+					var recObj = new MarrigeHelper(recv);
+
+					var newAskData = askObj.addData(otherPerson.author.id);
+					var newRecData = recObj.addData(repliedTo.author.id);
+
+					if(newAskData == false || newRecData == false){
+
+						await interaction.reply({content:"user is already married ...", ephemeral: true});
+						return;
+					}else{
+
+						await db.put(`user${repliedTo.author.id}`, newAskData);
+						await db.put(`user${otherPerson.author.id}`, newRecData);
+
+					}
+					await msg.edit({embeds:[exampleEmbed], components:[]})
+
+				}else if (interaction.component.customId == "reject"){
+
+					let links = [
+						"https://c.tenor.com/lWwk7j4-_QIAAAAC/oreimo-anime.gif"
+					]
+			
+					const exampleEmbed = new Discord.MessageEmbed()
+						.setColor('#FF0000')
+						.setTitle('Love is not in the air...')
+						.setDescription(`${MessageHelper.getSendersVisibleName(otherPerson)} is just rejected ${MessageHelper.getSendersVisibleName(repliedTo)}.....`)
+						.setImage(links[Math.floor(Math.random()*links.length)])
+					await msg.edit({embeds:[exampleEmbed], components:[]})
+				}
+				
+			}else{
+				await interaction.reply({content:"you were not asked", ephemeral: true});
+			}
+
+
+		});
+
 		clientBob.on('messageCreate', async message => {
 			SimplePerRules(BobCommands, message);
 		});
+
 	}
 	async run(eventdata: any) {
 		clientBee.login(Env.beeToken);

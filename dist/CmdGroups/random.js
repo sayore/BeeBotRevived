@@ -38,7 +38,7 @@ class RandomEvents {
             { val: "sometimes i dream of a never ending staircase.", chance: 1 },
             { val: "luna do be kinda cute doe", chance: 5 },
             { val: "my favorite color is actually green", chance: 1 },
-            { val: "hey monika \(°^°)/ \n\noh she already left", chance: 1 },
+            { val: "hey monika \\(°^°)/ \n\noh she already left", chance: 1 },
             { val: "once, when i was playing poker", chance: 1 },
             { val: "i mɒ ɘɿɘʜw", chance: 1 },
             { val: "ɘm oƚ ɘᴎob uoʏ ɘvɒʜ ƚɒʜw", chance: 1 },
