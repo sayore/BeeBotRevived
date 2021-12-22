@@ -5,6 +5,7 @@ import { ItemStack } from 'supernode/Game/ItemStack';
 import { db } from '../app';
 import { DBHelper } from '../db.helper';
 import { ICommand } from "./icommands";
+import { clientBee, clientBob } from "../app";
 import _ from "lodash";
 
 export class ResultReport {
@@ -30,7 +31,7 @@ export class ResultReport {
 
 export function SimplePerRules(cmds: ICommand[], msg: Discord.Message, reports?: ResultReport): ResultReport {
     let report = { executed: 0, errors: [], halting: false }
-    if (msg.author.id == "732377258857070602") { Logging.log("This is me :shyduck:"); return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed); } // This is Bee himself
+    if (msg.author.id == clientBee.user.id || msg.author.id == clientBob.user.id) { Logging.log("This is me or bob."); return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed); } // This is Bee himself
     if (reports) if (reports.halting) return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
     cmds.forEach((async v => {
         if (v.userlimitedids != undefined)

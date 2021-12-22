@@ -16,6 +16,7 @@ exports.iterateSortedFilter = exports.setUser = exports.getUser = exports.Userda
 const Logging_1 = require("supernode/Base/Logging");
 const app_1 = require("../app");
 const db_helper_1 = require("../db.helper");
+const app_2 = require("../app");
 const lodash_1 = __importDefault(require("lodash"));
 class ResultReport {
     constructor(executed, halting = false, scanned, executedNum) {
@@ -38,8 +39,8 @@ class ResultReport {
 exports.ResultReport = ResultReport;
 function SimplePerRules(cmds, msg, reports) {
     let report = { executed: 0, errors: [], halting: false };
-    if (msg.author.id == "732377258857070602") {
-        Logging_1.Logging.log("This is me :shyduck:");
+    if (msg.author.id == app_2.clientBee.user.id || msg.author.id == app_2.clientBob.user.id) {
+        Logging_1.Logging.log("This is me or bob.");
         return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
     } // This is Bee himself
     if (reports)

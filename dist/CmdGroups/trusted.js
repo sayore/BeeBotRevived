@@ -36,6 +36,7 @@ const mod_1 = require("supernode/Discord/mod");
 const command_helper_1 = require("./command.helper");
 const db_helper_1 = require("../db.helper");
 const discord_js_1 = require("discord.js");
+const master_1 = require("./master");
 exports.TrustedCommands = [
     {
         prefix: true,
@@ -56,6 +57,22 @@ exports.TrustedCommands = [
             return __awaiter(this, void 0, void 0, function* () {
                 msg.reply("There are '" +
                     exports.TrustedCommands.filter(v => { return v.typeofcmd == icommands_1.TypeOfCmd.Action; }).map(v => { return v.messagecontent; }).join("','") + "'.");
+            });
+        }
+    },
+    {
+        prefix: true,
+        typeofcmd: icommands_1.TypeOfCmd.Information,
+        triggerwords: ["bee", "help"],
+        cmd(msg) {
+            var _a, _b, _c, _d;
+            return __awaiter(this, void 0, void 0, function* () {
+                msg.reply("MasterCmds: '" +
+                    ((_a = master_1.MasterCommands.filter(v => { return v.messagecontent != undefined; })) === null || _a === void 0 ? void 0 : _a.map(v => { return "**" + v.messagecontent + "**"; }).join("','")) + "'.\n" +
+                    ((_b = master_1.MasterCommands.filter(v => { return v.triggerwords != undefined; })) === null || _b === void 0 ? void 0 : _b.map(v => { return "**" + v.triggerwords + "**"; }).join("','")) + "'.\n" +
+                    "TrustedCmds: '" +
+                    ((_c = exports.TrustedCommands.filter(v => { return v.messagecontent != undefined; })) === null || _c === void 0 ? void 0 : _c.map(v => { return "**" + v.messagecontent + "**"; }).join("','")) + "'.\n" +
+                    ((_d = exports.TrustedCommands.filter(v => { return v.triggerwords != undefined; })) === null || _d === void 0 ? void 0 : _d.map(v => { return "**" + v.triggerwords + "**"; }).join("','")) + "'.\n");
             });
         }
     },
@@ -428,11 +445,37 @@ exports.TrustedCommands = [
                     .setImage(links[Math.floor(Math.random() * links.length)]);
                 const row = new discord_js_1.MessageActionRow()
                     .addComponents(new discord_js_1.MessageButton()
-                    .setCustomId('accept')
+                    .setCustomId('accept-marriage')
                     .setLabel('I DO!')
                     .setStyle('SUCCESS')).addComponents(new discord_js_1.MessageButton()
-                    .setCustomId('reject')
+                    .setCustomId('reject-marriage')
                     .setLabel('Reject')
+                    .setStyle('DANGER'));
+                msg.reply({ embeds: [exampleEmbed], components: [row] });
+            });
+        }
+    },
+    {
+        prefix: true,
+        typeofcmd: icommands_1.TypeOfCmd.Action,
+        messagecontent: "divorce",
+        cmd(msg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                let links = [
+                    "https://c.tenor.com/zr2rab_BRioAAAAC/schtroumpf-peyo.gif"
+                ];
+                const exampleEmbed = new Discord.MessageEmbed()
+                    .setColor('#FFD35D')
+                    .setTitle('OH NO!')
+                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} wants to divorce ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}.`)
+                    .setImage(links[Math.floor(Math.random() * links.length)]);
+                const row = new discord_js_1.MessageActionRow()
+                    .addComponents(new discord_js_1.MessageButton()
+                    .setCustomId('accept-divorce')
+                    .setLabel('Yes')
+                    .setStyle('SUCCESS')).addComponents(new discord_js_1.MessageButton()
+                    .setCustomId('reject-divorce')
+                    .setLabel('NOOO')
                     .setStyle('DANGER'));
                 msg.reply({ embeds: [exampleEmbed], components: [row] });
             });

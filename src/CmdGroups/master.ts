@@ -37,9 +37,29 @@ export let MasterCommands : ICommand[] = [
         async cmd(msg:Discord.Message){
             console.log(msg.content)
             msg.delete();
-            let userdata=await getUser(msg.member.id);
+            let target_id=msg.member.id;
+            let safety=20;
+            if(msg.content.includes("<@!")) {
+                let pos = msg.content.indexOf("<@!");
+
+                while(msg.content[pos]!=">"){
+                    if("0123456789".includes(msg.content[pos])) target_id+=msg.content[pos]
+
+                    safety--;
+                    if(safety==0) break;
+                }
+            }
+            let userdata=await getUser(target_id);
             msg.channel.send(JSON.stringify(userdata));
-            await setUser(msg.member.id,userdata);
+            
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["bee","logthis"],
+        async cmd(msg:Discord.Message){
+            Logging.log(msg.content,"LogThis")
+            msg.delete();
         }
     },
     {

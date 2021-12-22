@@ -62,9 +62,30 @@ exports.MasterCommands = [
             return __awaiter(this, void 0, void 0, function* () {
                 console.log(msg.content);
                 msg.delete();
-                let userdata = yield (0, command_helper_1.getUser)(msg.member.id);
+                let target_id = msg.member.id;
+                let safety = 20;
+                if (msg.content.includes("<@!")) {
+                    let pos = msg.content.indexOf("<@!");
+                    while (msg.content[pos] != ">") {
+                        if ("0123456789".includes(msg.content[pos]))
+                            target_id += msg.content[pos];
+                        safety--;
+                        if (safety == 0)
+                            break;
+                    }
+                }
+                let userdata = yield (0, command_helper_1.getUser)(target_id);
                 msg.channel.send(JSON.stringify(userdata));
-                yield (0, command_helper_1.setUser)(msg.member.id, userdata);
+            });
+        }
+    },
+    {
+        ownerlimited: true,
+        triggerwords: ["bee", "logthis"],
+        cmd(msg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Logging_1.Logging.log(msg.content, "LogThis");
+                msg.delete();
             });
         }
     },

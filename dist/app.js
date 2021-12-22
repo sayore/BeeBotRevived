@@ -84,6 +84,15 @@ class MarrigeHelper {
             return this.jsonObj;
         }
     }
+    removeData() {
+        if (!!this.jsonObj["MarrigeID"]) {
+            delete this.jsonObj["MarrigeID"];
+            return this.jsonObj;
+        }
+        else {
+            return false;
+        }
+    }
 }
 class BeeApplication {
     constructor(beeToken, bobToken) {
@@ -156,6 +165,8 @@ class BeeApplication {
             }
         }));
         exports.clientBee.on('interactionCreate', (interaction) => __awaiter(this, void 0, void 0, function* () {
+            // 'accept-divorce'
+            // 'reject-divorce'
             var _a;
             if (!interaction.isButton())
                 return;
@@ -171,8 +182,9 @@ class BeeApplication {
                 : "noone?");
             console.log(UID);
             console.log(interaction.user.id);
-            if (otherPerson.author.id == interaction.user.id) {
-                if (interaction.component.customId == "accept") {
+            if (otherPerson.author.id == interaction.user.id && (interaction.component.customId == "accept-marriage" || interaction.component.customId == "reject-marriage")) {
+                // TODO: make switch
+                if (interaction.component.customId == "accept-marriage") {
                     let links = [
                         "https://c.tenor.com/gj75w2kkqngAAAAC/tonikaku-kawaii-tonikaku.gif",
                         "https://c.tenor.com/kftblVYVuSsAAAAC/anime-incest.gif",
@@ -199,7 +211,7 @@ class BeeApplication {
                     }
                     yield msg.edit({ embeds: [exampleEmbed], components: [] });
                 }
-                else if (interaction.component.customId == "reject") {
+                else if (interaction.component.customId == "reject-marriage") {
                     let links = [
                         "https://c.tenor.com/lWwk7j4-_QIAAAAC/oreimo-anime.gif"
                     ];
@@ -207,6 +219,53 @@ class BeeApplication {
                         .setColor('#FF0000')
                         .setTitle('Love is not in the air...')
                         .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(otherPerson)} is just rejected ${mod_1.MessageHelper.getSendersVisibleName(repliedTo)}.....`)
+                        .setImage(links[Math.floor(Math.random() * links.length)]);
+                    yield msg.edit({ embeds: [exampleEmbed], components: [] });
+                }
+            }
+            else if (repliedTo.author.id == interaction.user.id && (interaction.component.customId == 'accept-divorce' || interaction.component.customId == 'reject-divorce')) {
+                // TODO: make switch
+                if (interaction.component.customId == 'accept-divorce') {
+                    let links = [
+                        "https://c.tenor.com/gtDJpK50s4UAAAAC/air-gear-agito.gif"
+                    ];
+                    const exampleEmbed = new Discord.MessageEmbed()
+                        .setColor('#00FF00')
+                        .setTitle('Love is not in the air....')
+                        .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(repliedTo)} is now divorced to ${mod_1.MessageHelper.getSendersVisibleName(otherPerson)}.`)
+                        .setImage(links[Math.floor(Math.random() * links.length)]);
+                    var asker = yield exports.db.get(`user${repliedTo.author.id}`);
+                    var recv = yield exports.db.get(`user${otherPerson.author.id}`);
+                    var askObj = new MarrigeHelper(asker);
+                    var recObj = new MarrigeHelper(recv);
+                    var MarrigeID1 = recObj.jsonObj["MarrigeID"];
+                    var MarrigeID2 = askObj.jsonObj["MarrigeID"];
+                    var newAskData = askObj.removeData(); // removeData => divorce()
+                    var newRecData = recObj.removeData();
+                    if (newAskData == false || newRecData == false) {
+                        yield interaction.reply({ content: "User isnt married", ephemeral: true });
+                        return;
+                    }
+                    else { //
+                        if (MarrigeID2 == otherPerson.author.id) {
+                            yield exports.db.put(`user${repliedTo.author.id}`, newAskData);
+                            yield exports.db.put(`user${otherPerson.author.id}`, newRecData);
+                        }
+                        else {
+                            yield interaction.reply({ content: "You cant divorce other people", ephemeral: true });
+                            return;
+                        }
+                    }
+                    yield msg.edit({ embeds: [exampleEmbed], components: [] });
+                }
+                else if (interaction.component.customId == "reject-divorce") { //<- should be divorce ?
+                    let links = [
+                        "https://c.tenor.com/pTPTKYgD4gwAAAAd/divorce-flip-book.gif"
+                    ];
+                    const exampleEmbed = new Discord.MessageEmbed()
+                        .setColor('#FF0000')
+                        .setTitle('Love is still in the air!')
+                        .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(repliedTo)} is just cancled the divorce to ${mod_1.MessageHelper.getSendersVisibleName(otherPerson)}.....`)
                         .setImage(links[Math.floor(Math.random() * links.length)]);
                     yield msg.edit({ embeds: [exampleEmbed], components: [] });
                 }

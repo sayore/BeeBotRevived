@@ -5,40 +5,55 @@ import { MessageHelper } from "supernode/Discord/mod";
 import { getRandom } from "./command.helper";
 import { DBHelper } from "../db.helper";
 import { MessageActionRow, MessageButton } from "discord.js";
+import { EveryoneCommands } from "./everyone";
+import { MasterCommands } from "./master";
 
 
-export let TrustedCommands : ICommand[] = [
+export let TrustedCommands: ICommand[] = [
     {
-        prefix:true,
-        typeofcmd:TypeOfCmd.Information,
-        triggerwords:["bee","how","many","actions"],
-        async cmd(msg:Discord.Message) {
-            msg.reply("There are "+
-                TrustedCommands.filter(v=>{return v.typeofcmd==TypeOfCmd.Action}).length+" commands.");
+        prefix: true,
+        typeofcmd: TypeOfCmd.Information,
+        triggerwords: ["bee", "how", "many", "actions"],
+        async cmd(msg: Discord.Message) {
+            msg.reply("There are " +
+                TrustedCommands.filter(v => { return v.typeofcmd == TypeOfCmd.Action }).length + " commands.");
         }
     },
     {
-        prefix:true,
-        typeofcmd:TypeOfCmd.Information,
-        triggerwords:["bee","what","are","actions","there"],
-        async cmd(msg:Discord.Message) {
-            msg.reply("There are '"+
-                TrustedCommands.filter(v=>{return v.typeofcmd==TypeOfCmd.Action}).map(v=>{return v.messagecontent}).join("','")+"'.");
+        prefix: true,
+        typeofcmd: TypeOfCmd.Information,
+        triggerwords: ["bee", "what", "are", "actions", "there"],
+        async cmd(msg: Discord.Message) {
+            msg.reply("There are '" +
+                TrustedCommands.filter(v => { return v.typeofcmd == TypeOfCmd.Action }).map(v => { return v.messagecontent }).join("','") + "'.");
         }
     },
     {
-        prefix:true,
-        typeofcmd:TypeOfCmd.Information,
-        triggerwords:["i love","bee"],
-        async cmd(msg:Discord.Message) {
-            msg.reply(getRandom(["	☜(⌒▽⌒)☞","(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄","(〃￣ω￣〃ゞ"]));
+        prefix: true,
+        typeofcmd: TypeOfCmd.Information,
+        triggerwords: ["bee","help"],
+        async cmd(msg: Discord.Message) {
+            msg.reply("MasterCmds: '" +
+                MasterCommands.filter(v => { return v.messagecontent != undefined })?.map(v => { return   "**"+v.messagecontent+"**" }).join("','") + "'.\n" +
+                MasterCommands.filter(v => { return v.triggerwords != undefined })?.map(v => { return     "**"+v.triggerwords  +"**" }).join("','") + "'.\n"+
+            "TrustedCmds: '"+
+                TrustedCommands.filter(v => { return v.messagecontent != undefined })?.map(v => { return  "**"+v.messagecontent+"**" }).join("','") + "'.\n" +
+                TrustedCommands.filter(v => { return v.triggerwords != undefined })?.map(v => { return    "**"+v.triggerwords  +"**" }).join("','") + "'.\n");
         }
     },
     {
-        prefix:true,
-        typeofcmd:TypeOfCmd.Action,
-        messagecontent:"hug",
-        async cmd(msg:Discord.Message) {
+        prefix: true,
+        typeofcmd: TypeOfCmd.Information,
+        triggerwords: ["i love", "bee"],
+        async cmd(msg: Discord.Message) {
+            msg.reply(getRandom(["	☜(⌒▽⌒)☞", "(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄", "(〃￣ω￣〃ゞ"]));
+        }
+    },
+    {
+        prefix: true,
+        typeofcmd: TypeOfCmd.Action,
+        messagecontent: "hug",
+        async cmd(msg: Discord.Message) {
             let links = [
                 "https://c.tenor.com/OXCV_qL-V60AAAAC/mochi-peachcat-mochi.gif",
                 'https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif',
@@ -49,24 +64,24 @@ export let TrustedCommands : ICommand[] = [
                 "https://c.tenor.com/IwRSZxi6vzkAAAAC/hug-hugs.gif"
             ]
 
-			const exampleEmbed = new Discord.MessageEmbed()
-				.setColor('#FFD35D')
-				.setTitle('Hugs!')
+            const exampleEmbed = new Discord.MessageEmbed()
+                .setColor('#FFD35D')
+                .setTitle('Hugs!')
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} hugs ${MessageHelper.getRepliantsVisibleName(msg)}`)
-				.setImage(links[Math.floor(Math.random()*links.length)])
-			let m = await msg.reply({embeds:[exampleEmbed]});
+                .setImage(links[Math.floor(Math.random() * links.length)])
+            let m = await msg.reply({ embeds: [exampleEmbed] });
 
             var action = "hug";
-            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
-            if(msg.mentions)
-                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
+            DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+            if (msg.mentions)
+                DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
         }
     },
     {
-        prefix:true,
-        typeofcmd:TypeOfCmd.Action,
-        messagecontent:"boop",
-        async cmd(msg:Discord.Message) {
+        prefix: true,
+        typeofcmd: TypeOfCmd.Action,
+        messagecontent: "boop",
+        async cmd(msg: Discord.Message) {
             let links = [
                 "https://c.tenor.com/l5XjHcppGN0AAAAd/boop.gif",
                 "https://c.tenor.com/B1ohHuPJIpgAAAAS/anime-cuteness.gif",
@@ -78,24 +93,24 @@ export let TrustedCommands : ICommand[] = [
             // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
 
             // Send "pong" to the same channel
-			const exampleEmbed = new Discord.MessageEmbed()
-				.setColor('#FFD35D')
-				.setTitle('Boop!')
+            const exampleEmbed = new Discord.MessageEmbed()
+                .setColor('#FFD35D')
+                .setTitle('Boop!')
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} boops ${MessageHelper.getRepliantsVisibleName(msg)}`)
-				.setImage(links[Math.floor(Math.random()*links.length)])
-			let m = await msg.reply({embeds:[exampleEmbed]});
-            
+                .setImage(links[Math.floor(Math.random() * links.length)])
+            let m = await msg.reply({ embeds: [exampleEmbed] });
+
             var action = "boop";
-            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
-            if(msg.mentions)
-                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
+            DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+            if (msg.mentions)
+                DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
         }
     },
     {
-        prefix:true,
-        typeofcmd:TypeOfCmd.Action,
-        messagecontent:"sex",
-        async cmd(msg:Discord.Message) {
+        prefix: true,
+        typeofcmd: TypeOfCmd.Action,
+        messagecontent: "sex",
+        async cmd(msg: Discord.Message) {
             let links = [
                 "https://c.tenor.com/-XrLQFqn8N0AAAAC/yuri-lewd.gif", // From behind
                 "https://c.tenor.com/XCLEsDZBeBQAAAAC/kissxsis-anime.gif", //clothed, touching wiender kiss xsis
@@ -103,24 +118,24 @@ export let TrustedCommands : ICommand[] = [
             // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
 
             // Send "pong" to the same channel
-			const exampleEmbed = new Discord.MessageEmbed()
-				.setColor('#FFD35D')
-				.setTitle('Sex!')
+            const exampleEmbed = new Discord.MessageEmbed()
+                .setColor('#FFD35D')
+                .setTitle('Sex!')
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} fucks ${MessageHelper.getRepliantsVisibleName(msg)}. **moans***`)
-				.setImage(links[Math.floor(Math.random()*links.length)])
-			let m = await msg.reply({embeds:[exampleEmbed]});
+                .setImage(links[Math.floor(Math.random() * links.length)])
+            let m = await msg.reply({ embeds: [exampleEmbed] });
 
             var action = "sex";
-            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
-            if(msg.mentions)
-                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
+            DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+            if (msg.mentions)
+                DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
         }
     },
     {
-        prefix:true,
-        typeofcmd:TypeOfCmd.Action,
-        messagecontent:"kiss",
-        async cmd(msg:Discord.Message) {
+        prefix: true,
+        typeofcmd: TypeOfCmd.Action,
+        messagecontent: "kiss",
+        async cmd(msg: Discord.Message) {
             let links = [
                 "https://c.tenor.com/_ttVgUDKJL0AAAAC/anime-couple.gif",
                 "https://c.tenor.com/v4Ur0OCvaXcAAAAd/koi-to-uso-kiss.gif",
@@ -130,24 +145,24 @@ export let TrustedCommands : ICommand[] = [
             // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
 
             // Send "pong" to the same channel
-			const exampleEmbed = new Discord.MessageEmbed()
-				.setColor('#FFD35D')
-				.setTitle('Kiss!')
+            const exampleEmbed = new Discord.MessageEmbed()
+                .setColor('#FFD35D')
+                .setTitle('Kiss!')
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} kisses ${MessageHelper.getRepliantsVisibleName(msg)}`)
-				.setImage(links[Math.floor(Math.random()*links.length)])
-			let m = await msg.reply({embeds:[exampleEmbed]});
-            
+                .setImage(links[Math.floor(Math.random() * links.length)])
+            let m = await msg.reply({ embeds: [exampleEmbed] });
+
             var action = "kiss";
-            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
-            if(msg.mentions)
-                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
+            DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+            if (msg.mentions)
+                DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
         }
     },
     {
-        prefix:true,
-        typeofcmd:TypeOfCmd.Action,
-        messagecontent:"kiss cheek",
-        async cmd(msg:Discord.Message) {
+        prefix: true,
+        typeofcmd: TypeOfCmd.Action,
+        messagecontent: "kiss cheek",
+        async cmd(msg: Discord.Message) {
             let links = [
                 "https://c.tenor.com/OC54_DJOXRAAAAAC/love-anime.gif",
                 "https://c.tenor.com/etSTc3aWspcAAAAC/yuri-kiss.gif",
@@ -155,24 +170,24 @@ export let TrustedCommands : ICommand[] = [
             // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
 
             // Send "pong" to the same channel
-			const exampleEmbed = new Discord.MessageEmbed()
-				.setColor('#FFD35D')
-				.setTitle('Kiss!')
+            const exampleEmbed = new Discord.MessageEmbed()
+                .setColor('#FFD35D')
+                .setTitle('Kiss!')
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} kisses ${MessageHelper.getRepliantsVisibleName(msg)}`)
-				.setImage(links[Math.floor(Math.random()*links.length)])
-			let m = await msg.reply({embeds:[exampleEmbed]});
-            
+                .setImage(links[Math.floor(Math.random() * links.length)])
+            let m = await msg.reply({ embeds: [exampleEmbed] });
+
             var action = "kiss cheeck";
-            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
-            if(msg.mentions)
-                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
+            DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+            if (msg.mentions)
+                DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
         }
     },
     {
-        prefix:true,
-        typeofcmd:TypeOfCmd.Action,
-        messagecontent:"cuddle",
-        async cmd(msg:Discord.Message) {
+        prefix: true,
+        typeofcmd: TypeOfCmd.Action,
+        messagecontent: "cuddle",
+        async cmd(msg: Discord.Message) {
             let links = [
                 "https://c.tenor.com/Cy8RWMcVDj0AAAAd/anime-hug.gif",
                 "https://c.tenor.com/DlW1R4d1NQAAAAAC/anime-cuddle.gif",
@@ -182,24 +197,24 @@ export let TrustedCommands : ICommand[] = [
             // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
 
             // Send "pong" to the same channel
-			const exampleEmbed = new Discord.MessageEmbed()
-				.setColor('#FFD35D')
-				.setTitle('Cuddle!')
+            const exampleEmbed = new Discord.MessageEmbed()
+                .setColor('#FFD35D')
+                .setTitle('Cuddle!')
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} cuddles ${MessageHelper.getRepliantsVisibleName(msg)}`)
-				.setImage(links[Math.floor(Math.random()*links.length)])
-			let m = await msg.reply({embeds:[exampleEmbed]});
-            
+                .setImage(links[Math.floor(Math.random() * links.length)])
+            let m = await msg.reply({ embeds: [exampleEmbed] });
+
             var action = "cuddle";
-            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
-            if(msg.mentions)
-                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
+            DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+            if (msg.mentions)
+                DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
         }
     },
     {
-        prefix:true,
-        typeofcmd:TypeOfCmd.Action,
-        messagecontent:"holdhands",
-        async cmd(msg:Discord.Message) {
+        prefix: true,
+        typeofcmd: TypeOfCmd.Action,
+        messagecontent: "holdhands",
+        async cmd(msg: Discord.Message) {
             let links = [
                 "https://c.tenor.com/WUZAwo5KFdMAAAAd/love-holding-hands.gif",
                 "https://c.tenor.com/rU3xZo2_jaIAAAAC/anime-hold.gif",
@@ -208,24 +223,24 @@ export let TrustedCommands : ICommand[] = [
             // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
 
             // Send "pong" to the same channel
-			const exampleEmbed = new Discord.MessageEmbed()
-				.setColor('#FFD35D')
-				.setTitle('Handholding!')
+            const exampleEmbed = new Discord.MessageEmbed()
+                .setColor('#FFD35D')
+                .setTitle('Handholding!')
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} handholds ${MessageHelper.getRepliantsVisibleName(msg)} ***blushes***`)
-				.setImage(links[Math.floor(Math.random()*links.length)])
-			let m = await msg.reply({embeds:[exampleEmbed]});
-            
+                .setImage(links[Math.floor(Math.random() * links.length)])
+            let m = await msg.reply({ embeds: [exampleEmbed] });
+
             var action = "holdhand";
-            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
-            if(msg.mentions)
-                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
+            DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+            if (msg.mentions)
+                DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
         }
     },
     {
-        prefix:true,
-        typeofcmd:TypeOfCmd.Action,
-        messagecontent:"pat",
-        async cmd(msg:Discord.Message) {
+        prefix: true,
+        typeofcmd: TypeOfCmd.Action,
+        messagecontent: "pat",
+        async cmd(msg: Discord.Message) {
             let links = [
                 "https://c.tenor.com/tYS5DBIos-UAAAAS/kyo-ani-musaigen.gif",
                 "https://c.tenor.com/EtvotzSToyMAAAAd/petra-rezero.gif",
@@ -239,24 +254,24 @@ export let TrustedCommands : ICommand[] = [
             // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
 
             // Send "pong" to the same channel
-			const exampleEmbed = new Discord.MessageEmbed()
-				.setColor('#FFD35D')
-				.setTitle('Pats!')
+            const exampleEmbed = new Discord.MessageEmbed()
+                .setColor('#FFD35D')
+                .setTitle('Pats!')
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} pats ${MessageHelper.getRepliantsVisibleName(msg)} ***happynoises are filling the room***`)
-				.setImage(links[Math.floor(Math.random()*links.length)])
-			let m = await msg.reply({embeds:[exampleEmbed]});
-            
+                .setImage(links[Math.floor(Math.random() * links.length)])
+            let m = await msg.reply({ embeds: [exampleEmbed] });
+
             var action = "pat";
-            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
-            if(msg.mentions)
-                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
+            DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+            if (msg.mentions)
+                DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
         }
     },
     {
-        prefix:true,
-        typeofcmd:TypeOfCmd.Action,
-        messagecontent:"hide",
-        async cmd(msg:Discord.Message) {
+        prefix: true,
+        typeofcmd: TypeOfCmd.Action,
+        messagecontent: "hide",
+        async cmd(msg: Discord.Message) {
             let links = [
                 "https://c.tenor.com/T6X8wbaOGhIAAAAC/sagiri-bed.gif",
                 "https://c.tenor.com/AmYTuh5XM7sAAAAC/shy-rikka.gif",
@@ -265,24 +280,24 @@ export let TrustedCommands : ICommand[] = [
             // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
 
             // Send "pong" to the same channel
-			const exampleEmbed = new Discord.MessageEmbed()
-				.setColor('#FFD35D')
-				.setTitle('Hides!')
-                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} hides ${(MessageHelper.hasRepliant(msg)?"from "+MessageHelper.getRepliantsVisibleName(msg)+"!!!":"!!!")}`)
-				.setImage(links[Math.floor(Math.random()*links.length)])
-			let m = await msg.reply({embeds:[exampleEmbed]});
-            
+            const exampleEmbed = new Discord.MessageEmbed()
+                .setColor('#FFD35D')
+                .setTitle('Hides!')
+                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} hides ${(MessageHelper.hasRepliant(msg) ? "from " + MessageHelper.getRepliantsVisibleName(msg) + "!!!" : "!!!")}`)
+                .setImage(links[Math.floor(Math.random() * links.length)])
+            let m = await msg.reply({ embeds: [exampleEmbed] });
+
             var action = "hide";
-            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
-            if(msg.mentions)
-                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
+            DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+            if (msg.mentions)
+                DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
         }
     },
     {
-        prefix:true,
-        typeofcmd:TypeOfCmd.Action,
-        messagecontent:"blush",
-        async cmd(msg:Discord.Message) {
+        prefix: true,
+        typeofcmd: TypeOfCmd.Action,
+        messagecontent: "blush",
+        async cmd(msg: Discord.Message) {
             let links = [
                 "https://c.tenor.com/wwxHnJqUNEMAAAAC/anime-blush.gif",
                 "https://c.tenor.com/M7wcdD0eujYAAAAd/anime-looking.gif",
@@ -293,24 +308,24 @@ export let TrustedCommands : ICommand[] = [
             // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
 
             // Send "pong" to the same channel
-			const exampleEmbed = new Discord.MessageEmbed()
-				.setColor('#FFD35D')
-				.setTitle('Blush!')
+            const exampleEmbed = new Discord.MessageEmbed()
+                .setColor('#FFD35D')
+                .setTitle('Blush!')
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} blushes.`)
-				.setImage(links[Math.floor(Math.random()*links.length)])
-			let m = await msg.reply({embeds:[exampleEmbed]});
-            
+                .setImage(links[Math.floor(Math.random() * links.length)])
+            let m = await msg.reply({ embeds: [exampleEmbed] });
+
             var action = "blush";
-            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
-            if(msg.mentions)
-                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
+            DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+            if (msg.mentions)
+                DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
         }
     },
     {
-        prefix:true,
-        typeofcmd:TypeOfCmd.Action,
-        messagecontent:"love",
-        async cmd(msg:Discord.Message) {
+        prefix: true,
+        typeofcmd: TypeOfCmd.Action,
+        messagecontent: "love",
+        async cmd(msg: Discord.Message) {
             let links = [
                 "https://c.tenor.com/_2KihRhrHD8AAAAC/girls-heart.gif",
                 "https://c.tenor.com/1rEO6m7rWWQAAAAC/i-love-you-love.gif",
@@ -321,24 +336,24 @@ export let TrustedCommands : ICommand[] = [
             // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
 
             // Send "pong" to the same channel
-			const exampleEmbed = new Discord.MessageEmbed()
-				.setColor('#FFD35D')
-				.setTitle('Love!')
+            const exampleEmbed = new Discord.MessageEmbed()
+                .setColor('#FFD35D')
+                .setTitle('Love!')
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} loves ${MessageHelper.getRepliantsVisibleName(msg)}.`)
-				.setImage(links[Math.floor(Math.random()*links.length)])
-			let m = await msg.reply({embeds:[exampleEmbed]});
-            
+                .setImage(links[Math.floor(Math.random() * links.length)])
+            let m = await msg.reply({ embeds: [exampleEmbed] });
+
             var action = "love";
-            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
-            if(msg.mentions)
-                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
+            DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+            if (msg.mentions)
+                DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
         }
     },
     {
-        prefix:true,
-        typeofcmd:TypeOfCmd.Action,
-        messagecontent:"nom",
-        async cmd(msg:Discord.Message) {
+        prefix: true,
+        typeofcmd: TypeOfCmd.Action,
+        messagecontent: "nom",
+        async cmd(msg: Discord.Message) {
             let links = [
                 "https://c.tenor.com/9dOzFGFZxnoAAAAM/bite-anime.gif",
                 "https://c.tenor.com/djDaxKCZXpwAAAAM/chomp-cute.gif",
@@ -349,64 +364,96 @@ export let TrustedCommands : ICommand[] = [
             // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
 
             // Send "pong" to the same channel
-			const exampleEmbed = new Discord.MessageEmbed()
-				.setColor('#FFD35D')
-				.setTitle('Nom\'d!')
+            const exampleEmbed = new Discord.MessageEmbed()
+                .setColor('#FFD35D')
+                .setTitle('Nom\'d!')
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} noms ${MessageHelper.getRepliantsVisibleName(msg)}. RIP`)
-				.setImage(links[Math.floor(Math.random()*links.length)])
-                //@ts-ignore
-			let m = await msg.channel.send({embeds:[exampleEmbed]});
-            
+                .setImage(links[Math.floor(Math.random() * links.length)])
+            //@ts-ignore
+            let m = await msg.channel.send({ embeds: [exampleEmbed] });
+
             var action = "nom";
-            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
-            if(msg.mentions)
-                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
+            DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+            if (msg.mentions)
+                DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
         }
     },
     {
-        messagecontent:"good bee",
-        async cmd(msg:Discord.Message){
+        messagecontent: "good bee",
+        async cmd(msg: Discord.Message) {
             msg.reply("yay \(◦'⌣'◦)/.");
 
             var action = "goodbee";
-            DBHelper.increase(db,"action::"+action+"sSent::"+msg.member.id+"",1);
-            if(msg.mentions)
-                DBHelper.increase(db,"action::"+action+"sReceived::"+msg.mentions.repliedUser.id,1);
+            DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+            if (msg.mentions)
+                DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
         }
     },
-    
+
     {
-        prefix:true,
-        typeofcmd:TypeOfCmd.Action,
-        messagecontent:"marry",
-        async cmd(msg:Discord.Message) {
+        prefix: true,
+        typeofcmd: TypeOfCmd.Action,
+        messagecontent: "marry",
+        async cmd(msg: Discord.Message) {
 
             let links = [
                 "https://c.tenor.com/aJjnVhJ1k_0AAAAd/melamar-geisha.gif",
                 "https://c.tenor.com/NK-CNqOr5TwAAAAC/hu-tao-marry.gif",
                 "https://c.tenor.com/IcwN28AtBVgAAAAC/marry-me-anime.gif"
             ]
-    
+
             const exampleEmbed = new Discord.MessageEmbed()
                 .setColor('#FFD35D')
                 .setTitle('Love is in the air!')
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} proposes to ${MessageHelper.getRepliantsVisibleName(msg)}.`)
-                .setImage(links[Math.floor(Math.random()*links.length)])
+                .setImage(links[Math.floor(Math.random() * links.length)])
 
             const row = new MessageActionRow()
-			.addComponents(
-				new MessageButton()
-					.setCustomId('accept')
-					.setLabel('I DO!')
-					.setStyle('SUCCESS'),
-			).addComponents(
-				new MessageButton()
-					.setCustomId('reject')
-					.setLabel('Reject')
-					.setStyle('DANGER'),
-			);
+                .addComponents(
+                    new MessageButton()
+                        .setCustomId('accept-marriage')
+                        .setLabel('I DO!')
+                        .setStyle('SUCCESS'),
+                ).addComponents(
+                    new MessageButton()
+                        .setCustomId('reject-marriage')
+                        .setLabel('Reject')
+                        .setStyle('DANGER'),
+                );
             msg.reply({ embeds: [exampleEmbed], components: [row] });
-            
+
+        }
+    },
+    {
+        prefix: true,
+        typeofcmd: TypeOfCmd.Action,
+        messagecontent: "divorce",
+        async cmd(msg: Discord.Message) {
+
+            let links = [
+                "https://c.tenor.com/zr2rab_BRioAAAAC/schtroumpf-peyo.gif"
+            ]
+
+            const exampleEmbed = new Discord.MessageEmbed()
+                .setColor('#FFD35D')
+                .setTitle('OH NO!')
+                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} wants to divorce ${MessageHelper.getRepliantsVisibleName(msg)}.`)
+                .setImage(links[Math.floor(Math.random() * links.length)])
+
+            const row = new MessageActionRow()
+                .addComponents(
+                    new MessageButton()
+                        .setCustomId('accept-divorce')
+                        .setLabel('Yes')
+                        .setStyle('SUCCESS'),
+                ).addComponents(
+                    new MessageButton()
+                        .setCustomId('reject-divorce')
+                        .setLabel('NOOO')
+                        .setStyle('DANGER'),
+                );
+            msg.reply({ embeds: [exampleEmbed], components: [row] });
+
         }
     },
 ]
