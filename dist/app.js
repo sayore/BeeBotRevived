@@ -182,9 +182,9 @@ class BeeApplication {
                 : "noone?");
             console.log(UID);
             console.log(interaction.user.id);
-            if (otherPerson.author.id == interaction.user.id && (interaction.component.customId == "accept-marriage" || interaction.component.customId == "reject-marriage")) {
+            if (otherPerson.author.id == interaction.user.id && (interaction.customId == "accept-marriage" || interaction.customId == "reject-marriage")) {
                 // TODO: make switch
-                if (interaction.component.customId == "accept-marriage") {
+                if (interaction.customId == "accept-marriage") {
                     let links = [
                         "https://c.tenor.com/gj75w2kkqngAAAAC/tonikaku-kawaii-tonikaku.gif",
                         "https://c.tenor.com/kftblVYVuSsAAAAC/anime-incest.gif",
@@ -211,7 +211,7 @@ class BeeApplication {
                     }
                     yield msg.edit({ embeds: [exampleEmbed], components: [] });
                 }
-                else if (interaction.component.customId == "reject-marriage") {
+                else if (interaction.customId == "reject-marriage") {
                     let links = [
                         "https://c.tenor.com/lWwk7j4-_QIAAAAC/oreimo-anime.gif"
                     ];
@@ -223,9 +223,9 @@ class BeeApplication {
                     yield msg.edit({ embeds: [exampleEmbed], components: [] });
                 }
             }
-            else if (repliedTo.author.id == interaction.user.id && (interaction.component.customId == 'accept-divorce' || interaction.component.customId == 'reject-divorce')) {
+            else if (repliedTo.author.id == interaction.user.id && (interaction.customId == 'accept-divorce' || interaction.customId == 'reject-divorce')) {
                 // TODO: make switch
-                if (interaction.component.customId == 'accept-divorce') {
+                if (interaction.customId == 'accept-divorce') {
                     let links = [
                         "https://c.tenor.com/gtDJpK50s4UAAAAC/air-gear-agito.gif"
                     ];
@@ -258,7 +258,7 @@ class BeeApplication {
                     }
                     yield msg.edit({ embeds: [exampleEmbed], components: [] });
                 }
-                else if (interaction.component.customId == "reject-divorce") { //<- should be divorce ?
+                else if (interaction.customId == "reject-divorce") { //<- should be divorce ?
                     let links = [
                         "https://c.tenor.com/pTPTKYgD4gwAAAAd/divorce-flip-book.gif"
                     ];
