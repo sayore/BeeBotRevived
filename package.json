@@ -9,7 +9,8 @@
   },
   "scripts": {
     "build": "tsc --build",
-    "clean": "tsc --build --clean"
+    "clean": "tsc --build --clean",
+    "test": "node ./dist/test.js"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.178",
