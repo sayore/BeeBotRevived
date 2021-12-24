@@ -42,11 +42,12 @@ export let MasterCommands : ICommand[] = [
             if(msg.content.includes("<@!")) {
                 let pos = msg.content.indexOf("<@!");
 
-                while(msg.content[pos]!=">"){
-                    if("0123456789".includes(msg.content[pos])) target_id+=msg.content[pos]
-
+                while(msg.content.charAt(pos)!=">"){
+                    if("0123456789".includes(msg.content.charAt(pos))) target_id+=msg.content.charAt(pos)
+                    console.log(msg.content.charAt(pos))
                     safety--;
-                    if(safety==0) break;
+                    pos++;
+                    if(safety==0) {Logging.log("Needed to break"); break;}
                 }
             }
             let userdata=await getUser(target_id);
