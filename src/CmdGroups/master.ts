@@ -1,11 +1,13 @@
 import { ICommand } from "./icommands";
 import * as Discord from 'discord.js';
-import { CheckForManyWords, getUser, iterateSortedFilter, RPG, setUser, Userdata } from "./command.helper";
+import { CheckForManyWords, iterateSortedFilter } from "./command.helper";
 import { clientBee, db, EnvFile, randomEvents } from "../app";
 import { MessageHelper } from "supernode/Discord/MessageHelper";
 import { Environment } from "supernode/Base/Environment";
 import { Logging } from "supernode/Base/Logging";
 import _ from "lodash";
+import { getUser, Userdata } from '../Helper/user';
+import { RPG } from '../RPG/rpg';
 
 export let MasterCommands : ICommand[] = [
     {

@@ -1,6 +1,6 @@
 import { DiscordAPIError } from "discord.js";
 import * as Discord from 'discord.js';
-import { Userdata } from "./command.helper";
+import { Userdata } from "../Helper/user";
 
 export interface ICommand {
     prefix?:boolean

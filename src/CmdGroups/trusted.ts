@@ -14,6 +14,7 @@ export let TrustedCommands: ICommand[] = [
         prefix: true,
         typeofcmd: TypeOfCmd.Information,
         triggerwords: ["bee", "how", "many", "actions"],
+        
         async cmd(msg: Discord.Message) {
             msg.reply("There are " +
                 TrustedCommands.filter(v => { return v.typeofcmd == TypeOfCmd.Action }).length + " commands.");

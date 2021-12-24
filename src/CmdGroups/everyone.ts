@@ -4,7 +4,7 @@ import { clientBee, db } from "../app";
 import { MessageHelper } from "supernode/Discord/mod";
 import { DBHelper } from "../db.helper";
 import { Logging } from "supernode/Base/Logging";
-import { setUser } from "./command.helper";
+import { setUser } from "../Helper/user";
 //import { getUser, setUser } from "./command.helper";
 
 var randomUserIdCache:{time:number,id:string}[] = []

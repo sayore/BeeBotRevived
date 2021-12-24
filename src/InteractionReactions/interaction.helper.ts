@@ -2,9 +2,10 @@ import _ from "lodash";
 import * as Discord from 'discord.js';
 import { Logging } from "supernode/Base/Logging";
 import { clientBee, clientBob, db } from "../app";
-import { CheckForManyWordsCI, ResultReport, RPG, Userdata } from "../CmdGroups/command.helper";
+import { CheckForManyWordsCI, ResultReport } from "../CmdGroups/command.helper";
 import { DBHelper } from "../db.helper";
 import { IReaction } from "./ireaction";
+import { getUser } from "../Helper/user";
 
 
 export function SimpleReactionsPerRules(cmds: IReaction[], interaction: Discord.Interaction, reports?: ResultReport): ResultReport {
@@ -61,22 +62,4 @@ export function SimpleReactionsPerRules(cmds: IReaction[], interaction: Discord.
     }))
     DBHelper.increase(db, "msg_since_online");
     return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
-}
-
-// TODO: IMPORTANT!! Refactor this outside of the helper AS SOON AS POSSIBLE, there is a duplicate
-export async function getUser(userid: string): Promise<Userdata> {
-    var key = "user" + userid;
-    if (await db.exists(key)) {
-        let userdata = <Userdata>_.assignIn(new Userdata(),await (db.get(key)));
-        userdata.rpg = <RPG>_.assignIn(new RPG(), userdata.rpg);
-        
-        userdata.id = userid;
-        return userdata;
-    } else {
-        console.log("New User")
-        return new Userdata();
-    }
-}
-export async function setUser(userid: string, userdata: Userdata) {
-    return await db.put("user" + userid, userdata);
 }
