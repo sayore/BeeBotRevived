@@ -96,6 +96,17 @@ exports.MasterCommands = [
     },
     {
         ownerlimited: true,
+        triggerwords: ["beesaythis"],
+        cmd(msg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                Logging_1.Logging.log(msg.content, "SayThis");
+                msg.channel.send(msg.content.replace("beesaythis ", ""));
+                msg.delete();
+            });
+        }
+    },
+    {
+        ownerlimited: true,
         triggerwords: ["bee", "most", "money"],
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {

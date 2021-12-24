@@ -67,6 +67,15 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
+        triggerwords:["beesaythis"],
+        async cmd(msg:Discord.Message){
+            Logging.log(msg.content,"SayThis")
+            msg.channel.send(msg.content.replace("beesaythis ",""));
+            msg.delete();
+        }
+    },
+    {
+        ownerlimited:true,
         triggerwords:["bee","most","money"],
         async cmd(msg:Discord.Message){
             console.log(msg.content)
