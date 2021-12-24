@@ -16,6 +16,9 @@ import * as Discord from 'discord.js';
 import level from 'level-ts';
 import { MasterCommands } from './CmdGroups/master';
 import { ResultReport, SimplePerRules } from './CmdGroups/command.helper';
+import { SimpleReactionsPerRules } from './InteractionReactions/interaction.helper';
+import { TestReactions } from './InteractionReactions/testreactions';
+import { MarriageReactions } from './InteractionReactions/marriage';
 import Level from 'level-ts';
 import { DBHelper } from './db.helper';
 import { EveryoneCommands } from './CmdGroups/everyone';
@@ -105,13 +108,6 @@ export class BeeApplication implements Application {
 		clientBee.on('ready', GenerealReadyAsync);
 		clientBob.on('ready', GenerealReadyAsync);
 
-		clientBee.on('interaction', async interaction => {
-			if (!interaction.isCommand()) return;
-			if (interaction.commandName === 'ping') {
-				await interaction.reply('Pong!');
-			}
-		});
-
 		clientBee.on('messageCreate', async message => {
 			//Logging.log("message..." + (await message.content))
 			// Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
@@ -170,138 +166,12 @@ export class BeeApplication implements Application {
 
 			// 'accept-divorce'
 			// 'reject-divorce'
-
-			if (!interaction.isButton()) return;
 			
+			let simpreacts = SimpleReactionsPerRules(TestReactions,interaction,new ResultReport(false,false,0,0));
+			if(simpreacts.executed) return;
+			simpreacts.add(SimpleReactionsPerRules(MarriageReactions,interaction,new ResultReport(false,false,0,0)))
+			simpreacts.report();
 
-			var msg = <Discord.Message>interaction.message; 
-			const repliedTo = await msg.channel.messages.fetch(msg.reference.messageId);
-			const otherPerson = await repliedTo.channel.messages.fetch(repliedTo.reference.messageId);
-			// console.log(msg.mentions);
-			// console.log("got here ..");
-			var UID = (msg.mentions?.repliedUser?
-				(msg.mentions.repliedUser.id?
-					msg.mentions.repliedUser.id
-					:msg.mentions.repliedUser.tag)
-				:"noone?")
-
-			console.log(UID);
-			console.log(interaction.user.id);
-			
-			if(otherPerson.author.id == interaction.user.id && (interaction.customId == "accept-marriage" || interaction.customId == "reject-marriage")){
-
-
-				// TODO: make switch
-				if(interaction.customId == "accept-marriage"){
-
-					let links = [
-						"https://c.tenor.com/gj75w2kkqngAAAAC/tonikaku-kawaii-tonikaku.gif",
-						"https://c.tenor.com/kftblVYVuSsAAAAC/anime-incest.gif",
-						"https://c.tenor.com/3OYmSePDSVUAAAAC/black-clover-licht.gif"
-					]
-			
-					const exampleEmbed = new Discord.MessageEmbed()
-						.setColor('#00FF00')
-						.setTitle('Love is in the air!')
-						.setDescription(`${MessageHelper.getSendersVisibleName(repliedTo)} is now married to ${MessageHelper.getSendersVisibleName(otherPerson)}.`)
-						.setImage(links[Math.floor(Math.random()*links.length)])
-					
-					var asker = await db.get(`user${repliedTo.author.id}`);
-					var recv = await db.get(`user${otherPerson.author.id}`);
-
-					var askObj = new MarrigeHelper(asker);
-					var recObj = new MarrigeHelper(recv);
-
-					var newAskData = askObj.addData(otherPerson.author.id);
-					var newRecData = recObj.addData(repliedTo.author.id);
-
-					if(newAskData == false || newRecData == false){
-
-						await interaction.reply({content:"user is already married ...", ephemeral: true});
-						return;
-					}else{
-
-						await db.put(`user${repliedTo.author.id}`, newAskData);
-						await db.put(`user${otherPerson.author.id}`, newRecData);
-
-					}
-					await msg.edit({embeds:[exampleEmbed], components:[]})
-
-				}else if (interaction.customId == "reject-marriage"){
-
-					let links = [
-						"https://c.tenor.com/lWwk7j4-_QIAAAAC/oreimo-anime.gif"
-					]
-			
-					const exampleEmbed = new Discord.MessageEmbed()
-						.setColor('#FF0000')
-						.setTitle('Love is not in the air...')
-						.setDescription(`${MessageHelper.getSendersVisibleName(otherPerson)} is just rejected ${MessageHelper.getSendersVisibleName(repliedTo)}.....`)
-						.setImage(links[Math.floor(Math.random()*links.length)])
-					await msg.edit({embeds:[exampleEmbed], components:[]})
-				}
-			} else
-			if(repliedTo.author.id == interaction.user.id && (interaction.customId == 'accept-divorce' || interaction.customId == 'reject-divorce')){
-
-				// TODO: make switch
-				if(interaction.customId == 'accept-divorce'){
-
-					let links = [
-						"https://c.tenor.com/gtDJpK50s4UAAAAC/air-gear-agito.gif"
-					]
-					const exampleEmbed = new Discord.MessageEmbed()
-						.setColor('#00FF00')
-						.setTitle('Love is not in the air....')
-						.setDescription(`${MessageHelper.getSendersVisibleName(repliedTo)} is now divorced to ${MessageHelper.getSendersVisibleName(otherPerson)}.`)
-						.setImage(links[Math.floor(Math.random()*links.length)])
-					
-					var asker = await db.get(`user${repliedTo.author.id}`);
-					var recv = await db.get(`user${otherPerson.author.id}`);
-
-					var askObj = new MarrigeHelper(asker);
-					var recObj = new MarrigeHelper(recv);
-
-					var MarrigeID1 = recObj.jsonObj["MarrigeID"];
-					var MarrigeID2 = askObj.jsonObj["MarrigeID"];
-
-					var newAskData = askObj.removeData(); // removeData => divorce()
-					var newRecData = recObj.removeData();
-
-					if(newAskData == false || newRecData == false){
-
-						await interaction.reply({content:"User isnt married", ephemeral: true});
-						return;
-					}else{ //
-
-
-						if(MarrigeID2 == otherPerson.author.id){
-							await db.put(`user${repliedTo.author.id}`, newAskData);
-							await db.put(`user${otherPerson.author.id}`, newRecData);
-						}else{
-							await interaction.reply({content:"You cant divorce other people", ephemeral: true});
-							return;
-						}
-
-					}
-					await msg.edit({embeds:[exampleEmbed], components:[]})
-
-				}else if (interaction.customId == "reject-divorce"){ //<- should be divorce ?
-
-					let links = [
-						"https://c.tenor.com/pTPTKYgD4gwAAAAd/divorce-flip-book.gif"
-					]
-			
-					const exampleEmbed = new Discord.MessageEmbed()
-						.setColor('#FF0000')
-						.setTitle('Love is still in the air!')
-						.setDescription(`${MessageHelper.getSendersVisibleName(repliedTo)} is just cancled the divorce to ${MessageHelper.getSendersVisibleName(otherPerson)}.....`)
-						.setImage(links[Math.floor(Math.random()*links.length)])
-					await msg.edit({embeds:[exampleEmbed], components:[]})
-				}
-
-			}else{
-				await interaction.reply({content:"you were not asked", ephemeral: true});
-			}
 
 
 		});

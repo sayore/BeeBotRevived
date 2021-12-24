@@ -456,4 +456,31 @@ export let TrustedCommands: ICommand[] = [
 
         }
     },
+    {
+        prefix: true,
+        typeofcmd: TypeOfCmd.Action,
+        messagecontent: "bbtext",
+        async cmd(msg: Discord.Message) {
+
+            let links = [
+                "https://c.tenor.com/zr2rab_BRioAAAAC/schtroumpf-peyo.gif"
+            ]
+
+            const exampleEmbed = new Discord.MessageEmbed()
+                .setColor('#FFD35D')
+                .setTitle('OH NO!')
+                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} wants to divorce ${MessageHelper.getRepliantsVisibleName(msg)}.`)
+                .setImage(links[Math.floor(Math.random() * links.length)])
+
+            const row = new MessageActionRow()
+                .addComponents(
+                    new MessageButton()
+                        .setCustomId('bbtext')
+                        .setLabel('BBText')
+                        .setStyle('SUCCESS'),
+                );
+            msg.reply({ embeds: [exampleEmbed], components: [row] });
+
+        }
+    },
 ]

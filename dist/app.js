@@ -50,6 +50,9 @@ const Discord = __importStar(require("discord.js"));
 const level_ts_1 = __importDefault(require("level-ts"));
 const master_1 = require("./CmdGroups/master");
 const command_helper_1 = require("./CmdGroups/command.helper");
+const interaction_helper_1 = require("./InteractionReactions/interaction.helper");
+const testreactions_1 = require("./InteractionReactions/testreactions");
+const marriage_1 = require("./InteractionReactions/marriage");
 const db_helper_1 = require("./db.helper");
 const everyone_1 = require("./CmdGroups/everyone");
 const trusted_1 = require("./CmdGroups/trusted");
@@ -58,7 +61,6 @@ const Application_1 = require("supernode/Base/Application");
 const ApplicationCollection_1 = require("supernode/Base/ApplicationCollection");
 const ExpressApplication_1 = require("supernode/Base/ExpressApplication");
 const random_1 = require("./CmdGroups/random");
-const mod_1 = require("supernode/Discord/mod");
 exports.clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 exports.clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 exports.db = new level_ts_1.default('./database');
@@ -112,13 +114,6 @@ class BeeApplication {
         BeeApplication.hasStarted = true;
         exports.clientBee.on('ready', GenerealReadyAsync);
         exports.clientBob.on('ready', GenerealReadyAsync);
-        exports.clientBee.on('interaction', (interaction) => __awaiter(this, void 0, void 0, function* () {
-            if (!interaction.isCommand())
-                return;
-            if (interaction.commandName === 'ping') {
-                yield interaction.reply('Pong!');
-            }
-        }));
         exports.clientBee.on('messageCreate', (message) => __awaiter(this, void 0, void 0, function* () {
             //Logging.log("message..." + (await message.content))
             // Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
@@ -167,112 +162,11 @@ class BeeApplication {
         exports.clientBee.on('interactionCreate', (interaction) => __awaiter(this, void 0, void 0, function* () {
             // 'accept-divorce'
             // 'reject-divorce'
-            var _a;
-            if (!interaction.isButton())
+            let simpreacts = (0, interaction_helper_1.SimpleReactionsPerRules)(testreactions_1.TestReactions, interaction, new command_helper_1.ResultReport(false, false, 0, 0));
+            if (simpreacts.executed)
                 return;
-            var msg = interaction.message;
-            const repliedTo = yield msg.channel.messages.fetch(msg.reference.messageId);
-            const otherPerson = yield repliedTo.channel.messages.fetch(repliedTo.reference.messageId);
-            // console.log(msg.mentions);
-            // console.log("got here ..");
-            var UID = (((_a = msg.mentions) === null || _a === void 0 ? void 0 : _a.repliedUser) ?
-                (msg.mentions.repliedUser.id ?
-                    msg.mentions.repliedUser.id
-                    : msg.mentions.repliedUser.tag)
-                : "noone?");
-            console.log(UID);
-            console.log(interaction.user.id);
-            if (otherPerson.author.id == interaction.user.id && (interaction.customId == "accept-marriage" || interaction.customId == "reject-marriage")) {
-                // TODO: make switch
-                if (interaction.customId == "accept-marriage") {
-                    let links = [
-                        "https://c.tenor.com/gj75w2kkqngAAAAC/tonikaku-kawaii-tonikaku.gif",
-                        "https://c.tenor.com/kftblVYVuSsAAAAC/anime-incest.gif",
-                        "https://c.tenor.com/3OYmSePDSVUAAAAC/black-clover-licht.gif"
-                    ];
-                    const exampleEmbed = new Discord.MessageEmbed()
-                        .setColor('#00FF00')
-                        .setTitle('Love is in the air!')
-                        .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(repliedTo)} is now married to ${mod_1.MessageHelper.getSendersVisibleName(otherPerson)}.`)
-                        .setImage(links[Math.floor(Math.random() * links.length)]);
-                    var asker = yield exports.db.get(`user${repliedTo.author.id}`);
-                    var recv = yield exports.db.get(`user${otherPerson.author.id}`);
-                    var askObj = new MarrigeHelper(asker);
-                    var recObj = new MarrigeHelper(recv);
-                    var newAskData = askObj.addData(otherPerson.author.id);
-                    var newRecData = recObj.addData(repliedTo.author.id);
-                    if (newAskData == false || newRecData == false) {
-                        yield interaction.reply({ content: "user is already married ...", ephemeral: true });
-                        return;
-                    }
-                    else {
-                        yield exports.db.put(`user${repliedTo.author.id}`, newAskData);
-                        yield exports.db.put(`user${otherPerson.author.id}`, newRecData);
-                    }
-                    yield msg.edit({ embeds: [exampleEmbed], components: [] });
-                }
-                else if (interaction.customId == "reject-marriage") {
-                    let links = [
-                        "https://c.tenor.com/lWwk7j4-_QIAAAAC/oreimo-anime.gif"
-                    ];
-                    const exampleEmbed = new Discord.MessageEmbed()
-                        .setColor('#FF0000')
-                        .setTitle('Love is not in the air...')
-                        .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(otherPerson)} is just rejected ${mod_1.MessageHelper.getSendersVisibleName(repliedTo)}.....`)
-                        .setImage(links[Math.floor(Math.random() * links.length)]);
-                    yield msg.edit({ embeds: [exampleEmbed], components: [] });
-                }
-            }
-            else if (repliedTo.author.id == interaction.user.id && (interaction.customId == 'accept-divorce' || interaction.customId == 'reject-divorce')) {
-                // TODO: make switch
-                if (interaction.customId == 'accept-divorce') {
-                    let links = [
-                        "https://c.tenor.com/gtDJpK50s4UAAAAC/air-gear-agito.gif"
-                    ];
-                    const exampleEmbed = new Discord.MessageEmbed()
-                        .setColor('#00FF00')
-                        .setTitle('Love is not in the air....')
-                        .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(repliedTo)} is now divorced to ${mod_1.MessageHelper.getSendersVisibleName(otherPerson)}.`)
-                        .setImage(links[Math.floor(Math.random() * links.length)]);
-                    var asker = yield exports.db.get(`user${repliedTo.author.id}`);
-                    var recv = yield exports.db.get(`user${otherPerson.author.id}`);
-                    var askObj = new MarrigeHelper(asker);
-                    var recObj = new MarrigeHelper(recv);
-                    var MarrigeID1 = recObj.jsonObj["MarrigeID"];
-                    var MarrigeID2 = askObj.jsonObj["MarrigeID"];
-                    var newAskData = askObj.removeData(); // removeData => divorce()
-                    var newRecData = recObj.removeData();
-                    if (newAskData == false || newRecData == false) {
-                        yield interaction.reply({ content: "User isnt married", ephemeral: true });
-                        return;
-                    }
-                    else { //
-                        if (MarrigeID2 == otherPerson.author.id) {
-                            yield exports.db.put(`user${repliedTo.author.id}`, newAskData);
-                            yield exports.db.put(`user${otherPerson.author.id}`, newRecData);
-                        }
-                        else {
-                            yield interaction.reply({ content: "You cant divorce other people", ephemeral: true });
-                            return;
-                        }
-                    }
-                    yield msg.edit({ embeds: [exampleEmbed], components: [] });
-                }
-                else if (interaction.customId == "reject-divorce") { //<- should be divorce ?
-                    let links = [
-                        "https://c.tenor.com/pTPTKYgD4gwAAAAd/divorce-flip-book.gif"
-                    ];
-                    const exampleEmbed = new Discord.MessageEmbed()
-                        .setColor('#FF0000')
-                        .setTitle('Love is still in the air!')
-                        .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(repliedTo)} is just cancled the divorce to ${mod_1.MessageHelper.getSendersVisibleName(otherPerson)}.....`)
-                        .setImage(links[Math.floor(Math.random() * links.length)]);
-                    yield msg.edit({ embeds: [exampleEmbed], components: [] });
-                }
-            }
-            else {
-                yield interaction.reply({ content: "you were not asked", ephemeral: true });
-            }
+            simpreacts.add((0, interaction_helper_1.SimpleReactionsPerRules)(marriage_1.MarriageReactions, interaction, new command_helper_1.ResultReport(false, false, 0, 0)));
+            simpreacts.report();
         }));
         exports.clientBob.on('messageCreate', (message) => __awaiter(this, void 0, void 0, function* () {
             (0, command_helper_1.SimplePerRules)(bobjokes_1.BobCommands, message);

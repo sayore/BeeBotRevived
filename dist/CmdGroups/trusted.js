@@ -481,5 +481,28 @@ exports.TrustedCommands = [
             });
         }
     },
+    {
+        prefix: true,
+        typeofcmd: icommands_1.TypeOfCmd.Action,
+        messagecontent: "bbtext",
+        cmd(msg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                let links = [
+                    "https://c.tenor.com/zr2rab_BRioAAAAC/schtroumpf-peyo.gif"
+                ];
+                const exampleEmbed = new Discord.MessageEmbed()
+                    .setColor('#FFD35D')
+                    .setTitle('OH NO!')
+                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} wants to divorce ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}.`)
+                    .setImage(links[Math.floor(Math.random() * links.length)]);
+                const row = new discord_js_1.MessageActionRow()
+                    .addComponents(new discord_js_1.MessageButton()
+                    .setCustomId('bbtext')
+                    .setLabel('BBText')
+                    .setStyle('SUCCESS'));
+                msg.reply({ embeds: [exampleEmbed], components: [row] });
+            });
+        }
+    },
 ];
 //# sourceMappingURL=trusted.js.map

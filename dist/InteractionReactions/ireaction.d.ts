@@ -1,20 +1,15 @@
 import * as Discord from 'discord.js';
 import { Userdata } from '../CmdGroups/command.helper';
-
 export interface IReaction {
-    customId:string;
-
+    customId: string;
     prefix?: boolean;
     ownerlimited?: boolean;
     userlimitedids?: string[];
     grouplimitedids?: string[];
-    typeOfInteraction:("Button")
+    typeOfInteraction: ("Button");
     always?: boolean;
     triggerwords?: string[];
     triggerfunc?: (msg: Discord.Interaction) => boolean;
-    //typeofcmd?: TypeOfCmd;
-    //cmd(msg: Discord.Message, user?: Userdata): void;
-    reaction(interaction:Discord.Interaction, user?: Userdata);
+    reaction(interaction: Discord.Interaction, user?: Userdata): any;
     isHalting?: boolean;
-    
 }
