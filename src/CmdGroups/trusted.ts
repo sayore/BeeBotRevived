@@ -389,7 +389,8 @@ export let TrustedCommands: ICommand[] = [
                 "https://c.tenor.com/djDaxKCZXpwAAAAM/chomp-cute.gif",
                 "https://c.tenor.com/SXuvQ7XzeD0AAAAM/cake-birthday.gif",
                 "https://c.tenor.com/NUvfL_4DmHoAAAAM/yum-cute.gif",
-                "https://c.tenor.com/i9UwyNJiHCQAAAAM/nom-anime.gif"
+                "https://c.tenor.com/i9UwyNJiHCQAAAAM/nom-anime.gif",
+                "https://c.tenor.com/HO71nB7fQdkAAAAM/anime-zombielandsaga.gif"
             ]
             // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
 
