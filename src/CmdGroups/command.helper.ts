@@ -9,12 +9,14 @@ import { clientBee, clientBob } from "../app";
 import _ from "lodash";
 
 export class ResultReport {
+    private start:number;
+    private noConsoleLog=false;
     constructor(
         public executed: boolean,
         public halting = false,
         public scanned?: number,
         public executedNum?: number) {
-
+        this.start= Date.now();
     }
 
     add(resrep: ResultReport) {
@@ -22,17 +24,28 @@ export class ResultReport {
         this.halting = resrep.halting || this.halting;
         this.scanned += resrep.scanned;
         this.executedNum += resrep.executedNum;
+        this.noConsoleLog = resrep.noConsoleLog || this.noConsoleLog;
         return this;
     }
+    setNoConsoleLog() {this.noConsoleLog=true;return this;}
     report() {
-        Logging.log(`Scanned ${this.scanned} commands. ${this.executedNum} matched and executed(=>${this.executed}).`, "Reporter")
+        if(!this.noConsoleLog)
+        Logging.log(`Scanned ${this.scanned} commands. ${this.executedNum} matched and executed(=>${this.executed}). (Took ${Date.now()-this.start}ms)`, "Reporter")
     }
 }
 
 export function SimplePerRules(cmds: ICommand[], msg: Discord.Message, reports?: ResultReport): ResultReport {
     let report = { executed: 0, errors: [], halting: false }
-    if (msg.author.id == clientBee.user.id || msg.author.id == clientBob.user.id) { Logging.log("This is me or bob."); return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed); } // This is Bee himself
+
+    // This is Bee himself
+    if (msg.author.id == clientBee.user.id || msg.author.id == clientBob.user.id) { 
+        return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed).setNoConsoleLog(); 
+    } 
+
+    // If any command wants to halt now, do it.
     if (reports) if (reports.halting) return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
+
+    //Check that conditionals are met, then execute the cmd.
     cmds.forEach((async v => {
         if (v.userlimitedids != undefined)
             if (v.userlimitedids.indexOf(msg.author.id) == -1) { return; } //This checks for privelege for the command on a per user basis
