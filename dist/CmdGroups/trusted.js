@@ -61,13 +61,13 @@ exports.TrustedCommands = [
                         msg.reply((0, command_helper_1.getRandom)(["hello cutie kaly <3", "hey :3", "top1 best cutie", "hey kaly <3", "cutie ❤️", "how you doin kaly <:lunalove:915990988177162280>"]));
                         break;
                     case "902232441748615201":
-                        msg.reply((0, command_helper_1.getRandom)(["Hi master uwu"]));
+                        msg.reply((0, command_helper_1.getRandom)(["Hi master uwu", "Luna uwu"]));
                         break;
                     case "387372763171520513":
                         msg.reply((0, command_helper_1.getRandom)(["Hey pan *blushes*", "Good to see you pan <:yay:855047723118886912>"]));
                         break;
                     default:
-                        msg.reply((0, command_helper_1.getRandom)(["Hi!", "Heya! <:yay:855047723118886912>"]));
+                        msg.reply((0, command_helper_1.getRandom)(["Hi!", "Heya! <:yay:855047723118886912>", "Hey " + msg.member.displayName + "!", , "Heya " + msg.member.displayName + "! <:yay:855047723118886912>"]));
                 }
             });
         }
