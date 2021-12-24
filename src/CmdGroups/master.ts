@@ -12,13 +12,6 @@ import { RPG } from '../RPG/rpg';
 export let MasterCommands : ICommand[] = [
     {
         ownerlimited:true,
-        messagecontent:"hello bee",
-        async cmd(msg:Discord.Message){
-            msg.reply("Hi master uwu");
-        }
-    },
-    {
-        ownerlimited:true,
         triggerwords:["bee","access","can","database","?"],
         async cmd(msg:Discord.Message){
             

@@ -21,6 +21,27 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
+        messagecontent:"hello bee",
+        async cmd(msg:Discord.Message){
+            switch(msg.member.id) {
+                case "562640877705756690":
+                    msg.reply("Hi master uwu");
+                    break;
+                case "465583365781717003":
+                    msg.reply(getRandom(["hello cutie kaly <3","hey :3","top1 best cutie"]));
+                    break;
+                case "902232441748615201":
+                    msg.reply(getRandom(["Hi master uwu"]));
+                    break;
+                case "387372763171520513":
+                    msg.reply(getRandom(["Hey pan *blushes*","Good to see you pan :yay:"]));
+                    break;
+                default:
+                    msg.reply(getRandom(["Hi!","Heya!"]));
+            }
+        }
+    },
+    {
         prefix: true,
         typeofcmd: TypeOfCmd.Information,
         triggerwords: ["bee", "what", "are", "actions", "there"],

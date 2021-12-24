@@ -50,6 +50,29 @@ exports.TrustedCommands = [
         }
     },
     {
+        messagecontent: "hello bee",
+        cmd(msg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                switch (msg.member.id) {
+                    case "562640877705756690":
+                        msg.reply("Hi master uwu");
+                        break;
+                    case "465583365781717003":
+                        msg.reply((0, command_helper_1.getRandom)(["hello cutie kaly <3", "hey :3", "top1 best cutie"]));
+                        break;
+                    case "902232441748615201":
+                        msg.reply((0, command_helper_1.getRandom)(["Hi master uwu"]));
+                        break;
+                    case "387372763171520513":
+                        msg.reply((0, command_helper_1.getRandom)(["Hey pan *blushes*", "Good to see you pan :yay:"]));
+                        break;
+                    default:
+                        msg.reply((0, command_helper_1.getRandom)(["Hi!", "Heya!"]));
+                }
+            });
+        }
+    },
+    {
         prefix: true,
         typeofcmd: icommands_1.TypeOfCmd.Information,
         triggerwords: ["bee", "what", "are", "actions", "there"],

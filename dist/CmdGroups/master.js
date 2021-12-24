@@ -30,15 +30,6 @@ const rpg_1 = require("../RPG/rpg");
 exports.MasterCommands = [
     {
         ownerlimited: true,
-        messagecontent: "hello bee",
-        cmd(msg) {
-            return __awaiter(this, void 0, void 0, function* () {
-                msg.reply("Hi master uwu");
-            });
-        }
-    },
-    {
-        ownerlimited: true,
         triggerwords: ["bee", "access", "can", "database", "?"],
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
