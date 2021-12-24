@@ -37,17 +37,17 @@ class MarrigeHelper {
         this.jsonObj = json;
     }
     addData(uuid) {
-        if (!!this.jsonObj["MarrigeID"]) {
+        if (!!this.jsonObj["partner"]) {
             return false;
         }
         else {
-            this.jsonObj.MarrigeID = uuid;
+            this.jsonObj.partner = uuid;
             return this.jsonObj;
         }
     }
     removeData() {
-        if (!!this.jsonObj["MarrigeID"]) {
-            delete this.jsonObj["MarrigeID"];
+        if (!!this.jsonObj["partner"]) {
+            delete this.jsonObj["partner"];
             return this.jsonObj;
         }
         else {
@@ -183,8 +183,8 @@ exports.MarriageReactions = [
                     var recv = yield app_1.db.get(`user${otherPerson.author.id}`);
                     var askObj = new MarrigeHelper(asker);
                     var recObj = new MarrigeHelper(recv);
-                    var MarrigeID1 = recObj.jsonObj["MarrigeID"];
-                    var MarrigeID2 = askObj.jsonObj["MarrigeID"];
+                    var MarrigeID1 = recObj.jsonObj["partner"];
+                    var MarrigeID2 = askObj.jsonObj["partner"];
                     var newAskData = askObj.removeData(); // removeData => divorce()
                     var newRecData = recObj.removeData();
                     if (newAskData == false || newRecData == false) {

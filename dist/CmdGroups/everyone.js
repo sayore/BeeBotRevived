@@ -12,7 +12,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.EveryoneCommands = void 0;
 const icommands_1 = require("./icommands");
 const app_1 = require("../app");
-const command_helper_1 = require("./command.helper");
+const user_1 = require("../Helper/user");
 //import { getUser, setUser } from "./command.helper";
 var randomUserIdCache = [];
 exports.EveryoneCommands = [
@@ -45,7 +45,7 @@ exports.EveryoneCommands = [
                     userdata.rpg.addExp(7 * Math.random());
                     randomUserIdCache.push({ id: userdata.id, time: Date.now() });
                 }
-                (0, command_helper_1.setUser)(msg.member.id, userdata);
+                (0, user_1.setUser)(msg.member.id, userdata);
                 //Logging.log(await db.get("user"+msg.member.id+".msgs"))
             });
         }

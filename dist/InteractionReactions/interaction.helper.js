@@ -8,16 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setUser = exports.getUser = exports.SimpleReactionsPerRules = void 0;
-const lodash_1 = __importDefault(require("lodash"));
+exports.SimpleReactionsPerRules = void 0;
 const Logging_1 = require("supernode/Base/Logging");
 const app_1 = require("../app");
 const command_helper_1 = require("../CmdGroups/command.helper");
 const db_helper_1 = require("../db.helper");
+const user_1 = require("../Helper/user");
 function SimpleReactionsPerRules(cmds, interaction, reports) {
     let report = { executed: 0, errors: [], halting: false };
     //if (interaction.user.id == clientBee.user.id || interaction.user.id == clientBob.user.id) { Logging.log("This is me or bob."); return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed); } // This is Bee himself
@@ -47,7 +44,7 @@ function SimpleReactionsPerRules(cmds, interaction, reports) {
             }
         if (v.customId != undefined && interaction.isButton())
             if (interaction.customId.toLowerCase() == v.customId.toLowerCase()) {
-                v.reaction(interaction, (yield getUser(interaction.user.id)));
+                v.reaction(interaction, (yield (0, user_1.getUser)(interaction.user.id)));
                 report.executed++;
                 if (v.isHalting == true) {
                     report.halting = true;
@@ -55,7 +52,7 @@ function SimpleReactionsPerRules(cmds, interaction, reports) {
                 }
             }
         if (v.always == true) {
-            v.reaction(interaction, (yield getUser(interaction.user.id)));
+            v.reaction(interaction, (yield (0, user_1.getUser)(interaction.user.id)));
             report.executed++;
             if (v.isHalting == true) {
                 report.halting = true;
@@ -64,7 +61,7 @@ function SimpleReactionsPerRules(cmds, interaction, reports) {
         }
         if (v.triggerwords != undefined && interaction.isButton() && v.triggerwords.length >= 1)
             if ((0, command_helper_1.CheckForManyWordsCI)(interaction.customId, v.triggerwords)) {
-                v.reaction(interaction, (yield getUser(interaction.user.id)));
+                v.reaction(interaction, (yield (0, user_1.getUser)(interaction.user.id)));
                 report.executed++;
                 if (v.isHalting == true) {
                     report.halting = true;
@@ -73,7 +70,7 @@ function SimpleReactionsPerRules(cmds, interaction, reports) {
             }
         if (v.triggerfunc != undefined)
             if (v.triggerfunc(interaction)) {
-                v.reaction(interaction, (yield getUser(interaction.user.id)));
+                v.reaction(interaction, (yield (0, user_1.getUser)(interaction.user.id)));
                 report.executed++;
                 if (v.isHalting == true) {
                     report.halting = true;
@@ -85,27 +82,4 @@ function SimpleReactionsPerRules(cmds, interaction, reports) {
     return new command_helper_1.ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
 }
 exports.SimpleReactionsPerRules = SimpleReactionsPerRules;
-// TODO: IMPORTANT!! Refactor this outside of the helper AS SOON AS POSSIBLE, there is a duplicate
-function getUser(userid) {
-    return __awaiter(this, void 0, void 0, function* () {
-        var key = "user" + userid;
-        if (yield app_1.db.exists(key)) {
-            let userdata = lodash_1.default.assignIn(new command_helper_1.Userdata(), yield (app_1.db.get(key)));
-            userdata.rpg = lodash_1.default.assignIn(new command_helper_1.RPG(), userdata.rpg);
-            userdata.id = userid;
-            return userdata;
-        }
-        else {
-            console.log("New User");
-            return new command_helper_1.Userdata();
-        }
-    });
-}
-exports.getUser = getUser;
-function setUser(userid, userdata) {
-    return __awaiter(this, void 0, void 0, function* () {
-        return yield app_1.db.put("user" + userid, userdata);
-    });
-}
-exports.setUser = setUser;
 //# sourceMappingURL=interaction.helper.js.map

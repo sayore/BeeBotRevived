@@ -20,12 +20,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MasterCommands = void 0;
-const command_helper_1 = require("./command.helper");
 const app_1 = require("../app");
 const MessageHelper_1 = require("supernode/Discord/MessageHelper");
 const Environment_1 = require("supernode/Base/Environment");
 const Logging_1 = require("supernode/Base/Logging");
 const lodash_1 = __importDefault(require("lodash"));
+const user_1 = require("../Helper/user");
+const rpg_1 = require("../RPG/rpg");
 exports.MasterCommands = [
     {
         ownerlimited: true,
@@ -66,15 +67,19 @@ exports.MasterCommands = [
                 let safety = 20;
                 if (msg.content.includes("<@!")) {
                     let pos = msg.content.indexOf("<@!");
-                    while (msg.content[pos] != ">") {
-                        if ("0123456789".includes(msg.content[pos]))
-                            target_id += msg.content[pos];
+                    while (msg.content.charAt(pos) != ">") {
+                        if ("0123456789".includes(msg.content.charAt(pos)))
+                            target_id += msg.content.charAt(pos);
+                        console.log(msg.content.charAt(pos));
                         safety--;
-                        if (safety == 0)
+                        pos++;
+                        if (safety == 0) {
+                            Logging_1.Logging.log("Needed to break");
                             break;
+                        }
                     }
                 }
-                let userdata = yield (0, command_helper_1.getUser)(target_id);
+                let userdata = yield (0, user_1.getUser)(target_id);
                 msg.channel.send(JSON.stringify(userdata));
             });
         }
@@ -123,7 +128,7 @@ exports.MasterCommands = [
                 let toplist = (yield app_1.db.iterateFilter((v) => { return (!!v.rpg); }));
                 // Loads RPG functions, without this, no "allExp()"
                 for (let i = 0; i < toplist.length; i++) {
-                    toplist[i].rpg = toplist[i].rpg = lodash_1.default.assignIn(new command_helper_1.RPG(), toplist[i].rpg);
+                    toplist[i].rpg = toplist[i].rpg = lodash_1.default.assignIn(new rpg_1.RPG(), toplist[i].rpg);
                     ;
                 }
                 toplist = yield toplist.sort((a, b) => {

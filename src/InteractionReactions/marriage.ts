@@ -12,10 +12,10 @@ class MarrigeHelper {
 
     addData(uuid: string) {
 
-        if (!!this.jsonObj["MarrigeID"]) {
+        if (!!this.jsonObj["partner"]) {
             return false;
         } else {
-            this.jsonObj.MarrigeID = uuid;
+            this.jsonObj.partner = uuid;
             return this.jsonObj;
         }
 
@@ -23,8 +23,8 @@ class MarrigeHelper {
 
     removeData() {
 
-        if (!!this.jsonObj["MarrigeID"]) {
-            delete this.jsonObj["MarrigeID"];
+        if (!!this.jsonObj["partner"]) {
+            delete this.jsonObj["partner"];
             return this.jsonObj;
         } else {
             return false;
@@ -178,8 +178,8 @@ export let MarriageReactions: IReaction[] = [
                     var askObj = new MarrigeHelper(asker);
                     var recObj = new MarrigeHelper(recv);
 
-                    var MarrigeID1 = recObj.jsonObj["MarrigeID"];
-                    var MarrigeID2 = askObj.jsonObj["MarrigeID"];
+                    var MarrigeID1 = recObj.jsonObj["partner"];
+                    var MarrigeID2 = askObj.jsonObj["partner"];
 
                     var newAskData = askObj.removeData(); // removeData => divorce()
                     var newRecData = recObj.removeData();

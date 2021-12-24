@@ -1,5 +1,5 @@
 import * as Discord from 'discord.js';
-import { Userdata } from '../CmdGroups/command.helper';
+import { Userdata } from '../Helper/user';
 export interface IReaction {
     customId: string;
     prefix?: boolean;
