@@ -16,7 +16,6 @@ export interface ICommand {
     isHalting?:boolean
 }
 
-
 export enum TypeOfCmd {
     Action,
     Moderation,
