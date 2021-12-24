@@ -63,8 +63,16 @@ exports.TrustedCommands = [
                     case "902232441748615201":
                         msg.reply((0, command_helper_1.getRandom)(["Hi master uwu", "Luna uwu"]));
                         break;
-                    case "387372763171520513":
+                    case "387372763171520513": //Pan
                         msg.reply((0, command_helper_1.getRandom)(["Hey pan *blushes*", "Good to see you pan <:yay:855047723118886912>"]));
+                        break;
+                    case "662209384482603019": //Tato
+                        msg.reply((0, command_helper_1.getRandom)([
+                            "Hey potato *blushes*",
+                            "Hi potato <:yay:855047723118886912>",
+                            "Glad you are around ryu!",
+                            "*hugs rin* heya! :3"
+                        ]));
                         break;
                     default:
                         msg.reply((0, command_helper_1.getRandom)(["Hi!", "Heya! <:yay:855047723118886912>", "Hey " + msg.member.displayName + "!", , "Heya " + msg.member.displayName + "! <:yay:855047723118886912>"]));

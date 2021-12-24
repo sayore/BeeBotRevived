@@ -33,8 +33,16 @@ export let TrustedCommands: ICommand[] = [
                 case "902232441748615201":
                     msg.reply(getRandom(["Hi master uwu","Luna uwu"]));
                     break;
-                case "387372763171520513":
+                case "387372763171520513": //Pan
                     msg.reply(getRandom(["Hey pan *blushes*","Good to see you pan <:yay:855047723118886912>"]));
+                    break;
+                case "662209384482603019": //Tato
+                    msg.reply(getRandom([
+                        "Hey potato *blushes*",
+                        "Hi potato <:yay:855047723118886912>",
+                        "Glad you are around ryu!",
+                        "*hugs rin* heya! :3"
+                    ]));
                     break;
                 default:
                     msg.reply(getRandom(["Hi!","Heya! <:yay:855047723118886912>","Hey "+msg.member.displayName+"!",,"Heya "+msg.member.displayName+"! <:yay:855047723118886912>"]));
