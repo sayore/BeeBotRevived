@@ -7,34 +7,36 @@ import { DBHelper } from "../db.helper";
 import { MessageActionRow, MessageButton } from "discord.js";
 import { EveryoneCommands } from "./everyone";
 import { MasterCommands } from "./master";
+import _ from "lodash";
 
 
 export let TrustedCommands: ICommand[] = [
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Information,
+        isHalting: true,
         triggerwords: ["bee", "how", "many", "actions"],
-        
+
         async cmd(msg: Discord.Message) {
             msg.reply("There are " +
                 TrustedCommands.filter(v => { return v.typeofcmd == TypeOfCmd.Action }).length + " commands.");
         }
     },
     {
-        messagecontent:"hello bee",
-        async cmd(msg:Discord.Message){
-            switch(msg.member.id) {
+        messagecontent: "hello bee",
+        async cmd(msg: Discord.Message) {
+            switch (msg.member.id) {
                 case "562640877705756690":
                     msg.reply("Hi master uwu");
                     break;
                 case "465583365781717003":
-                    msg.reply(getRandom(["hello cutie kaly <3","hey :3","top1 best cutie","hey kaly <3","cutie ❤️","how you doin kaly <:lunalove:915990988177162280>"]));
+                    msg.reply(getRandom(["hello cutie kaly <3", "hey :3", "top1 best cutie", "hey kaly <3", "cutie ❤️", "how you doin kaly <:lunalove:915990988177162280>"]));
                     break;
                 case "902232441748615201":
-                    msg.reply(getRandom(["Hi master uwu","Luna uwu"]));
+                    msg.reply(getRandom(["Hi master uwu", "Luna uwu"]));
                     break;
                 case "387372763171520513": //Pan
-                    msg.reply(getRandom(["Hey pan *blushes*","Good to see you pan <:yay:855047723118886912>"]));
+                    msg.reply(getRandom(["Hey pan *blushes*", "Good to see you pan <:yay:855047723118886912>"]));
                     break;
                 case "662209384482603019": //Tato
                     msg.reply(getRandom([
@@ -45,7 +47,7 @@ export let TrustedCommands: ICommand[] = [
                     ]));
                     break;
                 default:
-                    msg.reply(getRandom(["Hi!","Heya! <:yay:855047723118886912>","Hey "+msg.member.displayName+"!",,"Heya "+msg.member.displayName+"! <:yay:855047723118886912>"]));
+                    msg.reply(getRandom(["Hi!", "Heya! <:yay:855047723118886912>", "Hey " + msg.member.displayName + "!", , "Heya " + msg.member.displayName + "! <:yay:855047723118886912>"]));
             }
         }
     },
@@ -61,14 +63,15 @@ export let TrustedCommands: ICommand[] = [
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Information,
-        triggerwords: ["bee","help"],
+        isHalting: true,
+        triggerwords: ["bee", "help"],
         async cmd(msg: Discord.Message) {
             msg.reply("MasterCmds: '" +
-                MasterCommands.filter(v => { return v.messagecontent != undefined })?.map(v => { return   "**"+v.messagecontent+"**" }).join("','") + "'.\n" +
-                MasterCommands.filter(v => { return v.triggerwords != undefined })?.map(v => { return     "**"+v.triggerwords  +"**" }).join("','") + "'.\n"+
-            "TrustedCmds: '"+
-                TrustedCommands.filter(v => { return v.messagecontent != undefined })?.map(v => { return  "**"+v.messagecontent+"**" }).join("','") + "'.\n" +
-                TrustedCommands.filter(v => { return v.triggerwords != undefined })?.map(v => { return    "**"+v.triggerwords  +"**" }).join("','") + "'.\n");
+                MasterCommands.filter(v => { return v.messagecontent != undefined })?.map(v => { return "**" + v.messagecontent + "**" }).join("','") + "'.\n" +
+                MasterCommands.filter(v => { return v.triggerwords != undefined })?.map(v => { return "**" + v.triggerwords + "**" }).join("','") + "'.\n" +
+                "TrustedCmds: '" +
+                TrustedCommands.filter(v => { return v.messagecontent != undefined })?.map(v => { return "**" + v.messagecontent + "**" }).join("','") + "'.\n" +
+                TrustedCommands.filter(v => { return v.triggerwords != undefined })?.map(v => { return "**" + v.triggerwords + "**" }).join("','") + "'.\n");
         }
     },
     {
@@ -82,6 +85,7 @@ export let TrustedCommands: ICommand[] = [
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "hug",
         async cmd(msg: Discord.Message) {
             let links = [
@@ -110,6 +114,7 @@ export let TrustedCommands: ICommand[] = [
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "boop",
         async cmd(msg: Discord.Message) {
             let links = [
@@ -139,6 +144,7 @@ export let TrustedCommands: ICommand[] = [
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "sex",
         async cmd(msg: Discord.Message) {
             let links = [
@@ -164,6 +170,7 @@ export let TrustedCommands: ICommand[] = [
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "kiss",
         async cmd(msg: Discord.Message) {
             let links = [
@@ -191,6 +198,7 @@ export let TrustedCommands: ICommand[] = [
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "kiss cheek",
         async cmd(msg: Discord.Message) {
             let links = [
@@ -216,92 +224,68 @@ export let TrustedCommands: ICommand[] = [
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "cuddle",
         async cmd(msg: Discord.Message) {
-            let links = [
-                "https://c.tenor.com/Cy8RWMcVDj0AAAAd/anime-hug.gif",
-                "https://c.tenor.com/DlW1R4d1NQAAAAAC/anime-cuddle.gif",
-                "https://c.tenor.com/ch1kq7TOxlkAAAAC/anime-cuddle.gif",
-                "https://c.tenor.com/GJ6oX6r0mZsAAAAC/chuunibyou-anime.gif"
-            ]
-            // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
-
-            // Send "pong" to the same channel
-            const exampleEmbed = new Discord.MessageEmbed()
-                .setColor('#FFD35D')
-                .setTitle('Cuddle!')
-                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} cuddles ${MessageHelper.getRepliantsVisibleName(msg)}`)
-                .setImage(links[Math.floor(Math.random() * links.length)])
-            let m = await msg.reply({ embeds: [exampleEmbed] });
-
-            var action = "cuddle";
-            DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
-            if (msg.mentions)
-                DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
+            defaultReactionHandler(msg,{key:"cuddle",singular:"cuddle",plural:"cuddles"},[
+                {link:"https://c.tenor.com/Cy8RWMcVDj0AAAAd/anime-hug.gif"},
+                {link:"https://c.tenor.com/DlW1R4d1NQAAAAAC/anime-cuddle.gif"},
+                {link:"https://c.tenor.com/ch1kq7TOxlkAAAAC/anime-cuddle.gif"},
+                {link:"https://c.tenor.com/GJ6oX6r0mZsAAAAC/chuunibyou-anime.gif"}
+            ])
         }
     },
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "holdhands",
         async cmd(msg: Discord.Message) {
-            let links = [
-                "https://c.tenor.com/WUZAwo5KFdMAAAAd/love-holding-hands.gif",
-                "https://c.tenor.com/rU3xZo2_jaIAAAAC/anime-hold.gif",
-                "https://c.tenor.com/wC3hJXbQtYMAAAAd/touch-hands.gif",
-            ]
-            // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
-
-            // Send "pong" to the same channel
-            const exampleEmbed = new Discord.MessageEmbed()
-                .setColor('#FFD35D')
-                .setTitle('Handholding!')
-                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} handholds ${MessageHelper.getRepliantsVisibleName(msg)} ***blushes***`)
-                .setImage(links[Math.floor(Math.random() * links.length)])
-            let m = await msg.reply({ embeds: [exampleEmbed] });
-
-            var action = "holdhand";
-            DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
-            if (msg.mentions)
-                DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
+            defaultReactionHandler(msg,{key:"handhold",singular:"Handholding",plural:"handholds"},[
+                {link:"https://c.tenor.com/WUZAwo5KFdMAAAAd/love-holding-hands.gif"},
+                {link:"https://c.tenor.com/rU3xZo2_jaIAAAAC/anime-hold.gif"},
+                {link:"https://c.tenor.com/wC3hJXbQtYMAAAAd/touch-hands.gif"},
+            ])
         }
     },
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "pat",
         async cmd(msg: Discord.Message) {
-            let links = [
-                "https://c.tenor.com/tYS5DBIos-UAAAAS/kyo-ani-musaigen.gif",
-                "https://c.tenor.com/EtvotzSToyMAAAAd/petra-rezero.gif",
-                "https://c.tenor.com/rc8PwWHaV9gAAAAC/headpat-patpat.gif",
-                "https://c.tenor.com/wLqFGYigJuIAAAAC/mai-sakurajima.gif",
-                "https://c.tenor.com/0XzZ4R16RaQAAAAC/anime-smile.gif",
-                "https://c.tenor.com/QAIyvivjoB4AAAAC/anime-anime-head-rub.gif",
-                "https://c.tenor.com/2oOTpioZ_j4AAAAC/pet-cute.gif",
-                "https://c.tenor.com/Vz5yn1fwv-gAAAAd/pat-anime.gif",
-            ]
-            // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
-
-            // Send "pong" to the same channel
-            const exampleEmbed = new Discord.MessageEmbed()
-                .setColor('#FFD35D')
-                .setTitle('Pats!')
-                .setDescription(`${MessageHelper.getSendersVisibleName(msg)} pats ${MessageHelper.getRepliantsVisibleName(msg)} ***happynoises are filling the room***`)
-                .setImage(links[Math.floor(Math.random() * links.length)])
-            let m = await msg.reply({ embeds: [exampleEmbed] });
-
-            var action = "pat";
-            DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
-            if (msg.mentions)
-                DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
+            //***happynoises are filling the room***
+            defaultReactionHandler(msg,{key:"pats",singular:"Pats",plural:"pats"},[
+                {template:["PATPATPATPATPAT"],special:{},link:"https://c.tenor.com/tYS5DBIos-UAAAAS/kyo-ani-musaigen.gif"},
+                {template:["PATPATPATPATPAT?"],special:{},link:"https://c.tenor.com/EtvotzSToyMAAAAd/petra-rezero.gif"},
+                {template:["PATPATPATPATPAT!"],special:{},link:"https://c.tenor.com/rc8PwWHaV9gAAAAC/headpat-patpat.gif"},
+                {template:["PATPATPATPATPAT MAAAI"],special:{},link:"https://c.tenor.com/wLqFGYigJuIAAAAC/mai-sakurajima.gif"},
+                {template:["PATPATPATPATPAT"],special:{},link:"https://c.tenor.com/0XzZ4R16RaQAAAAC/anime-smile.gif"},
+                {template:["PATPATPATPATPAT *headrub*"],special:{},link:"https://c.tenor.com/QAIyvivjoB4AAAAC/anime-anime-head-rub.gif"},
+                {template:["PATPATPATPATPAT CUTE"],special:{},link:"https://c.tenor.com/2oOTpioZ_j4AAAAC/pet-cute.gif"},
+                {template:["PATPATPATPATPAT ANIME"],special:{},link:"https://c.tenor.com/Vz5yn1fwv-gAAAAd/pat-anime.gif"}
+            ])
         }
     },
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "hide",
         async cmd(msg: Discord.Message) {
+            defaultReactionHandler(msg,{key:"handhopatsld",singular:"Pats",plural:"pats",
+                    defaultTemplate:""
+                },[
+                {template:[],special:{},link:"https://c.tenor.com/tYS5DBIos-UAAAAS/kyo-ani-musaigen.gif"},
+                {template:[],special:{},link:"https://c.tenor.com/EtvotzSToyMAAAAd/petra-rezero.gif"},
+                {template:[],special:{},link:"https://c.tenor.com/rc8PwWHaV9gAAAAC/headpat-patpat.gif"},
+                {template:[],special:{},link:"https://c.tenor.com/wLqFGYigJuIAAAAC/mai-sakurajima.gif"},
+                {template:[],special:{},link:"https://c.tenor.com/0XzZ4R16RaQAAAAC/anime-smile.gif"},
+                {template:[],special:{},link:"https://c.tenor.com/QAIyvivjoB4AAAAC/anime-anime-head-rub.gif"},
+                {template:[],special:{},link:"https://c.tenor.com/2oOTpioZ_j4AAAAC/pet-cute.gif"},
+                {template:[],special:{},link:"https://c.tenor.com/Vz5yn1fwv-gAAAAd/pat-anime.gif"}
+            ])
+
             let links = [
                 "https://c.tenor.com/T6X8wbaOGhIAAAAC/sagiri-bed.gif",
                 "https://c.tenor.com/AmYTuh5XM7sAAAAC/shy-rikka.gif",
@@ -326,6 +310,7 @@ export let TrustedCommands: ICommand[] = [
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "blush",
         async cmd(msg: Discord.Message) {
             let links = [
@@ -354,6 +339,7 @@ export let TrustedCommands: ICommand[] = [
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "love",
         async cmd(msg: Discord.Message) {
             let links = [
@@ -515,3 +501,53 @@ export let TrustedCommands: ICommand[] = [
         }
     },
 ]
+
+function addActionToStatistic(action: string, msg: Discord.Message) {
+    DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+    if (msg.mentions)
+        DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
+}
+
+function simpleReactEmbed(
+                            links: {link:string,template?:string[],header?:string[],special?:any}[],
+                            msg: Discord.Message,
+                            action: {key:string,singular:string,plural:string,defaultTemplate?:string,defaultHeader?:string}) {
+    var fields = {
+        sender:MessageHelper.getSendersVisibleName(msg),
+        repliant:MessageHelper.getRepliantsVisibleName(msg),
+        action
+    }
+
+    var header = "<%= action.singular %>!"
+    var template = "<%= sender %> <%= action.plural %> <%= repliant %>!"
+
+    if(action.defaultHeader)
+    header = action.defaultHeader
+    if(action.defaultTemplate)
+    template = action.defaultTemplate
+
+    var linkId=Math.floor(Math.random() * links.length);
+    var link = links[linkId].link
+
+    if(links[linkId].template) template=getRandom(links[linkId].template);
+    if(links[linkId].header) header=getRandom(links[linkId].header);
+
+    return new Discord.MessageEmbed()
+        .setColor('#FFD35D')
+        .setTitle(_.template(header)(fields))
+        .setDescription(_.template(template)(fields))
+        .setImage(link);
+}
+
+async function defaultReactionHandler(msg:Discord.Message, action:{key:string,singular:string,plural:string,defaultTemplate?:string,defaultHeader?:string},defaultGifs:{link:string,template?:string[],header?:string[],special?:any}[]) {
+    //var gifkey="actionGIFs::"+action.key;
+    //var links:{link:string,template:string,special:any}[]=[];
+    /**if(db.exists(gifkey)){
+        var gifs = db.get(gifkey)
+    } else {
+        db.put(gifkey,defaultGifs)
+    }*/
+
+    let m = await msg.reply({embeds: [simpleReactEmbed(defaultGifs, msg, action)]});
+    addActionToStatistic("cuddle", msg);
+}

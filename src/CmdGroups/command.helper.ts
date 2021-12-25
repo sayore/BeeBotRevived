@@ -8,16 +8,19 @@ import { ICommand } from "./icommands";
 import { clientBee, clientBob } from "../app";
 import _ from "lodash";
 import { getUser, Userdata } from '../Helper/user';
+import { report } from 'process';
 
 export class ResultReport {
-    private start:number;
-    private noConsoleLog=false;
+
+    private start: number;
+    private noConsoleLog = false;
     constructor(
         public executed: boolean,
         public halting = false,
-        public scanned?: number,
-        public executedNum?: number) {
-        this.start= Date.now();
+        public scanned: number = 0,
+        public executedNum: number = 0,
+        public matchedNum: number = 0) {
+        this.start = Date.now();
     }
 
     add(resrep: ResultReport) {
@@ -26,65 +29,80 @@ export class ResultReport {
         this.scanned += resrep.scanned;
         this.executedNum += resrep.executedNum;
         this.noConsoleLog = resrep.noConsoleLog || this.noConsoleLog;
+        this.matchedNum += resrep.matchedNum;
         return this;
     }
-    setNoConsoleLog() {this.noConsoleLog=true;return this;}
+    setNoConsoleLog() { this.noConsoleLog = true; return this; }
+    setExecuted(arg0: boolean) { this.executed = arg0; return this; }
+    addScanned(arg0: number) { this.scanned = arg0; return this; }
+    addExecuted(isHalting: boolean = false) {
+        this.executed = true;
+        this.executedNum++;
+        this.halting = isHalting || this.halting;
+        return this;
+    }
     report() {
-        if(!this.noConsoleLog)
-        Logging.log(`Scanned ${this.scanned} commands. ${this.executedNum} matched and executed(=>${this.executed}). (Took ${Date.now()-this.start}ms)`, "Reporter")
+        if (!this.noConsoleLog)
+            Logging.log(`Scanned ${this.scanned} commands. ${this.matchedNum} matched and executed ${this.executedNum}. (Took ${Date.now() - this.start}ms) ${(this.halting ? "Halted" : "")}`, "Reporter")
     }
 }
 
-export function SimplePerRules(cmds: ICommand[], msg: Discord.Message, reports?: ResultReport): ResultReport {
-    let report = { executed: 0, errors: [], halting: false }
+export function SimplePerRules(cmds: ICommand[], msg: Discord.Message, reports: ResultReport = new ResultReport(false, false, 0, 0, 0)): ResultReport {
+    //let report = { executed: (reports?reports.executedNum:0), errors: [], halting: (reports?reports.executed:false) }
 
     // This is Bee himself
-    if (msg.author.id == clientBee.user.id || msg.author.id == clientBob.user.id) { 
-        return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed).setNoConsoleLog(); 
-    } 
+    if (msg.author.id == clientBee.user.id || msg.author.id == clientBob.user.id) {
+        return reports.setNoConsoleLog();
+    }
 
     // If any command wants to halt now, do it.
-    if (reports) if (reports.halting) return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
+    reports.addScanned(cmds.length);
+    if (reports) if (reports.halting) return reports;
+
 
     //Check that conditionals are met, then execute the cmd.
     cmds.forEach((async v => {
+        reports.matchedNum += 1;
         if (v.userlimitedids != undefined)
             if (v.userlimitedids.indexOf(msg.author.id) == -1) { return; } //This checks for privelege for the command on a per user basis
         //Logging.log(v.userlimitedids)
 
         if (v.ownerlimited != undefined)
-            if (v.ownerlimited == true && msg.guild.ownerId != msg.author.id) { return; }
+            if (v.ownerlimited == true && msg.guild.ownerId != msg.author.id) { return reports; }
 
         if (v.messagecontent != undefined)
             if (msg.content.toLowerCase() == v.messagecontent.toLowerCase()) {
-                v.cmd(msg, (await getUser(msg.member.id)));
-                report.executed++;
-                if (v.isHalting == true) { report.halting = true; return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed); }
+                await v.cmd(msg, (await getUser(msg.member.id)));
+                reports.addExecuted(v.isHalting);
+                if (v.isHalting)
+                    return reports
             }
 
         if (v.always == true) {
-            v.cmd(msg, (await getUser(msg.member.id)));
-            report.executed++;
-            if (v.isHalting == true) { report.halting = true; return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed); }
+            await v.cmd(msg, (await getUser(msg.member.id)));
+            reports.addExecuted(v.isHalting);
+            if (v.isHalting)
+                return reports;
         }
 
         if (v.triggerwords != undefined && v.triggerwords.length >= 1)
             if (CheckForManyWordsCI(msg.content, v.triggerwords)) {
-                v.cmd(msg, (await getUser(msg.member.id)));
-                report.executed++;
-                if (v.isHalting == true) { report.halting = true; return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed); }
+                await v.cmd(msg, (await getUser(msg.member.id)));
+                reports.addExecuted(v.isHalting);
+                if (v.isHalting)
+                    return reports;
             }
 
         if (v.triggerfunc != undefined)
             if (v.triggerfunc(msg)) {
-                v.cmd(msg, (await getUser(msg.member.id)));
+                await v.cmd(msg, (await getUser(msg.member.id)));
+                reports.addExecuted(v.isHalting);
 
-                report.executed++;
-                if (v.isHalting == true) { report.halting = true; return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed); }
+                if (v.isHalting)
+                    return reports;
             }
     }))
-    DBHelper.increase(db, "msg_since_online");
-    return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
+    return reports;
 }
 
 export function CheckForManyWords(message: string, words: string[]) {

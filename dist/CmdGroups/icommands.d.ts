@@ -10,7 +10,7 @@ export interface ICommand {
     triggerwords?: string[];
     triggerfunc?: (msg: Discord.Message) => boolean;
     typeofcmd?: TypeOfCmd;
-    cmd(msg: Discord.Message, user?: Userdata): void;
+    cmd: (msg: Discord.Message, user?: Userdata) => Promise<void>;
     isHalting?: boolean;
 }
 export declare enum TypeOfCmd {

@@ -4,13 +4,17 @@ import { Userdata } from '../Helper/user';
 export declare class ResultReport {
     executed: boolean;
     halting: boolean;
-    scanned?: number;
-    executedNum?: number;
+    scanned: number;
+    executedNum: number;
+    matchedNum: number;
     private start;
     private noConsoleLog;
-    constructor(executed: boolean, halting?: boolean, scanned?: number, executedNum?: number);
+    constructor(executed: boolean, halting?: boolean, scanned?: number, executedNum?: number, matchedNum?: number);
     add(resrep: ResultReport): this;
     setNoConsoleLog(): this;
+    setExecuted(arg0: boolean): this;
+    addScanned(arg0: number): this;
+    addExecuted(isHalting?: boolean): this;
     report(): void;
 }
 export declare function SimplePerRules(cmds: ICommand[], msg: Discord.Message, reports?: ResultReport): ResultReport;

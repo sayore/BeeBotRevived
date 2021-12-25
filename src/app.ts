@@ -112,10 +112,11 @@ export class BeeApplication implements Application {
 			//Logging.log("message..." + (await message.content))
 			// Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
 			var resFullreport = new ResultReport(false,false,0,0)
-			resFullreport.add(SimplePerRules(EveryoneCommands, message));
-			resFullreport.add(SimplePerRules(MasterCommands, message))
-			resFullreport.add(SimplePerRules(TrustedCommands, message));
-	
+			resFullreport=SimplePerRules(EveryoneCommands, message, resFullreport);
+			resFullreport.report()
+			resFullreport=SimplePerRules(MasterCommands, message, resFullreport);
+			resFullreport.report()
+			resFullreport=SimplePerRules(TrustedCommands, message, resFullreport);
 			resFullreport.report()
 
 			if (message.content.substr(0, 2) === 'b ' && message.member.roles.cache.some((a) => a.id == "854467063677976586")) {

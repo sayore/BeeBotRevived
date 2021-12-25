@@ -12,15 +12,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.iterateSortedFilter = exports.getRandom = exports.CheckForManyWordsCI = exports.CheckForManyWords = exports.SimplePerRules = exports.ResultReport = void 0;
 const Logging_1 = require("supernode/Base/Logging");
 const app_1 = require("../app");
-const db_helper_1 = require("../db.helper");
 const app_2 = require("../app");
 const user_1 = require("../Helper/user");
 class ResultReport {
-    constructor(executed, halting = false, scanned, executedNum) {
+    constructor(executed, halting = false, scanned = 0, executedNum = 0, matchedNum = 0) {
         this.executed = executed;
         this.halting = halting;
         this.scanned = scanned;
         this.executedNum = executedNum;
+        this.matchedNum = matchedNum;
         this.noConsoleLog = false;
         this.start = Date.now();
     }
@@ -30,27 +30,38 @@ class ResultReport {
         this.scanned += resrep.scanned;
         this.executedNum += resrep.executedNum;
         this.noConsoleLog = resrep.noConsoleLog || this.noConsoleLog;
+        this.matchedNum += resrep.matchedNum;
         return this;
     }
     setNoConsoleLog() { this.noConsoleLog = true; return this; }
+    setExecuted(arg0) { this.executed = arg0; return this; }
+    addScanned(arg0) { this.scanned = arg0; return this; }
+    addExecuted(isHalting = false) {
+        this.executed = true;
+        this.executedNum++;
+        this.halting = isHalting || this.halting;
+        return this;
+    }
     report() {
         if (!this.noConsoleLog)
-            Logging_1.Logging.log(`Scanned ${this.scanned} commands. ${this.executedNum} matched and executed(=>${this.executed}). (Took ${Date.now() - this.start}ms)`, "Reporter");
+            Logging_1.Logging.log(`Scanned ${this.scanned} commands. ${this.matchedNum} matched and executed ${this.executedNum}. (Took ${Date.now() - this.start}ms) ${(this.halting ? "Halted" : "")}`, "Reporter");
     }
 }
 exports.ResultReport = ResultReport;
-function SimplePerRules(cmds, msg, reports) {
-    let report = { executed: 0, errors: [], halting: false };
+function SimplePerRules(cmds, msg, reports = new ResultReport(false, false, 0, 0, 0)) {
+    //let report = { executed: (reports?reports.executedNum:0), errors: [], halting: (reports?reports.executed:false) }
     // This is Bee himself
     if (msg.author.id == app_2.clientBee.user.id || msg.author.id == app_2.clientBob.user.id) {
-        return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed).setNoConsoleLog();
+        return reports.setNoConsoleLog();
     }
     // If any command wants to halt now, do it.
+    reports.addScanned(cmds.length);
     if (reports)
         if (reports.halting)
-            return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
+            return reports;
     //Check that conditionals are met, then execute the cmd.
     cmds.forEach(((v) => __awaiter(this, void 0, void 0, function* () {
+        reports.matchedNum += 1;
         if (v.userlimitedids != undefined)
             if (v.userlimitedids.indexOf(msg.author.id) == -1) {
                 return;
@@ -58,46 +69,37 @@ function SimplePerRules(cmds, msg, reports) {
         //Logging.log(v.userlimitedids)
         if (v.ownerlimited != undefined)
             if (v.ownerlimited == true && msg.guild.ownerId != msg.author.id) {
-                return;
+                return reports;
             }
         if (v.messagecontent != undefined)
             if (msg.content.toLowerCase() == v.messagecontent.toLowerCase()) {
-                v.cmd(msg, (yield (0, user_1.getUser)(msg.member.id)));
-                report.executed++;
-                if (v.isHalting == true) {
-                    report.halting = true;
-                    return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
-                }
+                yield v.cmd(msg, (yield (0, user_1.getUser)(msg.member.id)));
+                reports.addExecuted(v.isHalting);
+                if (v.isHalting)
+                    return reports;
             }
         if (v.always == true) {
-            v.cmd(msg, (yield (0, user_1.getUser)(msg.member.id)));
-            report.executed++;
-            if (v.isHalting == true) {
-                report.halting = true;
-                return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
-            }
+            yield v.cmd(msg, (yield (0, user_1.getUser)(msg.member.id)));
+            reports.addExecuted(v.isHalting);
+            if (v.isHalting)
+                return reports;
         }
         if (v.triggerwords != undefined && v.triggerwords.length >= 1)
             if (CheckForManyWordsCI(msg.content, v.triggerwords)) {
-                v.cmd(msg, (yield (0, user_1.getUser)(msg.member.id)));
-                report.executed++;
-                if (v.isHalting == true) {
-                    report.halting = true;
-                    return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
-                }
+                yield v.cmd(msg, (yield (0, user_1.getUser)(msg.member.id)));
+                reports.addExecuted(v.isHalting);
+                if (v.isHalting)
+                    return reports;
             }
         if (v.triggerfunc != undefined)
             if (v.triggerfunc(msg)) {
-                v.cmd(msg, (yield (0, user_1.getUser)(msg.member.id)));
-                report.executed++;
-                if (v.isHalting == true) {
-                    report.halting = true;
-                    return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
-                }
+                yield v.cmd(msg, (yield (0, user_1.getUser)(msg.member.id)));
+                reports.addExecuted(v.isHalting);
+                if (v.isHalting)
+                    return reports;
             }
     })));
-    db_helper_1.DBHelper.increase(app_1.db, "msg_since_online");
-    return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed);
+    return reports;
 }
 exports.SimplePerRules = SimplePerRules;
 function CheckForManyWords(message, words) {

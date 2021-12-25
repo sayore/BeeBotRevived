@@ -27,6 +27,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.TrustedCommands = void 0;
 const icommands_1 = require("./icommands");
@@ -37,10 +40,12 @@ const command_helper_1 = require("./command.helper");
 const db_helper_1 = require("../db.helper");
 const discord_js_1 = require("discord.js");
 const master_1 = require("./master");
+const lodash_1 = __importDefault(require("lodash"));
 exports.TrustedCommands = [
     {
         prefix: true,
         typeofcmd: icommands_1.TypeOfCmd.Information,
+        isHalting: true,
         triggerwords: ["bee", "how", "many", "actions"],
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -94,6 +99,7 @@ exports.TrustedCommands = [
     {
         prefix: true,
         typeofcmd: icommands_1.TypeOfCmd.Information,
+        isHalting: true,
         triggerwords: ["bee", "help"],
         cmd(msg) {
             var _a, _b, _c, _d;
@@ -120,6 +126,7 @@ exports.TrustedCommands = [
     {
         prefix: true,
         typeofcmd: icommands_1.TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "hug",
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -148,6 +155,7 @@ exports.TrustedCommands = [
     {
         prefix: true,
         typeofcmd: icommands_1.TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "boop",
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -177,6 +185,7 @@ exports.TrustedCommands = [
     {
         prefix: true,
         typeofcmd: icommands_1.TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "sex",
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -202,6 +211,7 @@ exports.TrustedCommands = [
     {
         prefix: true,
         typeofcmd: icommands_1.TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "kiss",
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -229,6 +239,7 @@ exports.TrustedCommands = [
     {
         prefix: true,
         typeofcmd: icommands_1.TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "kiss cheek",
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -254,93 +265,74 @@ exports.TrustedCommands = [
     {
         prefix: true,
         typeofcmd: icommands_1.TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "cuddle",
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
-                let links = [
-                    "https://c.tenor.com/Cy8RWMcVDj0AAAAd/anime-hug.gif",
-                    "https://c.tenor.com/DlW1R4d1NQAAAAAC/anime-cuddle.gif",
-                    "https://c.tenor.com/ch1kq7TOxlkAAAAC/anime-cuddle.gif",
-                    "https://c.tenor.com/GJ6oX6r0mZsAAAAC/chuunibyou-anime.gif"
-                ];
-                // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
-                // Send "pong" to the same channel
-                const exampleEmbed = new Discord.MessageEmbed()
-                    .setColor('#FFD35D')
-                    .setTitle('Cuddle!')
-                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} cuddles ${mod_1.MessageHelper.getRepliantsVisibleName(msg)}`)
-                    .setImage(links[Math.floor(Math.random() * links.length)]);
-                let m = yield msg.reply({ embeds: [exampleEmbed] });
-                var action = "cuddle";
-                db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
-                if (msg.mentions)
-                    db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
+                defaultReactionHandler(msg, { key: "cuddle", singular: "cuddle", plural: "cuddles" }, [
+                    { link: "https://c.tenor.com/Cy8RWMcVDj0AAAAd/anime-hug.gif" },
+                    { link: "https://c.tenor.com/DlW1R4d1NQAAAAAC/anime-cuddle.gif" },
+                    { link: "https://c.tenor.com/ch1kq7TOxlkAAAAC/anime-cuddle.gif" },
+                    { link: "https://c.tenor.com/GJ6oX6r0mZsAAAAC/chuunibyou-anime.gif" }
+                ]);
             });
         }
     },
     {
         prefix: true,
         typeofcmd: icommands_1.TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "holdhands",
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
-                let links = [
-                    "https://c.tenor.com/WUZAwo5KFdMAAAAd/love-holding-hands.gif",
-                    "https://c.tenor.com/rU3xZo2_jaIAAAAC/anime-hold.gif",
-                    "https://c.tenor.com/wC3hJXbQtYMAAAAd/touch-hands.gif",
-                ];
-                // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
-                // Send "pong" to the same channel
-                const exampleEmbed = new Discord.MessageEmbed()
-                    .setColor('#FFD35D')
-                    .setTitle('Handholding!')
-                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} handholds ${mod_1.MessageHelper.getRepliantsVisibleName(msg)} ***blushes***`)
-                    .setImage(links[Math.floor(Math.random() * links.length)]);
-                let m = yield msg.reply({ embeds: [exampleEmbed] });
-                var action = "holdhand";
-                db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
-                if (msg.mentions)
-                    db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
+                defaultReactionHandler(msg, { key: "handhold", singular: "Handholding", plural: "handholds" }, [
+                    { link: "https://c.tenor.com/WUZAwo5KFdMAAAAd/love-holding-hands.gif" },
+                    { link: "https://c.tenor.com/rU3xZo2_jaIAAAAC/anime-hold.gif" },
+                    { link: "https://c.tenor.com/wC3hJXbQtYMAAAAd/touch-hands.gif" },
+                ]);
             });
         }
     },
     {
         prefix: true,
         typeofcmd: icommands_1.TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "pat",
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
-                let links = [
-                    "https://c.tenor.com/tYS5DBIos-UAAAAS/kyo-ani-musaigen.gif",
-                    "https://c.tenor.com/EtvotzSToyMAAAAd/petra-rezero.gif",
-                    "https://c.tenor.com/rc8PwWHaV9gAAAAC/headpat-patpat.gif",
-                    "https://c.tenor.com/wLqFGYigJuIAAAAC/mai-sakurajima.gif",
-                    "https://c.tenor.com/0XzZ4R16RaQAAAAC/anime-smile.gif",
-                    "https://c.tenor.com/QAIyvivjoB4AAAAC/anime-anime-head-rub.gif",
-                    "https://c.tenor.com/2oOTpioZ_j4AAAAC/pet-cute.gif",
-                    "https://c.tenor.com/Vz5yn1fwv-gAAAAd/pat-anime.gif",
-                ];
-                // https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif
-                // Send "pong" to the same channel
-                const exampleEmbed = new Discord.MessageEmbed()
-                    .setColor('#FFD35D')
-                    .setTitle('Pats!')
-                    .setDescription(`${mod_1.MessageHelper.getSendersVisibleName(msg)} pats ${mod_1.MessageHelper.getRepliantsVisibleName(msg)} ***happynoises are filling the room***`)
-                    .setImage(links[Math.floor(Math.random() * links.length)]);
-                let m = yield msg.reply({ embeds: [exampleEmbed] });
-                var action = "pat";
-                db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
-                if (msg.mentions)
-                    db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
+                //***happynoises are filling the room***
+                defaultReactionHandler(msg, { key: "pats", singular: "Pats", plural: "pats" }, [
+                    { template: ["PATPATPATPATPAT"], special: {}, link: "https://c.tenor.com/tYS5DBIos-UAAAAS/kyo-ani-musaigen.gif" },
+                    { template: ["PATPATPATPATPAT?"], special: {}, link: "https://c.tenor.com/EtvotzSToyMAAAAd/petra-rezero.gif" },
+                    { template: ["PATPATPATPATPAT!"], special: {}, link: "https://c.tenor.com/rc8PwWHaV9gAAAAC/headpat-patpat.gif" },
+                    { template: ["PATPATPATPATPAT MAAAI"], special: {}, link: "https://c.tenor.com/wLqFGYigJuIAAAAC/mai-sakurajima.gif" },
+                    { template: ["PATPATPATPATPAT"], special: {}, link: "https://c.tenor.com/0XzZ4R16RaQAAAAC/anime-smile.gif" },
+                    { template: ["PATPATPATPATPAT *headrub*"], special: {}, link: "https://c.tenor.com/QAIyvivjoB4AAAAC/anime-anime-head-rub.gif" },
+                    { template: ["PATPATPATPATPAT CUTE"], special: {}, link: "https://c.tenor.com/2oOTpioZ_j4AAAAC/pet-cute.gif" },
+                    { template: ["PATPATPATPATPAT ANIME"], special: {}, link: "https://c.tenor.com/Vz5yn1fwv-gAAAAd/pat-anime.gif" }
+                ]);
             });
         }
     },
     {
         prefix: true,
         typeofcmd: icommands_1.TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "hide",
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
+                defaultReactionHandler(msg, { key: "handhopatsld", singular: "Pats", plural: "pats",
+                    defaultTemplate: ""
+                }, [
+                    { template: [], special: {}, link: "https://c.tenor.com/tYS5DBIos-UAAAAS/kyo-ani-musaigen.gif" },
+                    { template: [], special: {}, link: "https://c.tenor.com/EtvotzSToyMAAAAd/petra-rezero.gif" },
+                    { template: [], special: {}, link: "https://c.tenor.com/rc8PwWHaV9gAAAAC/headpat-patpat.gif" },
+                    { template: [], special: {}, link: "https://c.tenor.com/wLqFGYigJuIAAAAC/mai-sakurajima.gif" },
+                    { template: [], special: {}, link: "https://c.tenor.com/0XzZ4R16RaQAAAAC/anime-smile.gif" },
+                    { template: [], special: {}, link: "https://c.tenor.com/QAIyvivjoB4AAAAC/anime-anime-head-rub.gif" },
+                    { template: [], special: {}, link: "https://c.tenor.com/2oOTpioZ_j4AAAAC/pet-cute.gif" },
+                    { template: [], special: {}, link: "https://c.tenor.com/Vz5yn1fwv-gAAAAd/pat-anime.gif" }
+                ]);
                 let links = [
                     "https://c.tenor.com/T6X8wbaOGhIAAAAC/sagiri-bed.gif",
                     "https://c.tenor.com/AmYTuh5XM7sAAAAC/shy-rikka.gif",
@@ -364,6 +356,7 @@ exports.TrustedCommands = [
     {
         prefix: true,
         typeofcmd: icommands_1.TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "blush",
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -392,6 +385,7 @@ exports.TrustedCommands = [
     {
         prefix: true,
         typeofcmd: icommands_1.TypeOfCmd.Action,
+        isHalting: true,
         messagecontent: "love",
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -537,4 +531,46 @@ exports.TrustedCommands = [
         }
     },
 ];
+function addActionToStatistic(action, msg) {
+    db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+    if (msg.mentions)
+        db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
+}
+function simpleReactEmbed(links, msg, action) {
+    var fields = {
+        sender: mod_1.MessageHelper.getSendersVisibleName(msg),
+        repliant: mod_1.MessageHelper.getRepliantsVisibleName(msg),
+        action
+    };
+    var header = "<%= action.singular %>!";
+    var template = "<%= sender %> <%= action.plural %> <%= repliant %>!";
+    if (action.defaultHeader)
+        header = action.defaultHeader;
+    if (action.defaultTemplate)
+        template = action.defaultTemplate;
+    var linkId = Math.floor(Math.random() * links.length);
+    var link = links[linkId].link;
+    if (links[linkId].template)
+        template = (0, command_helper_1.getRandom)(links[linkId].template);
+    if (links[linkId].header)
+        header = (0, command_helper_1.getRandom)(links[linkId].header);
+    return new Discord.MessageEmbed()
+        .setColor('#FFD35D')
+        .setTitle(lodash_1.default.template(header)(fields))
+        .setDescription(lodash_1.default.template(template)(fields))
+        .setImage(link);
+}
+function defaultReactionHandler(msg, action, defaultGifs) {
+    return __awaiter(this, void 0, void 0, function* () {
+        //var gifkey="actionGIFs::"+action.key;
+        //var links:{link:string,template:string,special:any}[]=[];
+        /**if(db.exists(gifkey)){
+            var gifs = db.get(gifkey)
+        } else {
+            db.put(gifkey,defaultGifs)
+        }*/
+        let m = yield msg.reply({ embeds: [simpleReactEmbed(defaultGifs, msg, action)] });
+        addActionToStatistic("cuddle", msg);
+    });
+}
 //# sourceMappingURL=trusted.js.map
