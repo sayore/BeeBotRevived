@@ -341,7 +341,7 @@ export let TrustedCommands: ICommand[] = [
 
 function addActionToStatistic(action: string, msg: Discord.Message) {
     DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
-    if (msg.mentions)
+    if (msg.mentions && msg.mentions.repliedUser)
         DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
 }
 

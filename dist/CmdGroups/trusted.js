@@ -389,7 +389,7 @@ exports.TrustedCommands = [
 ];
 function addActionToStatistic(action, msg) {
     db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sSent::" + msg.member.id + "", 1);
-    if (msg.mentions)
+    if (msg.mentions && msg.mentions.repliedUser)
         db_helper_1.DBHelper.increase(app_1.db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
 }
 function simpleReactEmbed(links, msg, action) {
