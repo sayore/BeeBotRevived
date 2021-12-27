@@ -412,5 +412,5 @@ async function defaultReactionHandler(msg: Discord.Message, action: { key: strin
     }*/
 
     let m = await msg.reply({ embeds: [simpleReactEmbed(defaultGifs, msg, action)] });
-    addActionToStatistic("cuddle", msg);
+    addActionToStatistic(action.key, msg);
 }

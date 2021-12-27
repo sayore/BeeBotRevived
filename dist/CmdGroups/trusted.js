@@ -455,7 +455,7 @@ function defaultReactionHandler(msg, action, defaultGifs) {
             db.put(gifkey,defaultGifs)
         }*/
         let m = yield msg.reply({ embeds: [simpleReactEmbed(defaultGifs, msg, action)] });
-        addActionToStatistic("cuddle", msg);
+        addActionToStatistic(action.key, msg);
     });
 }
 //# sourceMappingURL=trusted.js.map
