@@ -55,7 +55,7 @@ function setUser(user, userdata) {
             userdata.hexaccentcolor = user.user.hexAccentColor;
         }
         catch (e) {
-            console.log("Could not fetch user.\nWe got: ", user);
+            console.log("Could not fetch user.\nWe got: ", userdata);
         }
         //console.log(user);
         return yield app_1.db.put("user" + user.id, userdata);
