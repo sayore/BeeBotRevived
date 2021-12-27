@@ -1,5 +1,5 @@
 ﻿export let EnvFile = "BeeToken.json";
-import { Logging } from 'supernode/Base/Logging';
+import { Logging, LogLevel, LogTarget } from 'supernode/Base/Logging';
 import { Environment } from 'supernode/Base/Environment';
 import process from 'process';
 if (!Environment.checkExists(EnvFile)) {
@@ -36,7 +36,8 @@ export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"
 export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 export let db = new level('./database');
 export let randomEvents = new RandomEvents();
-
+Logging.setLogTarget(LogLevel.Unknown , LogTarget.All);
+Logging.setLogTarget(LogLevel.Testing , LogTarget.Textfile);
 
 
 

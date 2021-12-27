@@ -20,6 +20,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MasterCommands = void 0;
+const command_helper_1 = require("./command.helper");
 const app_1 = require("../app");
 const MessageHelper_1 = require("supernode/Discord/MessageHelper");
 const Environment_1 = require("supernode/Base/Environment");
@@ -55,22 +56,9 @@ exports.MasterCommands = [
                 console.log(msg.content);
                 msg.delete();
                 let target_id = msg.member.id;
-                let safety = 20;
-                if (msg.content.includes("<@!")) {
-                    let pos = msg.content.indexOf("<@!");
-                    while (msg.content.charAt(pos) != ">") {
-                        if ("0123456789".includes(msg.content.charAt(pos)))
-                            target_id += msg.content.charAt(pos);
-                        console.log(msg.content.charAt(pos));
-                        safety--;
-                        pos++;
-                        if (safety == 0) {
-                            Logging_1.Logging.log("Needed to break");
-                            break;
-                        }
-                    }
-                }
+                (0, command_helper_1.getMentions)(msg.content);
                 let userdata = yield (0, user_1.getUser)(target_id);
+                msg.channel.send(target_id);
                 msg.channel.send(JSON.stringify(userdata));
             });
         }
@@ -113,8 +101,16 @@ exports.MasterCommands = [
                 let sToplist = "";
                 for (let i = 0; i < toplist.length; i++) {
                     const v = toplist[i];
-                    let membername = yield msg.guild.members.fetch({ user: v.id });
-                    sToplist += `\` ${(Math.floor(v.rpg.money).toString() + " $").padEnd(15, " ")} ${membername.displayName.padEnd(40, " ")} \`\n`;
+                    var membername;
+                    if (toplist[i].tag) {
+                        membername = toplist[i].tag;
+                    }
+                    else {
+                        var member = yield msg.guild.members.fetch({ user: v.id });
+                        membername = member.displayName;
+                        (0, user_1.setUser)(member, toplist[i]);
+                    }
+                    sToplist += `\` ${(Math.floor(v.rpg.money).toString() + " $").padEnd(15, " ")} ${membername.padEnd(40, " ")} \`\n`;
                 }
                 msg.channel.send(sToplist);
             });
@@ -144,8 +140,16 @@ exports.MasterCommands = [
                 let sToplist = "";
                 for (let i = 0; i < toplist.length; i++) {
                     const v = toplist[i];
-                    let membername = yield msg.guild.members.fetch({ user: v.id });
-                    sToplist += `\` ${(Math.floor(v.rpg.allExp()).toString() + " EXP").padEnd(15, " ")} ${membername.displayName.padEnd(40, " ")} \`\n`;
+                    var membername;
+                    if (toplist[i].tag) {
+                        membername = toplist[i].tag;
+                    }
+                    else {
+                        var member = yield msg.guild.members.fetch({ user: v.id });
+                        membername = member.displayName;
+                        (0, user_1.setUser)(member, toplist[i]);
+                    }
+                    sToplist += `\` ${(Math.floor(v.rpg.allExp()).toString() + " EXP").padEnd(15, " ")} ${membername.padEnd(40, " ")} \`\n`;
                 }
                 msg.channel.send(sToplist);
             });

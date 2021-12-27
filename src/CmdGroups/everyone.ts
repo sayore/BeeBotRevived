@@ -43,7 +43,7 @@ export let EveryoneCommands : ICommand[] = [
                 randomUserIdCache.push({id:userdata.id,time:Date.now()});
             }
             
-            setUser(msg.member.id,userdata);
+            setUser(msg.member,userdata);
             //Logging.log(await db.get("user"+msg.member.id+".msgs"))
         }
     }

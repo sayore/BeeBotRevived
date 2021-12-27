@@ -1,12 +1,12 @@
 import { ICommand } from "./icommands";
 import * as Discord from 'discord.js';
-import { CheckForManyWords, iterateSortedFilter } from "./command.helper";
+import { CheckForManyWords, getMentions, iterateSortedFilter } from "./command.helper";
 import { clientBee, db, EnvFile, randomEvents } from "../app";
 import { MessageHelper } from "supernode/Discord/MessageHelper";
 import { Environment } from "supernode/Base/Environment";
 import { Logging } from "supernode/Base/Logging";
 import _ from "lodash";
-import { getUser, Userdata } from '../Helper/user';
+import { getUser, setUser, Userdata } from '../Helper/user';
 import { RPG } from '../RPG/rpg';
 
 export let MasterCommands : ICommand[] = [
@@ -33,19 +33,10 @@ export let MasterCommands : ICommand[] = [
             console.log(msg.content)
             msg.delete();
             let target_id=msg.member.id;
-            let safety=20;
-            if(msg.content.includes("<@!")) {
-                let pos = msg.content.indexOf("<@!");
-
-                while(msg.content.charAt(pos)!=">"){
-                    if("0123456789".includes(msg.content.charAt(pos))) target_id+=msg.content.charAt(pos)
-                    console.log(msg.content.charAt(pos))
-                    safety--;
-                    pos++;
-                    if(safety==0) {Logging.log("Needed to break"); break;}
-                }
-            }
+            getMentions(msg.content)
+            
             let userdata=await getUser(target_id);
+            msg.channel.send(target_id);
             msg.channel.send(JSON.stringify(userdata));
             
         }
@@ -84,8 +75,18 @@ export let MasterCommands : ICommand[] = [
             
             for (let i = 0; i < toplist.length; i++) {
                 const v = toplist[i];
-                let membername = await msg.guild.members.fetch({user:v.id})
-                sToplist+=`\` ${(Math.floor(v.rpg.money).toString()+" $").padEnd(15," ")} ${membername.displayName.padEnd(40," ")} \`\n`;
+                var membername:string;
+                if(toplist[i].tag)
+                {
+                    membername = toplist[i].tag
+                }
+                else
+                {
+                    var member = await msg.guild.members.fetch({user:v.id});
+                    membername = member.displayName
+                    setUser(member,toplist[i]);
+                }
+                sToplist+=`\` ${(Math.floor(v.rpg.money).toString()+" $").padEnd(15," ")} ${membername.padEnd(40," ")} \`\n`;
             }
             
             msg.channel.send(sToplist); 
@@ -115,8 +116,18 @@ export let MasterCommands : ICommand[] = [
             
             for (let i = 0; i < toplist.length; i++) {
                 const v = toplist[i];
-                let membername = await msg.guild.members.fetch({user:v.id})
-                sToplist+=`\` ${(Math.floor(v.rpg.allExp()).toString()+" EXP").padEnd(15," ")} ${membername.displayName.padEnd(40," ")} \`\n`;
+                var membername: string;
+                if(toplist[i].tag)
+                {
+                    membername = toplist[i].tag
+                }
+                else
+                {
+                    var member = await msg.guild.members.fetch({user:v.id});
+                    membername = member.displayName
+                    setUser(member,toplist[i]);
+                } 
+                sToplist+=`\` ${(Math.floor(v.rpg.allExp()).toString()+" EXP").padEnd(15," ")} ${membername.padEnd(40," ")} \`\n`;
             }
             
             msg.channel.send(sToplist); 

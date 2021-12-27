@@ -26,7 +26,7 @@ class Userdata {
     }
 }
 exports.Userdata = Userdata;
-function getUser(userid) {
+function getUser(userid, msg) {
     return __awaiter(this, void 0, void 0, function* () {
         var key = "user" + userid;
         if (yield app_1.db.exists(key)) {
@@ -42,9 +42,16 @@ function getUser(userid) {
     });
 }
 exports.getUser = getUser;
-function setUser(userid, userdata) {
+function setUser(user, userdata) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield app_1.db.put("user" + userid, userdata);
+        userdata.tag = user.displayName;
+        userdata.color = user.displayColor;
+        userdata.hexcolor = user.displayHexColor;
+        yield user.user.fetch();
+        userdata.accentcolor = user.user.accentColor;
+        userdata.hexaccentcolor = user.user.hexAccentColor;
+        console.log(user);
+        return yield app_1.db.put("user" + user.id, userdata);
     });
 }
 exports.setUser = setUser;

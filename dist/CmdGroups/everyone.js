@@ -45,7 +45,7 @@ exports.EveryoneCommands = [
                     userdata.rpg.addExp(7 * Math.random());
                     randomUserIdCache.push({ id: userdata.id, time: Date.now() });
                 }
-                (0, user_1.setUser)(msg.member.id, userdata);
+                (0, user_1.setUser)(msg.member, userdata);
                 //Logging.log(await db.get("user"+msg.member.id+".msgs"))
             });
         }

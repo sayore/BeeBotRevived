@@ -65,6 +65,8 @@ exports.clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "
 exports.clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 exports.db = new level_ts_1.default('./database');
 exports.randomEvents = new random_1.RandomEvents();
+Logging_1.Logging.setLogTarget(Logging_1.LogLevel.Unknown, Logging_1.LogTarget.All);
+Logging_1.Logging.setLogTarget(Logging_1.LogLevel.Testing, Logging_1.LogTarget.Textfile);
 function GenerealReadyAsync(e) {
     return __awaiter(this, void 0, void 0, function* () {
         Logging_1.Logging.log(`Logged in as ${e.user.tag}!`);

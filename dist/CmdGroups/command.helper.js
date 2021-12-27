@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.iterateSortedFilter = exports.getRandom = exports.CheckForManyWordsCI = exports.CheckForManyWords = exports.SimplePerRules = exports.ResultReport = void 0;
+exports.iterateSortedFilter = exports.getMentions = exports.getRandom = exports.CheckForManyWordsCI = exports.CheckForManyWords = exports.SimplePerRules = exports.ResultReport = void 0;
 const Logging_1 = require("supernode/Base/Logging");
 const app_1 = require("../app");
 const app_2 = require("../app");
@@ -126,6 +126,31 @@ function getRandom(arr) {
     return arr[Math.floor(Math.random() * arr.length)];
 }
 exports.getRandom = getRandom;
+function getMentions(msgstr) {
+    let rets = [];
+    let safety = 50;
+    var idscan = "";
+    while (msgstr.includes("<@!")) {
+        let pos = msgstr.indexOf("<@!");
+        idscan = "";
+        do {
+            if ("0123456789".includes(msgstr.charAt(pos)))
+                idscan += msgstr.charAt(pos);
+            /**console.log(msg.content.charAt(pos))*/
+            safety--;
+            pos++;
+            if (safety == 0) {
+                Logging_1.Logging.log("Needed to break");
+                break;
+            }
+        } while (msgstr.charAt(pos) != ">");
+        safety = 50;
+        msgstr.replace("<@!" + idscan + ">", "");
+        rets.push(idscan);
+    }
+    return rets;
+}
+exports.getMentions = getMentions;
 function iterateSortedFilter(enumeF) {
     return __awaiter(this, void 0, void 0, function* () {
         let listed = yield (yield app_1.db.iterateFilter((v) => { return (!!v.msgs); })).sort();
