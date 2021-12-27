@@ -86,7 +86,7 @@ export let MasterCommands : ICommand[] = [
                     membername = member.displayName
                     setUser(member,toplist[i]);
                 }
-                sToplist+=`\` ${(Math.floor(v.rpg.money).toString()+" $").padEnd(15," ")} ${membername.padEnd(40," ")} \`\n`;
+                sToplist+=`\` ${(Math.floor(v.rpg.money).toString()+" $").padEnd(15," ")} ${(membername?membername:"NFI").padEnd(40," ")} \`\n`;
             }
             
             msg.channel.send(sToplist); 
@@ -127,7 +127,7 @@ export let MasterCommands : ICommand[] = [
                     membername = member.displayName
                     setUser(member,toplist[i]);
                 } 
-                sToplist+=`\` ${(Math.floor(v.rpg.allExp()).toString()+" EXP").padEnd(15," ")} ${membername.padEnd(40," ")} \`\n`;
+                sToplist+=`\` ${(Math.floor(v.rpg.allExp()).toString()+" EXP").padEnd(15," ")} ${(membername?membername:"NFI").padEnd(40," ")} \`\n`;
             }
             
             msg.channel.send(sToplist); 
