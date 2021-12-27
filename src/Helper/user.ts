@@ -36,6 +36,9 @@ export async function getUser(userid: string, msg?:Discord.Message): Promise<Use
     }
 }
 export async function setUser(user: Discord.GuildMember, userdata: Userdata) {
+    if(!userdata.id) {
+        return await db.del("user" + user.id);
+    }
     userdata.fetchCounter++;
     userdata.tag = user.displayName;
     userdata.color = user.displayColor;

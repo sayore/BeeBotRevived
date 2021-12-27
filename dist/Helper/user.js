@@ -45,6 +45,9 @@ function getUser(userid, msg) {
 exports.getUser = getUser;
 function setUser(user, userdata) {
     return __awaiter(this, void 0, void 0, function* () {
+        if (!userdata.id) {
+            return yield app_1.db.del("user" + user.id);
+        }
         userdata.fetchCounter++;
         userdata.tag = user.displayName;
         userdata.color = user.displayColor;
