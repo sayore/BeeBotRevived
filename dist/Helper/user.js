@@ -47,7 +47,6 @@ function setUser(user, userdata) {
         userdata.tag = user.displayName;
         userdata.color = user.displayColor;
         userdata.hexcolor = user.displayHexColor;
-        yield user.user.fetch();
         userdata.accentcolor = user.user.accentColor;
         userdata.hexaccentcolor = user.user.hexAccentColor;
         console.log(user);
