@@ -1,5 +1,6 @@
 import { RPG } from "../RPG/rpg";
 import * as Discord from 'discord.js';
+export declare type Actions = ("hugs" | "cuddles" | "noms" | "goodbees" | "pats");
 export declare class Userdata {
     id: string;
     tag: string;
@@ -12,6 +13,8 @@ export declare class Userdata {
     rpg: RPG;
     constructor();
     test(): void;
+    getSent(type: Actions): Promise<number>;
+    getReceived(type: Actions): Promise<number>;
 }
 export declare function getUser(userid: string, msg?: Discord.Message): Promise<Userdata>;
 export declare function setUser(user: Discord.GuildMember, userdata: Userdata): Promise<any>;

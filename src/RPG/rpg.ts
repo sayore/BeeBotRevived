@@ -24,7 +24,7 @@ export class RPG {
      * All Exp ever received.
      */
     allExp() {
-        return (this.level != 1 ? this.getExpNeeded(this.level - 1) : 0) + this.currentexp;
+        return (this.level != 1 ? this._getExpNeeded(this.level - 1) : 0) + this.currentexp;
     };
     skillpoints: number = 0;
     level: number = 1;
@@ -36,8 +36,11 @@ export class RPG {
     private nextLevelExpRequired() {
         return Math.pow(this.level, 3) + Math.pow(this.level, 2) * 23 + 100 * this.level + 100;
     }
-    private getExpNeeded(level: number) {
+    private _getExpNeeded(level: number) {
         return Math.pow(level, 3) + Math.pow(level, 2) * 23 + 100 * level + 100;
+    }
+    getExpNeeded() {
+        return this._getExpNeeded(this.level);
     }
     addExp(amount: number) {
         this.currentexp += amount;

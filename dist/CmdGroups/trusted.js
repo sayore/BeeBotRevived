@@ -41,6 +41,8 @@ const db_helper_1 = require("../db.helper");
 const discord_js_1 = require("discord.js");
 const master_1 = require("./master");
 const lodash_1 = __importDefault(require("lodash"));
+const user_1 = require("../Helper/user");
+const Logging_1 = require("supernode/Base/Logging");
 exports.TrustedCommands = [
     {
         prefix: true,
@@ -120,6 +122,33 @@ exports.TrustedCommands = [
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 msg.reply((0, command_helper_1.getRandom)(["	☜(⌒▽⌒)☞", "(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄", "(〃￣ω￣〃ゞ"]));
+            });
+        }
+    },
+    {
+        prefix: true,
+        typeofcmd: icommands_1.TypeOfCmd.Information,
+        triggerwords: ["bee", "profile"],
+        cmd(msg, user) {
+            return __awaiter(this, void 0, void 0, function* () {
+                try {
+                    var mentions = (0, command_helper_1.getMentions)(msg.content);
+                    if (mentions.length == 1)
+                        user = yield (0, user_1.getUser)(mentions[0]);
+                    msg.reply("\`" + user.tag + " -> Lvl " + user.rpg.level + "(" + Math.floor(user.rpg.expToNextLevel()) + "/" + user.rpg.getExpNeeded() + " EXP)" + "\`\n" +
+                        "\`" + "       STR AGI VIT INT DEX LUK      " + "\`\n" +
+                        "\`" + "       " + user.rpg.str.toString().padEnd(3, " ") + " " + user.rpg.agi.toString().padEnd(3, " ") + " " + user.rpg.vit.toString().padEnd(3, " ") + " " + user.rpg.int.toString().padEnd(3, " ") + " " + user.rpg.dex.toString().padEnd(3, " ") + " " + user.rpg.luk.toString().padEnd(3, " ") + "      " + "\`\n" +
+                        "\`" + "            Sent        Received    " + "\`\n" +
+                        "\`------------------------------------\`\n" +
+                        "\`" + "Hugs        " + (yield user.getSent("hugs")).toString().padEnd(12, " ") + (yield user.getReceived("hugs")).toString().padEnd(12, " ") + "\`\n" +
+                        "\`" + "Cuddles     " + (yield user.getSent("cuddles")).toString().padEnd(12, " ") + (yield user.getReceived("cuddles")).toString().padEnd(12, " ") + "\`\n" +
+                        "\`" + "Pats        " + (yield user.getSent("pats")).toString().padEnd(12, " ") + (yield user.getReceived("pats")).toString().padEnd(12, " ") + "\`\n" +
+                        "\`" + "Noms        " + (yield user.getSent("noms")).toString().padEnd(12, " ") + (yield user.getReceived("noms")).toString().padEnd(12, " ") + "\`\n" +
+                        "\`" + "?           " + (yield user.getSent("goodbees")).toString().padEnd(12, " ") + (yield user.getReceived("goodbees")).toString().padEnd(12, " ") + "\`");
+                }
+                catch (e) {
+                    Logging_1.Logging.log("Could not create User Profile", Logging_1.LogLevel.Verbose);
+                }
             });
         }
     },

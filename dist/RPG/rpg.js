@@ -30,7 +30,7 @@ class RPG {
      * All Exp ever received.
      */
     allExp() {
-        return (this.level != 1 ? this.getExpNeeded(this.level - 1) : 0) + this.currentexp;
+        return (this.level != 1 ? this._getExpNeeded(this.level - 1) : 0) + this.currentexp;
     }
     ;
     /**
@@ -41,8 +41,11 @@ class RPG {
     nextLevelExpRequired() {
         return Math.pow(this.level, 3) + Math.pow(this.level, 2) * 23 + 100 * this.level + 100;
     }
-    getExpNeeded(level) {
+    _getExpNeeded(level) {
         return Math.pow(level, 3) + Math.pow(level, 2) * 23 + 100 * level + 100;
+    }
+    getExpNeeded() {
+        return this._getExpNeeded(this.level);
     }
     addExp(amount) {
         this.currentexp += amount;

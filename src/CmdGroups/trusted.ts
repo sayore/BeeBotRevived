@@ -2,12 +2,15 @@ import { ICommand, TypeOfCmd } from "./icommands";
 import * as Discord from 'discord.js';
 import { clientBee, db } from "../app";
 import { MessageHelper } from "supernode/Discord/mod";
-import { getRandom } from "./command.helper";
+import { getRandom, getMentions } from './command.helper';
 import { DBHelper } from "../db.helper";
 import { MessageActionRow, MessageButton } from "discord.js";
 import { EveryoneCommands } from "./everyone";
 import { MasterCommands } from "./master";
 import _ from "lodash";
+import { getUser } from "../Helper/user";
+import { LogLevel, Logging } from 'supernode/Base/Logging';
+import { RPG } from "../RPG/rpg";
 
 
 export let TrustedCommands: ICommand[] = [
@@ -80,6 +83,29 @@ export let TrustedCommands: ICommand[] = [
         triggerwords: ["i love", "bee"],
         async cmd(msg: Discord.Message) {
             msg.reply(getRandom(["	☜(⌒▽⌒)☞", "(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄", "(〃￣ω￣〃ゞ"]));
+        }
+    },
+    {
+        prefix: true,
+        typeofcmd: TypeOfCmd.Information,
+        triggerwords:["bee","profile"],
+        async cmd(msg: Discord.Message,user) {
+            try {
+            var mentions = getMentions(msg.content);
+            if(mentions.length==1) user = await getUser(mentions[0])
+            msg.reply("\`"+user.tag+" -> Lvl "+user.rpg.level+ "("+Math.floor(user.rpg.expToNextLevel())+"/"+user.rpg.getExpNeeded()+" EXP)"+"\`\n"+
+                      "\`"+"       STR AGI VIT INT DEX LUK      "+"\`\n"+
+                      "\`"+"       "+user.rpg.str.toString().padEnd(3," ")+" "+user.rpg.agi.toString().padEnd(3," ")+" "+user.rpg.vit.toString().padEnd(3," ")+" "+user.rpg.int.toString().padEnd(3," ")+" "+user.rpg.dex.toString().padEnd(3," ")+" "+user.rpg.luk.toString().padEnd(3," ")+"      "+"\`\n"+
+                      "\`"+"            Sent        Received    "+"\`\n"+
+                      "\`------------------------------------\`\n"+
+                      "\`"+"Hugs        "+(await user.getSent("hugs")).toString().padEnd(12," ")+(await user.getReceived("hugs")).toString().padEnd(12," ")+"\`\n"+
+                      "\`"+"Cuddles     "+(await user.getSent("cuddles")).toString().padEnd(12," ")+(await user.getReceived("cuddles")).toString().padEnd(12," ")+"\`\n"+
+                      "\`"+"Pats        "+(await user.getSent("pats")).toString().padEnd(12," ")+(await user.getReceived("pats")).toString().padEnd(12," ")+"\`\n"+
+                      "\`"+"Noms        "+(await user.getSent("noms")).toString().padEnd(12," ")+(await user.getReceived("noms")).toString().padEnd(12," ")+"\`\n"+
+                      "\`"+"?           "+(await user.getSent("goodbees")).toString().padEnd(12," ")+(await user.getReceived("goodbees")).toString().padEnd(12," ")+"\`");
+            } catch (e) {
+                Logging.log("Could not create User Profile",LogLevel.Verbose);
+            }
         }
     },
     {

@@ -23,7 +23,26 @@ class Userdata {
         this.rpg = new rpg_1.RPG();
     }
     test() {
-        //console.log("Test Executed")
+    }
+    getSent(type) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var key = "action::" + type + "Sent::" + this.id;
+            let ret = 0;
+            if (yield app_1.db.exists(key)) {
+                ret = (yield app_1.db.get(key));
+            }
+            return (ret ? ret : 0);
+        });
+    }
+    getReceived(type) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var key = "action::" + type + "Received::" + this.id;
+            let ret = 0;
+            if (yield app_1.db.exists(key)) {
+                ret = (yield app_1.db.get(key));
+            }
+            return (ret ? ret : 0);
+        });
     }
 }
 exports.Userdata = Userdata;

@@ -91,7 +91,7 @@ exports.MasterCommands = [
             return __awaiter(this, void 0, void 0, function* () {
                 console.log(msg.content);
                 msg.delete();
-                let toplist = yield app_1.db.iterateFilter((v) => { var _a; return (!!((_a = v.rpg) === null || _a === void 0 ? void 0 : _a.money)); });
+                let toplist = yield app_1.db.iterateFilter((v) => { var _a; return (!!((_a = v.rpg) === null || _a === void 0 ? void 0 : _a.money) && !!v.id); });
                 toplist = yield toplist.sort((a, b) => {
                     if (a.rpg.money == b.rpg.money)
                         return 0;
@@ -123,7 +123,7 @@ exports.MasterCommands = [
             return __awaiter(this, void 0, void 0, function* () {
                 console.log(msg.content);
                 msg.delete();
-                let toplist = (yield app_1.db.iterateFilter((v) => { return (!!v.rpg); }));
+                let toplist = (yield app_1.db.iterateFilter((v) => { return (!!v.rpg && !!v.id); }));
                 // Loads RPG functions, without this, no "allExp()"
                 for (let i = 0; i < toplist.length; i++) {
                     toplist[i].rpg = toplist[i].rpg = lodash_1.default.assignIn(new rpg_1.RPG(), toplist[i].rpg);
@@ -170,7 +170,7 @@ exports.MasterCommands = [
                     // ? iterator.seek(...); // You can first seek if you'd like.
                     for (var iterator_1 = __asyncValues(iterator), iterator_1_1; iterator_1_1 = yield iterator_1.next(), !iterator_1_1.done;) {
                         const { key, value } = iterator_1_1.value;
-                        msg.channel.send(key + ":" + value); // Useable, readable and fast!
+                        console.log(key + ":" + value); // Useable, readable and fast!
                     } // If the end of the iterable is reached, iterator.end() is callend.
                 }
                 catch (e_1_1) { e_1 = { error: e_1_1 }; }

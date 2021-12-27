@@ -31,7 +31,8 @@ export declare class RPG {
      * @returns Exp needed to the next level
      */
     private nextLevelExpRequired;
-    private getExpNeeded;
+    private _getExpNeeded;
+    getExpNeeded(): number;
     addExp(amount: number): void;
     inventory: ItemStack[];
 }

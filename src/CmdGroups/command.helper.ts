@@ -129,7 +129,7 @@ export function getRandom<T>(arr: T[]): T {
 
 export function getMentions(msgstr:string):string[]{
     let rets=[];
-    let safety=50;
+    let safety=200;
     var idscan="";
     while(msgstr.includes("<@!")) {
         let pos = msgstr.indexOf("<@!");
@@ -143,8 +143,9 @@ export function getMentions(msgstr:string):string[]{
             if(safety==0) {Logging.log("Needed to break"); break;}
         } while (msgstr.charAt(pos)!=">");
 
-        safety=50;
-        msgstr.replace("<@!"+idscan+">","");
+        console.log(idscan);
+        msgstr = msgstr.replace("<@!"+idscan+">","");
+        //msgstr.replace(idscan,"");
         rets.push(idscan);
     }
     return rets;

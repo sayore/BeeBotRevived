@@ -128,7 +128,7 @@ function getRandom(arr) {
 exports.getRandom = getRandom;
 function getMentions(msgstr) {
     let rets = [];
-    let safety = 50;
+    let safety = 200;
     var idscan = "";
     while (msgstr.includes("<@!")) {
         let pos = msgstr.indexOf("<@!");
@@ -144,8 +144,9 @@ function getMentions(msgstr) {
                 break;
             }
         } while (msgstr.charAt(pos) != ">");
-        safety = 50;
-        msgstr.replace("<@!" + idscan + ">", "");
+        console.log(idscan);
+        msgstr = msgstr.replace("<@!" + idscan + ">", "");
+        //msgstr.replace(idscan,"");
         rets.push(idscan);
     }
     return rets;

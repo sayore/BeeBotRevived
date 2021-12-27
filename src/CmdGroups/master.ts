@@ -64,7 +64,7 @@ export let MasterCommands : ICommand[] = [
         async cmd(msg:Discord.Message){
             console.log(msg.content)
             msg.delete();
-            let toplist= await db.iterateFilter((v) => { return (!!v.rpg?.money); });
+            let toplist= await db.iterateFilter((v) => { return (!!v.rpg?.money && !!v.id); });
             
             toplist = await toplist.sort((a, b) => {
                 if(a.rpg.money == b.rpg.money) return 0;
@@ -98,7 +98,7 @@ export let MasterCommands : ICommand[] = [
         async cmd(msg:Discord.Message){
             console.log(msg.content)
             msg.delete();
-            let toplist= <Userdata[]>(await db.iterateFilter((v) => { return (!!v.rpg); }));
+            let toplist= <Userdata[]>(await db.iterateFilter((v) => { return (!!v.rpg && !!v.id); }));
             
             // Loads RPG functions, without this, no "allExp()"
             for (let i = 0; i < toplist.length; i++) {
@@ -143,7 +143,7 @@ export let MasterCommands : ICommand[] = [
             const iterator = db.iterate({ });
             // ? iterator.seek(...); // You can first seek if you'd like.
             for await (const { key, value } of iterator) {
-                msg.channel.send(key+":"+ value); // Useable, readable and fast!
+                console.log(key+":"+ value); // Useable, readable and fast!
             } // If the end of the iterable is reached, iterator.end() is callend.
             await iterator.end();            
         }

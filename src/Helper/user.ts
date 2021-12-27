@@ -3,6 +3,8 @@ import { clientBee, db } from '../app';
 import _ from "lodash";
 import * as Discord from 'discord.js';
 
+export type Actions = ("hugs" | "cuddles" | "noms" | "goodbees" | "pats");
+
 export class Userdata {
     id: string;
     tag: string;
@@ -17,8 +19,26 @@ export class Userdata {
 
     }
     test(){
-        //console.log("Test Executed")
+        
     }
+
+    async getSent(type:Actions) : Promise<number>{
+        var key="action::"+type+"Sent::"+this.id
+        let ret = 0;
+        if(await db.exists(key))
+        {ret = await db.get(key) as number;}
+
+        return (ret?ret:0);
+    }
+    async getReceived(type:Actions) : Promise<number> {
+        var key="action::"+type+"Received::"+this.id
+        let ret = 0;
+        if(await db.exists(key))
+        {ret = await db.get(key) as number;}
+
+        return (ret?ret:0);
+    }
+
 }
 
 export async function getUser(userid: string, msg?:Discord.Message): Promise<Userdata> {
