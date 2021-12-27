@@ -38,9 +38,13 @@ export async function setUser(user: Discord.GuildMember, userdata: Userdata) {
     userdata.tag = user.displayName;
     userdata.color = user.displayColor;
     userdata.hexcolor = user.displayHexColor;
-    userdata.accentcolor = user.user.accentColor; 
-    userdata.hexaccentcolor = user.user.hexAccentColor;
-    
+    try {
+        await user.user.fetch();
+        userdata.accentcolor = user.user.accentColor; 
+        userdata.hexaccentcolor = user.user.hexAccentColor;
+    } catch (e) {
+        console.log("Could not fetch user.")
+    }
     console.log(user);
     return await db.put("user" + user.id, userdata);
 }

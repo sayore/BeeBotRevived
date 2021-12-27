@@ -47,8 +47,14 @@ function setUser(user, userdata) {
         userdata.tag = user.displayName;
         userdata.color = user.displayColor;
         userdata.hexcolor = user.displayHexColor;
-        userdata.accentcolor = user.user.accentColor;
-        userdata.hexaccentcolor = user.user.hexAccentColor;
+        try {
+            yield user.user.fetch();
+            userdata.accentcolor = user.user.accentColor;
+            userdata.hexaccentcolor = user.user.hexAccentColor;
+        }
+        catch (e) {
+            console.log("Could not fetch user.");
+        }
         console.log(user);
         return yield app_1.db.put("user" + user.id, userdata);
     });
