@@ -126,7 +126,8 @@ export let MasterCommands : ICommand[] = [
                     var member = await msg.guild.members.fetch({user:v.id});
                     membername = member.displayName
                     setUser(member,toplist[i]);
-                } 
+                }
+                if(!membername) msg.channel.send(JSON.stringify(v));
                 sToplist+=`\` ${(Math.floor(v.rpg.allExp()).toString()+" EXP").padEnd(15," ")} ${(membername?membername:"NFI").padEnd(40," ")} \`\n`;
             }
             

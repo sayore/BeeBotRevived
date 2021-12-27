@@ -149,6 +149,8 @@ exports.MasterCommands = [
                         membername = member.displayName;
                         (0, user_1.setUser)(member, toplist[i]);
                     }
+                    if (!membername)
+                        msg.channel.send(JSON.stringify(v));
                     sToplist += `\` ${(Math.floor(v.rpg.allExp()).toString() + " EXP").padEnd(15, " ")} ${(membername ? membername : "NFI").padEnd(40, " ")} \`\n`;
                 }
                 msg.channel.send(sToplist);
