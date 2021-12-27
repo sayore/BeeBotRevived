@@ -18,7 +18,8 @@ const app_1 = require("../app");
 const lodash_1 = __importDefault(require("lodash"));
 class Userdata {
     constructor() {
-        this.msgs = 10;
+        this.msgs = 0;
+        this.fetchCounter = 0;
         this.rpg = new rpg_1.RPG();
     }
     test() {
@@ -44,6 +45,7 @@ function getUser(userid, msg) {
 exports.getUser = getUser;
 function setUser(user, userdata) {
     return __awaiter(this, void 0, void 0, function* () {
+        userdata.fetchCounter++;
         userdata.tag = user.displayName;
         userdata.color = user.displayColor;
         userdata.hexcolor = user.displayHexColor;
@@ -55,7 +57,7 @@ function setUser(user, userdata) {
         catch (e) {
             console.log("Could not fetch user.");
         }
-        console.log(user);
+        //console.log(user);
         return yield app_1.db.put("user" + user.id, userdata);
     });
 }

@@ -8,6 +8,7 @@ export declare class Userdata {
     accentcolor: number;
     hexcolor: string;
     hexaccentcolor: string;
+    fetchCounter: number;
     rpg: RPG;
     constructor();
     test(): void;

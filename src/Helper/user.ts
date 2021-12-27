@@ -6,11 +6,12 @@ import * as Discord from 'discord.js';
 export class Userdata {
     id: string;
     tag: string;
-    msgs: number = 10;
+    msgs: number = 0;
     color:number;
     accentcolor:number;
     hexcolor:string;
     hexaccentcolor:string;
+    fetchCounter=0;
     rpg: RPG = new RPG();
     constructor() {
 
@@ -35,6 +36,7 @@ export async function getUser(userid: string, msg?:Discord.Message): Promise<Use
     }
 }
 export async function setUser(user: Discord.GuildMember, userdata: Userdata) {
+    userdata.fetchCounter++;
     userdata.tag = user.displayName;
     userdata.color = user.displayColor;
     userdata.hexcolor = user.displayHexColor;
@@ -45,7 +47,7 @@ export async function setUser(user: Discord.GuildMember, userdata: Userdata) {
     } catch (e) {
         console.log("Could not fetch user.")
     }
-    console.log(user);
+    //console.log(user);
     return await db.put("user" + user.id, userdata);
 }
 
