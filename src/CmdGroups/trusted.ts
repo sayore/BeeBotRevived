@@ -389,16 +389,16 @@ export let TrustedCommands: ICommand[] = [
     },
 ]
 
-function addActionToStatistic(action: string, msg: Discord.Message) {
-    DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
+function addActionToStatistic(action:ActionInfo, msg: Discord.Message) {
+    DBHelper.increase(db, "action::" + action.key + "sSent::" + msg.member.id + "", 1);
     if (msg.mentions && msg.mentions.repliedUser)
-        DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
+        DBHelper.increase(db, "action::" + action.key + "sReceived::" + (action.target?action.target:msg.mentions.repliedUser.id), 1);
 }
 
 function simpleReactEmbed(
     links: { link: string, template?: string[], header?: string[], special?: any }[],
     msg: Discord.Message,
-    action: { key: string, singular: string, plural: string, defaultTemplate?: string, defaultHeader?: string, target?:string }) {
+    action: ActionInfo) {
     var fields = {
         sender: MessageHelper.getSendersVisibleName(msg),
         repliant: (action.target?action.target:MessageHelper.getRepliantsVisibleName(msg)),
@@ -426,7 +426,16 @@ function simpleReactEmbed(
         .setImage(link);
 }
 
-async function defaultReactionHandler(msg: Discord.Message, action: { key: string, singular: string, plural: string, defaultTemplate?: string, defaultHeader?: string, target?:string }, defaultGifs: { link: string, template?: string[], header?: string[], special?: any }[]) {
+interface ActionInfo {
+    key: string;
+    singular: string;
+    plural: string;
+    defaultTemplate?: string;
+    defaultHeader?: string;
+    target?: string;
+}
+
+async function defaultReactionHandler(msg: Discord.Message, action: ActionInfo, defaultGifs: { link: string, template?: string[], header?: string[], special?: any }[]) {
     //var gifkey="actionGIFs::"+action.key;
     //var links:{link:string,template:string,special:any}[]=[];
     /**if(db.exists(gifkey)){
@@ -441,5 +450,5 @@ async function defaultReactionHandler(msg: Discord.Message, action: { key: strin
     else {
         await msg.channel.send({ embeds: [simpleReactEmbed(defaultGifs, msg, action)] });
     }
-    addActionToStatistic(action.key, msg);
+    addActionToStatistic(action, msg);
 }
