@@ -93,7 +93,7 @@ export let TrustedCommands: ICommand[] = [
             try {
             var mentions = getMentions(msg.content);
             if(mentions.length==1) user = await getUser(mentions[0])
-            msg.reply("\`"+user.tag+" -> Lvl "+user.rpg.level+ "("+Math.floor(user.rpg.expToNextLevel())+"/"+user.rpg.getExpNeeded()+" EXP)"+"\`\n"+
+            msg.reply("\`"+user.tag+" -> Lvl "+user.rpg.level+ "("+Math.floor(RPG.expToNextLevel(user.rpg))+"/"+RPG.getExpNeeded(user.rpg)+" EXP)"+"\`\n"+
                       "\`"+"       STR AGI VIT INT DEX LUK      "+"\`\n"+
                       "\`"+"       "+user.rpg.str.toString().padEnd(3," ")+" "+user.rpg.agi.toString().padEnd(3," ")+" "+user.rpg.vit.toString().padEnd(3," ")+" "+user.rpg.int.toString().padEnd(3," ")+" "+user.rpg.dex.toString().padEnd(3," ")+" "+user.rpg.luk.toString().padEnd(3," ")+"      "+"\`\n"+
                       "\`"+"            Sent        Received    "+"\`\n"+
@@ -109,7 +109,7 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
-        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(msg.content,"hug"),
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(_.lowerCase(msg.content),"hug"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
             var mention = (mentions?"<@!"+mentions+">":undefined)
@@ -125,7 +125,7 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
-        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(msg.content,"boop"),
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(_.lowerCase(msg.content),"boop"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
             var mention = (mentions?"<@!"+mentions+">":undefined)
@@ -140,7 +140,7 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
-        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(msg.content,"sex"),
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(_.lowerCase(msg.content),"sex"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
             var mention = (mentions?"<@!"+mentions+">":undefined)
@@ -151,7 +151,7 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
-        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(msg.content,"kiss"),
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(_.lowerCase(msg.content),"kiss"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
             var mention = (mentions?"<@!"+mentions+">":undefined)
@@ -164,7 +164,7 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
-        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(msg.content,"kiss cheek"),
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(_.lowerCase(msg.content),"kiss cheek"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
             var mention = (mentions?"<@!"+mentions+">":undefined)
@@ -175,7 +175,7 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
-        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(msg.content,"cuddle"),
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(_.lowerCase(msg.content),"cuddle"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
             var mention = (mentions?"<@!"+mentions+">":undefined)
@@ -188,7 +188,7 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
-        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(msg.content,"holdhands"),
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(_.lowerCase(msg.content),"holdhands"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
             var mention = (mentions?"<@!"+mentions+">":undefined)
@@ -200,7 +200,7 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
-        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(msg.content,"pat"),
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(_.lowerCase(msg.content),"pat"),
         async cmd(msg: Discord.Message) {
             //***happynoises are filling the room***
             var mentions = getMentions(msg.content)[0];
@@ -218,7 +218,7 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
-        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(msg.content,"hide"),
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(_.lowerCase(msg.content),"hide"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
             var mention = (mentions?"<@!"+mentions+">":undefined)
@@ -233,7 +233,7 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
-        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(msg.content,"blush"),
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(_.lowerCase(msg.content),"blush"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
             var mention = (mentions?"<@!"+mentions+">":undefined)
@@ -250,7 +250,7 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
-        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(msg.content,"love"),
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg)=>_.startsWith(_.lowerCase(msg.content),"love"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
             var mention = (mentions?"<@!"+mentions+">":undefined)
@@ -267,7 +267,7 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
-        prefix: true, typeofcmd: TypeOfCmd.Action, triggerfunc: (msg)=>_.startsWith(msg.content,"nom"),
+        prefix: true, typeofcmd: TypeOfCmd.Action, triggerfunc: (msg)=>_.startsWith(_.lowerCase(msg.content),"nom"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
             var mention = (mentions?"<@!"+mentions+">":undefined)
