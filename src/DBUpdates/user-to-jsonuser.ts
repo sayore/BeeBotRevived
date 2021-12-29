@@ -18,14 +18,15 @@ import { RPG, RPGData } from '../RPG/rpg';
         if(!key.startsWith("userj"))
         if(!value.converted) {
             console.log("Converting old User Profile...")
+            console.log("Covnerted: "+value.converted);
             let userdata =new Userdata()
             _.assignIn(userdata,await (await db.get(key)));
             userdata.rpg = <RPGData>_.assignIn(new RPG(), userdata.rpg);
             console.log("Success?...")
             db.put("userj"+value.id,JSON.stringify(userdata)); 
             Logging.log(key+ ": " +JSON.stringify(value),LogLevel.Testing)
-            db.put(key,value);  
             value.converted = true;
+            db.put(key,value);  
         }
     }
     await iterator.end(); 

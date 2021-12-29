@@ -39,14 +39,15 @@ const rpg_1 = require("../RPG/rpg");
                     if (!key.startsWith("userj"))
                         if (!value.converted) {
                             console.log("Converting old User Profile...");
+                            console.log("Covnerted: " + value.converted);
                             let userdata = new user_1.Userdata();
                             lodash_1.default.assignIn(userdata, yield (yield app_1.db.get(key)));
                             userdata.rpg = lodash_1.default.assignIn(new rpg_1.RPG(), userdata.rpg);
                             console.log("Success?...");
                             app_1.db.put("userj" + value.id, JSON.stringify(userdata));
                             Logging_1.Logging.log(key + ": " + JSON.stringify(value), Logging_1.LogLevel.Testing);
-                            app_1.db.put(key, value);
                             value.converted = true;
+                            app_1.db.put(key, value);
                         }
         }
     }
