@@ -153,10 +153,12 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, messagecontent: "hug",
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(msg.content, "hug"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
-                defaultReactionHandler(msg, { key: "hug", singular: "hug", plural: "hugs" }, [
+                var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
+                var mention = (mentions ? "<@!" + mentions + ">" : undefined);
+                defaultReactionHandler(msg, { target: mention, key: "hug", singular: "hug", plural: "hugs" }, [
                     { link: "https://c.tenor.com/OXCV_qL-V60AAAAC/mochi-peachcat-mochi.gif" },
                     { link: 'https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif' },
                     { link: "https://c.tenor.com/X5nBTYuoKpoAAAAC/anime-cheeks.gif" },
@@ -169,10 +171,12 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, messagecontent: "boop",
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(msg.content, "boop"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
-                defaultReactionHandler(msg, { key: "boop", singular: "boop", plural: "boops" }, [
+                var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
+                var mention = (mentions ? "<@!" + mentions + ">" : undefined);
+                defaultReactionHandler(msg, { target: mention, key: "boop", singular: "boop", plural: "boops" }, [
                     { link: "https://c.tenor.com/l5XjHcppGN0AAAAd/boop.gif" },
                     { link: "https://c.tenor.com/B1ohHuPJIpgAAAAS/anime-cuteness.gif" },
                     { link: "https://c.tenor.com/YYoFAH8B7GAAAAAd/anime-your-face-is-cute.gif" },
@@ -184,10 +188,12 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, messagecontent: "sex",
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(msg.content, "sex"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
-                defaultReactionHandler(msg, { key: "sex", singular: "sex", plural: "sexes" }, [
+                var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
+                var mention = (mentions ? "<@!" + mentions + ">" : undefined);
+                defaultReactionHandler(msg, { target: mention, key: "sex", singular: "sex", plural: "sexes" }, [
                     { link: "https://c.tenor.com/-XrLQFqn8N0AAAAC/yuri-lewd.gif" },
                     { link: "https://c.tenor.com/XCLEsDZBeBQAAAAC/kissxsis-anime.gif" },
                 ]);
@@ -195,10 +201,12 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, messagecontent: "kiss",
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(msg.content, "kiss"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
-                defaultReactionHandler(msg, { key: "kiss", singular: "kiss", plural: "kisses" }, [
+                var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
+                var mention = (mentions ? "<@!" + mentions + ">" : undefined);
+                defaultReactionHandler(msg, { target: mention, key: "kiss", singular: "kiss", plural: "kisses" }, [
                     { link: "https://c.tenor.com/_ttVgUDKJL0AAAAC/anime-couple.gif" },
                     { link: "https://c.tenor.com/v4Ur0OCvaXcAAAAd/koi-to-uso-kiss.gif" },
                     { link: "https://c.tenor.com/WxITy4XYFVUAAAAC/kiss-yuri.gif" },
@@ -208,10 +216,12 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, messagecontent: "kiss cheek",
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(msg.content, "kiss cheek"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
-                defaultReactionHandler(msg, { key: "kisscheek", singular: "kiss", plural: "kisses" }, [
+                var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
+                var mention = (mentions ? "<@!" + mentions + ">" : undefined);
+                defaultReactionHandler(msg, { target: mention, key: "kisscheek", singular: "kiss", plural: "kisses" }, [
                     { link: "https://c.tenor.com/OC54_DJOXRAAAAAC/love-anime.gif" },
                     { link: "https://c.tenor.com/etSTc3aWspcAAAAC/yuri-kiss.gif" }
                 ]);
@@ -219,10 +229,12 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, messagecontent: "cuddle",
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(msg.content, "cuddle"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
-                defaultReactionHandler(msg, { key: "cuddle", singular: "cuddle", plural: "cuddles" }, [
+                var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
+                var mention = (mentions ? "<@!" + mentions + ">" : undefined);
+                defaultReactionHandler(msg, { target: mention, key: "cuddle", singular: "cuddle", plural: "cuddles" }, [
                     { link: "https://c.tenor.com/Cy8RWMcVDj0AAAAd/anime-hug.gif" },
                     { link: "https://c.tenor.com/DlW1R4d1NQAAAAAC/anime-cuddle.gif" },
                     { link: "https://c.tenor.com/ch1kq7TOxlkAAAAC/anime-cuddle.gif" },
@@ -232,10 +244,12 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, messagecontent: "holdhands",
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(msg.content, "holdhands"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
-                defaultReactionHandler(msg, { key: "handhold", singular: "Handholding", plural: "handholds" }, [
+                var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
+                var mention = (mentions ? "<@!" + mentions + ">" : undefined);
+                defaultReactionHandler(msg, { target: mention, key: "handhold", singular: "Handholding", plural: "handholds" }, [
                     { link: "https://c.tenor.com/WUZAwo5KFdMAAAAd/love-holding-hands.gif" },
                     { link: "https://c.tenor.com/rU3xZo2_jaIAAAAC/anime-hold.gif" },
                     { link: "https://c.tenor.com/wC3hJXbQtYMAAAAd/touch-hands.gif" },
@@ -244,11 +258,13 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, messagecontent: "pat",
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(msg.content, "pat"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 //***happynoises are filling the room***
-                defaultReactionHandler(msg, { key: "pats", singular: "Pats", plural: "pats" }, [
+                var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
+                var mention = (mentions ? "<@!" + mentions + ">" : undefined);
+                defaultReactionHandler(msg, { target: mention, key: "pats", singular: "Pats", plural: "pats" }, [
                     { template: ["PATPATPATPATPAT"], special: {}, link: "https://c.tenor.com/tYS5DBIos-UAAAAS/kyo-ani-musaigen.gif" },
                     { template: ["PATPATPATPATPAT?"], special: {}, link: "https://c.tenor.com/EtvotzSToyMAAAAd/petra-rezero.gif" },
                     { template: ["PATPATPATPATPAT!"], special: {}, link: "https://c.tenor.com/rc8PwWHaV9gAAAAC/headpat-patpat.gif" },
@@ -262,11 +278,13 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, messagecontent: "hide",
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(msg.content, "hide"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
+                var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
+                var mention = (mentions ? "<@!" + mentions + ">" : undefined);
                 defaultReactionHandler(msg, {
-                    key: "hide", singular: "hide", plural: "hides",
+                    target: mention, key: "hide", singular: "hide", plural: "hides",
                     defaultTemplate: "<%= sender %> <%= action.plural %> from <%= repliant %>!"
                 }, [
                     { link: "https://c.tenor.com/T6X8wbaOGhIAAAAC/sagiri-bed.gif" },
@@ -277,11 +295,13 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, messagecontent: "blush",
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(msg.content, "blush"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
+                var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
+                var mention = (mentions ? "<@!" + mentions + ">" : undefined);
                 defaultReactionHandler(msg, {
-                    key: "blush", singular: "blush", plural: "blushes",
+                    target: mention, key: "blush", singular: "blush", plural: "blushes",
                     defaultTemplate: "<%= sender %> <%= action.plural %> because of <%= repliant %>!"
                 }, [
                     { link: "https://c.tenor.com/wwxHnJqUNEMAAAAC/anime-blush.gif" },
@@ -294,11 +314,13 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, messagecontent: "love",
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(msg.content, "love"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
+                var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
+                var mention = (mentions ? "<@!" + mentions + ">" : undefined);
                 defaultReactionHandler(msg, {
-                    key: "love", singular: "love", plural: "loves",
+                    target: mention, key: "love", singular: "love", plural: "loves",
                     defaultTemplate: "<%= sender %> <%= action.plural %> because of <%= repliant %>!"
                 }, [
                     { link: "https://c.tenor.com/1rEO6m7rWWQAAAAC/i-love-you-love.gif" },
@@ -311,11 +333,13 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, messagecontent: "nom",
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, triggerfunc: (msg) => lodash_1.default.startsWith(msg.content, "nom"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
+                var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
+                var mention = (mentions ? "<@!" + mentions + ">" : undefined);
                 defaultReactionHandler(msg, {
-                    key: "nom", singular: "nom", plural: "noms",
+                    target: mention, key: "nom", singular: "nom", plural: "noms",
                     defaultTemplate: "<%= sender %> <%= action.plural %> because of <%= repliant %>!"
                 }, [
                     { link: "https://c.tenor.com/9dOzFGFZxnoAAAAM/bite-anime.gif" },
@@ -424,7 +448,7 @@ function addActionToStatistic(action, msg) {
 function simpleReactEmbed(links, msg, action) {
     var fields = {
         sender: mod_1.MessageHelper.getSendersVisibleName(msg),
-        repliant: mod_1.MessageHelper.getRepliantsVisibleName(msg),
+        repliant: (action.target ? action.target : mod_1.MessageHelper.getRepliantsVisibleName(msg)),
         action
     };
     var header = "<%= action.singular %>!";
@@ -454,7 +478,12 @@ function defaultReactionHandler(msg, action, defaultGifs) {
         } else {
             db.put(gifkey,defaultGifs)
         }*/
-        let m = yield msg.reply({ embeds: [simpleReactEmbed(defaultGifs, msg, action)] });
+        if (msg.mentions) {
+            msg.reply({ embeds: [simpleReactEmbed(defaultGifs, msg, action)] });
+        }
+        else {
+            yield msg.channel.send({ embeds: [simpleReactEmbed(defaultGifs, msg, action)] });
+        }
         addActionToStatistic(action.key, msg);
     });
 }
