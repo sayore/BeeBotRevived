@@ -1,4 +1,10 @@
+import { Chanceable } from "supernode/Math/Chanceable";
 import { Vector2 } from "supernode/Math/Vector2";
+import { Chance } from 'supernode/Math/mod';
+import { ItemStack } from 'supernode/Game/ItemStack';
+import _ from 'lodash';
+import { ItemDB } from "supernode/Game/ItemDB";
+import { BeeItemDB } from "./itemdb";
 
 class BaseMonster {
     type:"normal"
@@ -12,6 +18,7 @@ class BaseMonster {
     private _int: number=5
     private _dex: number=5
     private _luk: number=5
+    private _loot: Chanceable<ItemStack>[];
     
     public get Name():string {return this._name;}
     public get Elementar():("fire"|"earth"|"wind"|"stone"|"metal"|"light"|"dark"|"void"|"slime")[] { return this._elementar; };
@@ -46,6 +53,8 @@ class BaseMonster {
     public setInt(value:number):this {this.Int=value;return this;}
     public setDex(value:number):this {this.Dex=value;return this;}
     public setLuk(value:number):this {this.Luk=value;return this;}
+    public addLoot(isc:Chanceable<ItemStack>):this {this._loot.push(isc); return this;}
+    public addLoots(iscs:Chanceable<ItemStack>[]):this {this._loot = _.concat(this._loot,iscs); return this;}
 
     onAttack?()
     onEncounter?()
@@ -55,9 +64,25 @@ class BaseMonster {
 interface IPlace {
     shortname:string;
     name:string;
-    monster:BaseMonster[];
+    monster:Chanceable<BaseMonster>[];
     canGoTo?:string[]
     mapPos?:Vector2;
+}
+
+export let Monster = {
+    raco_base: new BaseMonster()
+                .setName("Raco")
+                .setStr(2),
+    slime_base: new BaseMonster()
+                .setName("Slime")
+                .setStr(2)
+                .addLoots([
+                   {chance:0.2,val:BeeItemDB.createStackByCanonicalId("cheese",1)} 
+                ]),
+    moth_base: new BaseMonster()
+                .setName("Moth")
+                .setStr(4)
+                .setInt(9)
 }
 
 export let Places:IPlace[] = [
@@ -65,17 +90,26 @@ export let Places:IPlace[] = [
         shortname:"prontera",
         name:"Prontera",
         monster:[],
+        //npcs:[],
         mapPos:new Vector2(0,0)
     }, {
         shortname:"ptr_fld1",
         name:"Prontera Fields 1",
         monster:[
-            new BaseMonster()
-                    .setName("Slime")
-                    .setStr(2)
-        ]
+            {val:Monster.raco_base,chance:3},
+            {val:Monster.slime_base,chance:7},
+            {val:Monster.moth_base,chance:1}
+        ],
+        mapPos:new Vector2(0,1)
     }
 ];
+
+/* [
+
+    Monster.raco_base,
+    Monster.slime_base,
+    Monster.moth_base
+]*/
 
 /**{
             name:"Slime",

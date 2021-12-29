@@ -7,21 +7,25 @@ let beedb = new ItemDB([
         CanonicalId:"nothing",
         Name:"Nothing",
         Color:'None',
-        Description:"Literally nothing."
+        Description:"Literally nothing.",
+        Extra:{},
+        Quality:100
     }),
     new Item({
         Id:1,
         CanonicalId:"honey",
         Name:"Honey",
         Color:'Yellow',
-        Description:"Sweet sugary Honey!"
+        Description:"Sweet sugary Honey!",
+        Extra: {heals:10}
     }),
     new Item({
         Id:2,
         CanonicalId:"milk",
         Name:"Milk",
         Color:'White',
-        Description:"Cowjuice!"
+        Description:"Cowjuice!",
+        Extra: {heals:5}
     }),
     new Item({
         Id:3,

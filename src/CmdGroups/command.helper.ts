@@ -6,7 +6,7 @@ import { db } from '../app';
 import { DBHelper } from '../db.helper';
 import { ICommand } from "./icommands";
 import { clientBee, clientBob } from "../app";
-import _ from "lodash";
+import _, { startsWith } from "lodash";
 import { getUser, Userdata } from '../Helper/user';
 import { report } from 'process';
 
