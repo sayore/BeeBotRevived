@@ -35,13 +35,13 @@ exports.RPGCommands = [
                         msg.channel.send("You are currently walking! (means no foresting possible)");
                         return;
                     }
-                if (false)
-                    if (!!user.extra && !!user.extra.noForageUntil)
-                        if (Date.now() < user.extra.noForageUntil) {
-                            var canForageAgain = new Date(user.extra.noForageUntil - Date.now());
-                            msg.channel.send("You already foraged! (You can forage in " + canForageAgain.getMinutes() + ":" + canForageAgain.getSeconds().toString().padEnd(2, "0") + " min again)");
-                            return;
-                        }
+                //if(false)
+                if (!!user.extra && !!user.extra.noForageUntil)
+                    if (Date.now() < user.extra.noForageUntil) {
+                        var canForageAgain = new Date(user.extra.noForageUntil - Date.now());
+                        msg.channel.send("You already foraged! (You can forage in " + canForageAgain.getMinutes() + ":" + canForageAgain.getSeconds().toString().padEnd(2, "0") + " min again)");
+                        return;
+                    }
                 var place = monster_1.Places.find(p => p.mapPos.asString() == rpg_1.RPG.getPosition(user.rpg).asString());
                 var found = [];
                 place.foragable.forEach((fa) => {

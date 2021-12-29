@@ -27,7 +27,7 @@ class RPGData {
 exports.RPGData = RPGData;
 class RPG {
     static getPosition(rpg) {
-        return new Vector2_1.Vector2(rpg.position.x, rpg.position.y);
+        return new Vector2_1.Vector2(rpg.position.x ? rpg.position.x : 0, rpg.position.y ? rpg.position.y : 0);
     }
     /**
      *

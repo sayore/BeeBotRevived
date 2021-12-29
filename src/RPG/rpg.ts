@@ -25,7 +25,7 @@ export class RPGData {
 
 export class RPG {
     static getPosition(rpg: RPGData) : Vector2 {
-        return new Vector2(rpg.position.x,rpg.position.y);
+        return new Vector2(rpg.position.x?rpg.position.x:0,rpg.position.y?rpg.position.y:0);
     }
     /**
      * 
