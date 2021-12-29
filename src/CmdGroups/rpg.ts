@@ -17,7 +17,7 @@ export let RPGCommands: ICommand[] = [
                 msg.channel.send("You are currently walking! (means no foresting possible)")
                 return;
             }
-            if(false)
+            //if(false)
             if(!!user.extra && !!user.extra.noForageUntil)
             if (Date.now() < user.extra.noForageUntil) {
                 var canForageAgain = new Date(user.extra.noForageUntil-Date.now());
