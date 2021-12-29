@@ -1,61 +1,74 @@
-import { ItemStack } from "supernode/Game/ItemStack";
+import { ItemStack } from 'supernode/Game/ItemStack';
+import { Vector2 } from 'supernode/Math/Vector2';
 
-export class RPG {
+export class RPGData {
     money: number = 50;
+    position:{x:number,y:number}={x:0,y:0};
     str: number = 5;
     agi: number = 5;
     vit: number = 5;
     int: number = 5;
     dex: number = 5;
     luk: number = 5;
+    extra:any; 
+    inventory: ItemStack[] = [];
+    skillpoints: number = 0;
+    level: number = 1;
     harshness = 0;
     /**
      * Exp that is used to check if next level is reached.
-     * Never access this directly! Read-only
+     * Never access rpg directly! Read-only
      * Access with expToNextLevel()
      */
-    private currentexp: number = 0;
+    currentexp: number = 0;
+}
+
+export class RPG {
+    static getPosition(rpg: RPGData) : Vector2 {
+        return new Vector2(rpg.position.x,rpg.position.y);
+    }
     /**
      * 
      * @returns 
      */
-    expToNextLevel() : number {return this.currentexp;}
+    static expToNextLevel(rpg:RPGData) : number {return rpg.currentexp;}
     /**
      * All Exp ever received.
      */
-    allExp() {
-        return (this.level != 1 ? this._getExpNeeded(this.level - 1) : 0) + this.currentexp;
+    static allExp(rpg:RPGData) {
+        return (rpg.level != 1 ? RPG._getExpNeeded(rpg, rpg.level - 1) : 0) + rpg.currentexp;
     };
-    skillpoints: number = 0;
-    level: number = 1;
+    
     /**
      * 
      * @param level Levelupcosts that are to be calculated
      * @returns Exp needed to the next level
      */
-    private nextLevelExpRequired() {
-        return Math.pow(this.level, 3) + Math.pow(this.level, 2) * 23 + 100 * this.level + 100;
+    static nextLevelExpRequired(rpg:RPGData) {
+        return Math.pow(rpg.level, 3) + Math.pow(rpg.level, 2) * 23 + 100 * rpg.level + 100;
     }
-    private _getExpNeeded(level: number) {
+    static  _getExpNeeded(rpg:RPGData,level: number) {
         return Math.pow(level, 3) + Math.pow(level, 2) * 23 + 100 * level + 100;
     }
-    getExpNeeded() {
-        return this._getExpNeeded(this.level);
+    static getExpNeeded(rpg:RPGData) {
+        return RPG._getExpNeeded(rpg,rpg.level);
     }
-    addExp(amount: number) {
-        this.currentexp += amount;
+    static addExp(rpg:RPGData,amount: number) {
+        rpg.currentexp += amount;
         /**
          * While we have more EXP in our CurrentXP, add level, increase skillpoints, and repeat.
          */
-        while (this.currentexp >= this.nextLevelExpRequired()) {
-            this.currentexp -= this.nextLevelExpRequired();
-            this.skillpoints += 5 + Math.floor(this.level / 10);
-            this.level += 1;
+        while (rpg.currentexp >= RPG.nextLevelExpRequired(rpg)) {
+            console.log("LEVELUP BEF EXP "+rpg.currentexp)
+            console.log("NEEDED "+RPG.nextLevelExpRequired(rpg))
+            rpg.currentexp -= RPG.nextLevelExpRequired(rpg);
+            console.log("AFTERREM "+rpg.currentexp)
+            rpg.skillpoints += 5 + Math.floor(rpg.level / 10);
+            rpg.level += 1;
         }
         /**
          * Add the rest of the remaining EXP.
          */
-        this.currentexp += amount;
+        //rpg.currentexp += amount;
     }
-    inventory: ItemStack[] = [];
 }

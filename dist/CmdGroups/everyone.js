@@ -8,11 +8,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EveryoneCommands = void 0;
 const icommands_1 = require("./icommands");
 const app_1 = require("../app");
-const user_1 = require("../Helper/user");
+const rpg_1 = require("../RPG/rpg");
+const lodash_1 = __importDefault(require("lodash"));
 //import { getUser, setUser } from "./command.helper";
 var randomUserIdCache = [];
 exports.EveryoneCommands = [
@@ -23,16 +27,25 @@ exports.EveryoneCommands = [
             return __awaiter(this, void 0, void 0, function* () {
                 //console.log("Uhm")
                 //console.log(JSON.stringify(userdata))
+                if ((yield app_1.db.exists("user" + msg.member.id)) && !(yield app_1.db.exists("user" + msg.member.id + "converted"))) {
+                    console.log("Converting old User Profile...");
+                    //let userdata =new Userdata()
+                    lodash_1.default.assignIn(userdata, yield (yield app_1.db.get("user" + msg.member.id)));
+                    userdata.rpg = lodash_1.default.assignIn(new rpg_1.RPG(), userdata.rpg);
+                    //msg.reply(JSON.stringify(userdata));
+                    console.log("Success?...");
+                    app_1.db.put("user" + msg.member.id + "converted", true);
+                }
                 if (yield app_1.db.exists("user" + msg.member.id + "::msgs")) {
                     let msgs = yield app_1.db.get("user" + msg.member.id + "::msgs");
                     userdata.msgs += msgs;
-                    userdata.rpg.addExp(userdata.msgs * 15);
+                    rpg_1.RPG.addExp(userdata.rpg, userdata.msgs * 15);
                     yield app_1.db.del("user" + msg.member.id + "::msgs");
                 }
                 if (yield app_1.db.exists("user" + msg.member.id + ".msgs")) {
                     let msgs = yield app_1.db.get("user" + msg.member.id + ".msgs");
                     userdata.msgs += msgs;
-                    userdata.rpg.addExp(userdata.msgs * 15);
+                    rpg_1.RPG.addExp(userdata.rpg, userdata.msgs * 15);
                     yield app_1.db.del("user" + msg.member.id + ".msgs");
                 }
                 /** Always add to the msg count */
@@ -42,10 +55,10 @@ exports.EveryoneCommands = [
                 var cachedUser = randomUserIdCache.find(e => e.id == userdata.id);
                 /** If the user isn't in the list, set a new timer, and also add EXP */
                 if (!cachedUser) {
-                    userdata.rpg.addExp(7 * Math.random());
+                    rpg_1.RPG.addExp(userdata.rpg, 7 * Math.random());
                     randomUserIdCache.push({ id: userdata.id, time: Date.now() });
                 }
-                (0, user_1.setUser)(msg.member, userdata);
+                //await setUser(msg.member,userdata);
                 //Logging.log(await db.get("user"+msg.member.id+".msgs"))
             });
         }

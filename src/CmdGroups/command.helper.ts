@@ -47,7 +47,7 @@ export class ResultReport {
     }
 }
 
-export function SimplePerRules(cmds: ICommand[], msg: Discord.Message, reports: ResultReport = new ResultReport(false, false, 0, 0, 0)): ResultReport {
+export function SimplePerRules(cmds: ICommand[], msg: Discord.Message, user:Userdata, reports: ResultReport = new ResultReport(false, false, 0, 0, 0)): ResultReport {
     //let report = { executed: (reports?reports.executedNum:0), errors: [], halting: (reports?reports.executed:false) }
 
     // This is Bee himself
@@ -72,14 +72,14 @@ export function SimplePerRules(cmds: ICommand[], msg: Discord.Message, reports: 
 
         if (v.messagecontent != undefined)
             if (msg.content.toLowerCase() == v.messagecontent.toLowerCase()) {
-                await v.cmd(msg, (await getUser(msg.member.id)));
+                await v.cmd(msg, (user));
                 reports.addExecuted(v.isHalting);
                 if (v.isHalting)
                     return reports
             }
 
         if (v.always == true) {
-            await v.cmd(msg, (await getUser(msg.member.id)));
+            await v.cmd(msg, (user));
             reports.addExecuted(v.isHalting);
             if (v.isHalting)
                 return reports;
@@ -87,7 +87,7 @@ export function SimplePerRules(cmds: ICommand[], msg: Discord.Message, reports: 
 
         if (v.triggerwords != undefined && v.triggerwords.length >= 1)
             if (CheckForManyWordsCI(msg.content, v.triggerwords)) {
-                await v.cmd(msg, (await getUser(msg.member.id)));
+                await v.cmd(msg, (user));
                 reports.addExecuted(v.isHalting);
                 if (v.isHalting)
                     return reports;
@@ -95,13 +95,14 @@ export function SimplePerRules(cmds: ICommand[], msg: Discord.Message, reports: 
 
         if (v.triggerfunc != undefined)
             if (v.triggerfunc(msg)) {
-                await v.cmd(msg, (await getUser(msg.member.id)));
+                await v.cmd(msg, (user));
                 reports.addExecuted(v.isHalting);
 
                 if (v.isHalting)
                     return reports;
             }
     }))
+    
     return reports;
 }
 

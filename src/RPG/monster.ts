@@ -65,6 +65,7 @@ interface IPlace {
     shortname:string;
     name:string;
     monster:Chanceable<BaseMonster>[];
+    foragable?:Chanceable<ItemStack>[];
     canGoTo?:string[]
     mapPos?:Vector2;
 }
@@ -90,6 +91,18 @@ export let Places:IPlace[] = [
         shortname:"prontera",
         name:"Prontera",
         monster:[],
+        foragable:[
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.20},
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.07},
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.04},
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.03},
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.03},
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.03},
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.03},
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.03},
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.03},
+            {val:BeeItemDB.createStackByCanonicalId("money1",1),chance:0.03},
+        ],
         //npcs:[],
         mapPos:new Vector2(0,0)
     }, {

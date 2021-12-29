@@ -36,8 +36,9 @@ exports.EnvFile = "BeeToken.json";
 const Logging_1 = require("supernode/Base/Logging");
 const Environment_1 = require("supernode/Base/Environment");
 const process_1 = __importDefault(require("process"));
+var defaultEnv = { envV: 0, beeToken: "NoTokenYet", bobToken: "NoTokenYet", domain: "sayore.de", subdomain: "bee" };
 if (!Environment_1.Environment.checkExists(exports.EnvFile)) {
-    Environment_1.Environment.save(exports.EnvFile, { envV: 0, beeToken: "NoTokenYet", bobToken: "NoTokenYet" });
+    Environment_1.Environment.save(exports.EnvFile, defaultEnv);
     Logging_1.Logging.log("There was no config File yet, it has been written to: " + Environment_1.Environment.getEnvFilePath(exports.EnvFile + "\nBe sure to add the Tokens there."));
     process_1.default.exit(-1);
 }
@@ -46,6 +47,7 @@ if (Env.beeToken == "NoTokenYet") {
     Logging_1.Logging.log("There was a config File yet, but it's missing the Tokens, find it here: " + Environment_1.Environment.getEnvFilePath(exports.EnvFile + "\nBe sure to add the Tokens there."));
     process_1.default.exit(-1);
 }
+Env = Object.assign(defaultEnv, Env);
 const Discord = __importStar(require("discord.js"));
 const level_ts_1 = __importDefault(require("level-ts"));
 const master_1 = require("./CmdGroups/master");
@@ -56,14 +58,17 @@ const marriage_1 = require("./InteractionReactions/marriage");
 const db_helper_1 = require("./db.helper");
 const everyone_1 = require("./CmdGroups/everyone");
 const trusted_1 = require("./CmdGroups/trusted");
+const random_1 = require("./CmdGroups/random");
+const rpg_1 = require("./CmdGroups/rpg");
 const bobjokes_1 = require("./CmdGroups/bobjokes");
 const Application_1 = require("supernode/Base/Application");
 const ApplicationCollection_1 = require("supernode/Base/ApplicationCollection");
 const ExpressApplication_1 = require("supernode/Base/ExpressApplication");
-const random_1 = require("./CmdGroups/random");
+const user_1 = require("./Helper/user");
 exports.clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 exports.clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 exports.db = new level_ts_1.default('./database');
+require("./DBUpdates/user-to-jsonuser");
 exports.randomEvents = new random_1.RandomEvents();
 Logging_1.Logging.setLogTarget(Logging_1.LogLevel.Unknown, Logging_1.LogTarget.All);
 Logging_1.Logging.setLogTarget(Logging_1.LogLevel.Testing, Logging_1.LogTarget.Textfile);
@@ -119,13 +124,17 @@ class BeeApplication {
         exports.clientBee.on('messageCreate', (message) => __awaiter(this, void 0, void 0, function* () {
             //Logging.log("message..." + (await message.content))
             // Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
+            var user = yield (0, user_1.getUser)(message.member.id, message);
             var resFullreport = new command_helper_1.ResultReport(false, false, 0, 0);
-            resFullreport = (0, command_helper_1.SimplePerRules)(everyone_1.EveryoneCommands, message, resFullreport);
+            resFullreport = (0, command_helper_1.SimplePerRules)(everyone_1.EveryoneCommands, message, user, resFullreport);
             resFullreport.report();
-            resFullreport = (0, command_helper_1.SimplePerRules)(master_1.MasterCommands, message, resFullreport);
+            resFullreport = (0, command_helper_1.SimplePerRules)(master_1.MasterCommands, message, user, resFullreport);
             resFullreport.report();
-            resFullreport = (0, command_helper_1.SimplePerRules)(trusted_1.TrustedCommands, message, resFullreport);
+            resFullreport = (0, command_helper_1.SimplePerRules)(trusted_1.TrustedCommands, message, user, resFullreport);
             resFullreport.report();
+            resFullreport = (0, command_helper_1.SimplePerRules)(rpg_1.RPGCommands, message, user, resFullreport);
+            resFullreport.report();
+            (0, user_1.setUser)(message.member, user);
             if (message.content.substr(0, 2) === 'b ' && message.member.roles.cache.some((a) => a.id == "854467063677976586")) {
                 if (message.content === 'b help') {
                 }
@@ -173,7 +182,9 @@ class BeeApplication {
             simpreacts.report();
         }));
         exports.clientBob.on('messageCreate', (message) => __awaiter(this, void 0, void 0, function* () {
-            (0, command_helper_1.SimplePerRules)(bobjokes_1.BobCommands, message);
+            var user = yield (0, user_1.getUser)(message.member.id, message);
+            (0, command_helper_1.SimplePerRules)(bobjokes_1.BobCommands, message, user);
+            //setUser(message.member, user);
         }));
     }
     run(eventdata) {
@@ -188,15 +199,18 @@ BeeApplication.hasStarted = false;
 class BeeWebserverApplication extends ExpressApplication_1.ExpressApplication {
     constructor() {
         super(...arguments);
-        this.subdomain = "bee";
-        this.domain = "sayore.de";
+        this.subdomain = Env.subdomain;
+        this.domain = Env.domain;
+        this.standalone = false;
         this.uid = `BeeWebserver (${this.subdomain}.${this.domain})`;
         this.needsSafeMode = Application_1.SafetyMode.NeedsCatch;
         this.typeOfApplication = Application_1.TypeOfApplication.Express;
     }
     error(eventdata) {
+        Logging_1.Logging.log(eventdata);
     }
     exit(eventdata) {
+        Logging_1.Logging.log(eventdata);
     }
     init(eventdata) {
         this.app.get('/', (req, res) => {
@@ -224,6 +238,10 @@ setTimeout(() => {
         let botApp = new BeeApplication(Env.beeToken, Env.bobToken);
         botApp.init();
         botApp.run({});
+        let beewebApp = new BeeWebserverApplication(80);
+        beewebApp.standalone = true;
+        beewebApp.init();
+        beewebApp.run();
     }
 }, 1200);
 //# sourceMappingURL=app.js.map

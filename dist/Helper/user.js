@@ -12,15 +12,16 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.iterateSortedFilter = exports.setUser = exports.getUser = exports.Userdata = void 0;
+exports.iterateSortedFilter = exports.setUser = exports.setUserByID = exports.getUser = exports.Userdata = exports.userkey = void 0;
 const rpg_1 = require("../RPG/rpg");
 const app_1 = require("../app");
 const lodash_1 = __importDefault(require("lodash"));
+exports.userkey = "userj";
 class Userdata {
     constructor() {
         this.msgs = 0;
         this.fetchCounter = 0;
-        this.rpg = new rpg_1.RPG();
+        this.rpg = new rpg_1.RPGData();
     }
     test() {
     }
@@ -44,28 +45,45 @@ class Userdata {
             return (ret ? ret : 0);
         });
     }
+    save() {
+        return __awaiter(this, void 0, void 0, function* () {
+            yield setUserByID(this.id, this);
+            console.log(this);
+        });
+    }
 }
 exports.Userdata = Userdata;
 function getUser(userid, msg) {
     return __awaiter(this, void 0, void 0, function* () {
-        var key = "user" + userid;
+        var key = exports.userkey + userid;
         if (yield app_1.db.exists(key)) {
-            let userdata = lodash_1.default.assignIn(new Userdata(), yield (app_1.db.get(key)));
-            userdata.rpg = lodash_1.default.assignIn(new rpg_1.RPG(), userdata.rpg);
-            userdata.id = userid;
+            let userdata = new Userdata();
+            lodash_1.default.assignIn(userdata, yield (JSON.parse(yield app_1.db.get(key))));
+            /*userdata.rpg = <RPG>_.assignIn(new RPG(), userdata.rpg);
+            userdata.rpg.position = new Vector2(userdata.rpg.position.x,userdata.rpg.position.y);
+            userdata.id = userid;*/
             return userdata;
         }
         else {
             console.log("New User");
-            return new Userdata();
+            var userdata = new Userdata();
+            userdata.id = userid;
+            return userdata;
         }
     });
 }
 exports.getUser = getUser;
+function setUserByID(userid, userdata) {
+    return __awaiter(this, void 0, void 0, function* () {
+        console.log("saved" + " user" + userid + JSON.stringify(userdata));
+        return yield app_1.db.put(exports.userkey + userid, JSON.stringify(userdata));
+    });
+}
+exports.setUserByID = setUserByID;
 function setUser(user, userdata) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!userdata.id) {
-            return yield app_1.db.del("user" + user.id);
+            return yield app_1.db.del(exports.userkey + user.id);
         }
         userdata.fetchCounter++;
         userdata.tag = user.displayName;
@@ -80,7 +98,7 @@ function setUser(user, userdata) {
             console.log("Could not fetch user.\nWe got: ", userdata);
         }
         //console.log(user);
-        return yield app_1.db.put("user" + user.id, userdata);
+        return yield app_1.db.put(exports.userkey + user.id, JSON.stringify(userdata));
     });
 }
 exports.setUser = setUser;

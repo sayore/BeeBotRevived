@@ -2,16 +2,18 @@
 import { Logging, LogLevel, LogTarget } from 'supernode/Base/Logging';
 import { Environment } from 'supernode/Base/Environment';
 import process from 'process';
+var defaultEnv = { envV: 0, beeToken: "NoTokenYet", bobToken: "NoTokenYet", domain:"sayore.de", subdomain:"bee" }
 if (!Environment.checkExists(EnvFile)) {
-	Environment.save(EnvFile, { envV: 0, beeToken: "NoTokenYet", bobToken: "NoTokenYet" })
+	Environment.save(EnvFile, defaultEnv)
 	Logging.log("There was no config File yet, it has been written to: " + Environment.getEnvFilePath(EnvFile + "\nBe sure to add the Tokens there."));
 	process.exit(-1);
 }
-let Env = <{ envV: number, beeToken: string, bobToken: string }>Environment.load("BeeToken.json");
+let Env = <{ envV: number, beeToken: string, bobToken: string,domain?:string,subdomain?:string }>Environment.load("BeeToken.json");
 if (Env.beeToken == "NoTokenYet") {
 	Logging.log("There was a config File yet, but it's missing the Tokens, find it here: " + Environment.getEnvFilePath(EnvFile + "\nBe sure to add the Tokens there."));
 	process.exit(-1);
 }
+Env = Object.assign(defaultEnv, Env);
 import * as Discord from 'discord.js';
 import level from 'level-ts';
 import { MasterCommands } from './CmdGroups/master';
@@ -21,20 +23,25 @@ import { TestReactions } from './InteractionReactions/testreactions';
 import { MarriageReactions } from './InteractionReactions/marriage';
 import Level from 'level-ts';
 import { DBHelper } from './db.helper';
+
 import { EveryoneCommands } from './CmdGroups/everyone';
 import { TrustedCommands } from './CmdGroups/trusted';
+import { RandomEvents } from './CmdGroups/random';
+import { RPGCommands } from './CmdGroups/rpg';
 import { BobCommands } from './CmdGroups/bobjokes';
+
 import { TypeOfApplication, SafetyMode, Application } from 'supernode/Base/Application';
 import { ApplicationCollection } from 'supernode/Base/ApplicationCollection';
 import { ExpressApplication } from 'supernode/Base/ExpressApplication';
 
-import { RandomEvents } from './CmdGroups/random';
 import { MessageHelper } from 'supernode/Discord/mod';
+import { getUser, setUser } from './Helper/user';
 
 
 export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 export let db = new level('./database');
+import "./DBUpdates/user-to-jsonuser";
 export let randomEvents = new RandomEvents();
 Logging.setLogTarget(LogLevel.Unknown , LogTarget.All);
 Logging.setLogTarget(LogLevel.Testing , LogTarget.Textfile);
@@ -112,13 +119,19 @@ export class BeeApplication implements Application {
 		clientBee.on('messageCreate', async message => {
 			//Logging.log("message..." + (await message.content))
 			// Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
+			var user = await getUser(message.member.id,message);
+
 			var resFullreport = new ResultReport(false,false,0,0)
-			resFullreport=SimplePerRules(EveryoneCommands, message, resFullreport);
+			resFullreport=SimplePerRules(EveryoneCommands, message,user, resFullreport);
 			resFullreport.report()
-			resFullreport=SimplePerRules(MasterCommands, message, resFullreport);
+			resFullreport=SimplePerRules(MasterCommands, message,user, resFullreport);
 			resFullreport.report()
-			resFullreport=SimplePerRules(TrustedCommands, message, resFullreport);
+			resFullreport=SimplePerRules(TrustedCommands, message,user, resFullreport);
 			resFullreport.report()
+			resFullreport=SimplePerRules(RPGCommands, message,user, resFullreport);
+			resFullreport.report()
+
+			setUser(message.member, user);
 
 			if (message.content.substr(0, 2) === 'b ' && message.member.roles.cache.some((a) => a.id == "854467063677976586")) {
 				if (message.content === 'b help') {
@@ -179,7 +192,9 @@ export class BeeApplication implements Application {
 		});
 
 		clientBob.on('messageCreate', async message => {
-			SimplePerRules(BobCommands, message);
+			var user = await getUser(message.member.id,message);
+			SimplePerRules(BobCommands, message, user);
+			//setUser(message.member, user);
 		});
 
 	}
@@ -190,15 +205,16 @@ export class BeeApplication implements Application {
 }
 
 export class BeeWebserverApplication extends ExpressApplication {
-	subdomain = "bee";
-	domain = "sayore.de";
+	subdomain = Env.subdomain;
+	domain = Env.domain;
+	standalone = false;
 	Type: TypeOfApplication.Express;
 	uid = `BeeWebserver (${this.subdomain}.${this.domain})`;
 	error?(eventdata?: any): void {
-
+		Logging.log(eventdata)
 	}
 	exit?(eventdata?: any): void {
-
+		Logging.log(eventdata)
 	}
 	needsSafeMode?: SafetyMode = SafetyMode.NeedsCatch;
 
@@ -234,5 +250,10 @@ setTimeout(() => {
 		let botApp = new BeeApplication(Env.beeToken, Env.bobToken);
 		botApp.init();
 		botApp.run({});
+
+		let beewebApp = new BeeWebserverApplication(80);
+		beewebApp.standalone=true;
+		beewebApp.init();
+		beewebApp.run();
 	}
 }, 1200)

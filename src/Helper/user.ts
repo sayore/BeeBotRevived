@@ -1,9 +1,11 @@
-import { RPG } from "../RPG/rpg";
+import { RPG,RPGData } from "../RPG/rpg";
 import { clientBee, db } from '../app';
 import _ from "lodash";
 import * as Discord from 'discord.js';
+import { Vector2 } from "supernode/Math/Vector2";
 
 export type Actions = ("hugs" | "cuddles" | "noms" | "goodbees" | "pats");
+export var userkey = "userj";
 
 export class Userdata {
     id: string;
@@ -14,7 +16,8 @@ export class Userdata {
     hexcolor:string;
     hexaccentcolor:string;
     fetchCounter=0;
-    rpg: RPG = new RPG();
+    extra:any;
+    rpg: RPGData = new RPGData();
     constructor() {
 
     }
@@ -38,26 +41,37 @@ export class Userdata {
 
         return (ret?ret:0);
     }
-
+    async save() {
+        await setUserByID(this.id,this);
+        console.log(this);
+    }
 }
 
 export async function getUser(userid: string, msg?:Discord.Message): Promise<Userdata> {
-    var key = "user" + userid;
+    var key = userkey + userid;
     if (await db.exists(key)) {
-        let userdata = <Userdata>_.assignIn(new Userdata(),await (db.get(key)));
-        userdata.rpg = <RPG>_.assignIn(new RPG(), userdata.rpg);
-        
-        userdata.id = userid;
+        let userdata =new Userdata()
+        _.assignIn(userdata,await (JSON.parse(await db.get(key))));
+        /*userdata.rpg = <RPG>_.assignIn(new RPG(), userdata.rpg);
+        userdata.rpg.position = new Vector2(userdata.rpg.position.x,userdata.rpg.position.y);
+        userdata.id = userid;*/
         
         return userdata;
     } else {
         console.log("New User")
-        return new Userdata();
+        var userdata = new Userdata();
+        userdata.id = userid;
+
+        return userdata;
     }
+}
+export async function setUserByID(userid: string, userdata: Userdata) {
+    console.log("saved" + " user" + userid+ JSON.stringify(userdata)); 
+    return await db.put(userkey + userid, JSON.stringify(userdata));
 }
 export async function setUser(user: Discord.GuildMember, userdata: Userdata) {
     if(!userdata.id) {
-        return await db.del("user" + user.id);
+        return await db.del(userkey + user.id);
     }
     userdata.fetchCounter++;
     userdata.tag = user.displayName;
@@ -71,7 +85,7 @@ export async function setUser(user: Discord.GuildMember, userdata: Userdata) {
         console.log("Could not fetch user.\nWe got: ", userdata)
     }
     //console.log(user);
-    return await db.put("user" + user.id, userdata);
+    return await db.put(userkey + user.id, JSON.stringify(userdata));
 }
 
 export async function iterateSortedFilter(enumeF: (v: Userdata, k: string) => boolean) {

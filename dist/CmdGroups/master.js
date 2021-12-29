@@ -15,9 +15,6 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.MasterCommands = void 0;
 const command_helper_1 = require("./command.helper");
@@ -25,7 +22,6 @@ const app_1 = require("../app");
 const MessageHelper_1 = require("supernode/Discord/MessageHelper");
 const Environment_1 = require("supernode/Base/Environment");
 const Logging_1 = require("supernode/Base/Logging");
-const lodash_1 = __importDefault(require("lodash"));
 const user_1 = require("../Helper/user");
 const rpg_1 = require("../RPG/rpg");
 exports.MasterCommands = [
@@ -51,15 +47,19 @@ exports.MasterCommands = [
     {
         ownerlimited: true,
         triggerwords: ["bee", "stats"],
-        cmd(msg) {
+        cmd(msg, user) {
             return __awaiter(this, void 0, void 0, function* () {
                 console.log(msg.content);
                 msg.delete();
-                let target_id = msg.member.id;
-                (0, command_helper_1.getMentions)(msg.content);
-                let userdata = yield (0, user_1.getUser)(target_id);
-                msg.channel.send(target_id);
-                msg.channel.send(JSON.stringify(userdata));
+                let mentioned = (0, command_helper_1.getMentions)(msg.content);
+                if (mentioned.length == 1) {
+                    let askedFor = yield (0, user_1.getUser)(mentioned[0]);
+                    msg.channel.send(mentioned[0]);
+                    msg.channel.send(JSON.stringify(askedFor));
+                }
+                else {
+                    msg.channel.send(JSON.stringify(user));
+                }
             });
         }
     },
@@ -124,14 +124,9 @@ exports.MasterCommands = [
                 console.log(msg.content);
                 msg.delete();
                 let toplist = (yield app_1.db.iterateFilter((v) => { return (!!v.rpg && !!v.id); }));
-                // Loads RPG functions, without this, no "allExp()"
-                for (let i = 0; i < toplist.length; i++) {
-                    toplist[i].rpg = toplist[i].rpg = lodash_1.default.assignIn(new rpg_1.RPG(), toplist[i].rpg);
-                    ;
-                }
                 toplist = yield toplist.sort((a, b) => {
-                    let axp = a.rpg.allExp();
-                    let bxp = b.rpg.allExp();
+                    let axp = rpg_1.RPG.allExp(a.rpg);
+                    let bxp = rpg_1.RPG.allExp(b.rpg);
                     if (axp == bxp)
                         return 0;
                     return axp < bxp ? 1 : -1;
@@ -151,7 +146,7 @@ exports.MasterCommands = [
                     }
                     if (!membername)
                         msg.channel.send(i + ": " + JSON.stringify(v));
-                    sToplist += `\` ${(Math.floor(v.rpg.allExp()).toString() + " EXP").padEnd(15, " ")} ${(membername ? membername : "NFI").padEnd(40, " ")} \`\n`;
+                    sToplist += `\` ${(Math.floor(rpg_1.RPG.allExp(v.rpg)).toString() + " EXP").padEnd(15, " ")} ${(membername ? membername : "NFI").padEnd(40, " ")} \`\n`;
                 }
                 msg.channel.send(sToplist);
             });

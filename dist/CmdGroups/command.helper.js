@@ -13,7 +13,6 @@ exports.iterateSortedFilter = exports.getMentions = exports.getRandom = exports.
 const Logging_1 = require("supernode/Base/Logging");
 const app_1 = require("../app");
 const app_2 = require("../app");
-const user_1 = require("../Helper/user");
 class ResultReport {
     constructor(executed, halting = false, scanned = 0, executedNum = 0, matchedNum = 0) {
         this.executed = executed;
@@ -48,7 +47,7 @@ class ResultReport {
     }
 }
 exports.ResultReport = ResultReport;
-function SimplePerRules(cmds, msg, reports = new ResultReport(false, false, 0, 0, 0)) {
+function SimplePerRules(cmds, msg, user, reports = new ResultReport(false, false, 0, 0, 0)) {
     //let report = { executed: (reports?reports.executedNum:0), errors: [], halting: (reports?reports.executed:false) }
     // This is Bee himself
     if (msg.author.id == app_2.clientBee.user.id || msg.author.id == app_2.clientBob.user.id) {
@@ -73,27 +72,27 @@ function SimplePerRules(cmds, msg, reports = new ResultReport(false, false, 0, 0
             }
         if (v.messagecontent != undefined)
             if (msg.content.toLowerCase() == v.messagecontent.toLowerCase()) {
-                yield v.cmd(msg, (yield (0, user_1.getUser)(msg.member.id)));
+                yield v.cmd(msg, (user));
                 reports.addExecuted(v.isHalting);
                 if (v.isHalting)
                     return reports;
             }
         if (v.always == true) {
-            yield v.cmd(msg, (yield (0, user_1.getUser)(msg.member.id)));
+            yield v.cmd(msg, (user));
             reports.addExecuted(v.isHalting);
             if (v.isHalting)
                 return reports;
         }
         if (v.triggerwords != undefined && v.triggerwords.length >= 1)
             if (CheckForManyWordsCI(msg.content, v.triggerwords)) {
-                yield v.cmd(msg, (yield (0, user_1.getUser)(msg.member.id)));
+                yield v.cmd(msg, (user));
                 reports.addExecuted(v.isHalting);
                 if (v.isHalting)
                     return reports;
             }
         if (v.triggerfunc != undefined)
             if (v.triggerfunc(msg)) {
-                yield v.cmd(msg, (yield (0, user_1.getUser)(msg.member.id)));
+                yield v.cmd(msg, (user));
                 reports.addExecuted(v.isHalting);
                 if (v.isHalting)
                     return reports;

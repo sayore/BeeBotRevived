@@ -3,6 +3,14 @@ import { ItemDB } from 'supernode/Game/ItemDB';
 
 let beedb = new ItemDB([
     new Item({
+        Id:-1,
+        CanonicalId:"money1",
+        Name:"1 $",
+        Color:'Yellow',
+        Description:"Random money lying on the floor!",
+        Extra: {money:1}
+    }),
+    new Item({
         Id:0,
         CanonicalId:"nothing",
         Name:"Nothing",
@@ -34,7 +42,25 @@ let beedb = new ItemDB([
         Color:'Yellow',
         Description:"Cowjuice(but solid)!",
         Extra: {heals:10}
-    })
+    }),
+    new Item({
+        Id:4,
+        CanonicalId:"stone",
+        Name:"Stone",
+        Color:'None',
+        Description:"A stone!",
+        Extra: {crafting:true},
+        BaseValue:1
+    }),
+    new Item({
+        Id:5,
+        CanonicalId:"trash",
+        Name:"Trash",
+        Color:'Black',
+        Description:"Trash from the streets! Nice! and also worthless.",
+        BaseValue:1
+    }),
+    
 ]);
 
 export let BeeItemDB = beedb;

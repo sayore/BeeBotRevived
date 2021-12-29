@@ -1,13 +1,14 @@
 export declare let EnvFile: string;
 import * as Discord from 'discord.js';
 import level from 'level-ts';
+import { RandomEvents } from './CmdGroups/random';
 import { TypeOfApplication, SafetyMode, Application } from 'supernode/Base/Application';
 import { ApplicationCollection } from 'supernode/Base/ApplicationCollection';
 import { ExpressApplication } from 'supernode/Base/ExpressApplication';
-import { RandomEvents } from './CmdGroups/random';
 export declare let clientBee: Discord.Client<boolean>;
 export declare let clientBob: Discord.Client<boolean>;
 export declare let db: level<any>;
+import "./DBUpdates/user-to-jsonuser";
 export declare let randomEvents: RandomEvents;
 export declare class BeeApplication implements Application {
     beeToken: string;
@@ -28,6 +29,7 @@ export declare class BeeApplication implements Application {
 export declare class BeeWebserverApplication extends ExpressApplication {
     subdomain: string;
     domain: string;
+    standalone: boolean;
     Type: TypeOfApplication.Express;
     uid: string;
     error?(eventdata?: any): void;

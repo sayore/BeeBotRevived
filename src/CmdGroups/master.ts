@@ -29,15 +29,18 @@ export let MasterCommands : ICommand[] = [
     {
         ownerlimited:true,
         triggerwords:["bee","stats"],
-        async cmd(msg:Discord.Message){
+        async cmd(msg:Discord.Message,user){
             console.log(msg.content)
             msg.delete();
-            let target_id=msg.member.id;
-            getMentions(msg.content)
+            let mentioned = getMentions(msg.content)
             
-            let userdata=await getUser(target_id);
-            msg.channel.send(target_id);
-            msg.channel.send(JSON.stringify(userdata));
+            if(mentioned.length==1)
+            {let askedFor=await getUser(mentioned[0]);
+            msg.channel.send(mentioned[0]);
+            msg.channel.send(JSON.stringify(askedFor));}
+            else {
+                msg.channel.send(JSON.stringify(user));
+            }
             
         }
     },
@@ -100,14 +103,10 @@ export let MasterCommands : ICommand[] = [
             msg.delete();
             let toplist= <Userdata[]>(await db.iterateFilter((v) => { return (!!v.rpg && !!v.id); }));
             
-            // Loads RPG functions, without this, no "allExp()"
-            for (let i = 0; i < toplist.length; i++) {
-                toplist[i].rpg = toplist[i].rpg = <RPG>_.assignIn(new RPG(), toplist[i].rpg);;
-            }
 
             toplist = await toplist.sort((a, b) => {
-                let axp = a.rpg.allExp();
-                let bxp = b.rpg.allExp();
+                let axp = RPG.allExp(a.rpg);
+                let bxp = RPG.allExp(b.rpg);
                 if(axp == bxp) return 0;
                 return axp < bxp ? 1 : -1;
             })
@@ -128,7 +127,7 @@ export let MasterCommands : ICommand[] = [
                     setUser(member,toplist[i]);
                 }
                 if(!membername) msg.channel.send(i+": "+JSON.stringify(v));
-                sToplist+=`\` ${(Math.floor(v.rpg.allExp()).toString()+" EXP").padEnd(15," ")} ${(membername?membername:"NFI").padEnd(40," ")} \`\n`;
+                sToplist+=`\` ${(Math.floor(RPG.allExp(v.rpg)).toString()+" EXP").padEnd(15," ")} ${(membername?membername:"NFI").padEnd(40," ")} \`\n`;
             }
             
             msg.channel.send(sToplist); 
