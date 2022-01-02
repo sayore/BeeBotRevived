@@ -230,6 +230,22 @@ exports.TrustedCommands = [
         }
     },
     {
+        userlimitedids: ["465583365781717003"],
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.toLower(msg.content), "gib cuddle"),
+        cmd(msg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
+                var mention = (mentions ? "<@!" + mentions + ">" : undefined);
+                defaultReactionHandler(msg, { target: mention, key: "cuddle", singular: "cuddle", plural: "cuddles", defaultTemplate: "<@!" + app_1.clientBee.user.id + "> <%= action.plural %> <%= sender %>!" }, [
+                    { link: "https://c.tenor.com/Cy8RWMcVDj0AAAAd/anime-hug.gif" },
+                    { link: "https://c.tenor.com/DlW1R4d1NQAAAAAC/anime-cuddle.gif" },
+                    { link: "https://c.tenor.com/ch1kq7TOxlkAAAAC/anime-cuddle.gif" },
+                    { link: "https://c.tenor.com/GJ6oX6r0mZsAAAAC/chuunibyou-anime.gif" }
+                ]);
+            });
+        }
+    },
+    {
         prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.toLower(msg.content), "cuddle"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -286,6 +302,7 @@ exports.TrustedCommands = [
                 var mention = (mentions ? "<@!" + mentions + ">" : undefined);
                 defaultReactionHandler(msg, {
                     target: mention, key: "hide", singular: "hide", plural: "hides",
+                    noTargetTemplate: "<%= sender %> <%= action.plural %>!",
                     defaultTemplate: "<%= sender %> <%= action.plural %> from <%= repliant %>!"
                 }, [
                     { link: "https://c.tenor.com/T6X8wbaOGhIAAAAC/sagiri-bed.gif" },
@@ -482,16 +499,20 @@ function addActionToStatistic(action, msg) {
 }
 function simpleReactEmbed(links, msg, action) {
     var fields = {
-        sender: mod_1.MessageHelper.getSendersVisibleName(msg),
+        sender: "<@!" + msg.member.id + ">",
         repliant: (!!action.target ? action.target : mod_1.MessageHelper.getRepliantsVisibleName(msg)),
         action
     };
-    var header = "<%= action.singular %>!";
+    var header = "<%= _.upperFirst(action.singular) %>!";
     var template = "<%= sender %> <%= action.plural %> <%= repliant %>!";
     if (action.defaultHeader)
         header = action.defaultHeader;
     if (action.defaultTemplate)
         template = action.defaultTemplate;
+    if (!!action.noTargetTemplate)
+        if (action.target == msg.member.id || !action.target) {
+            template = action.noTargetTemplate;
+        }
     var linkId = Math.floor(Math.random() * links.length);
     var link = links[linkId].link;
     if (links[linkId].template)
@@ -513,12 +534,7 @@ function defaultReactionHandler(msg, action, defaultGifs) {
         } else {
             db.put(gifkey,defaultGifs)
         }*/
-        if (msg.mentions) {
-            msg.reply({ embeds: [simpleReactEmbed(defaultGifs, msg, action)] });
-        }
-        else {
-            yield msg.channel.send({ embeds: [simpleReactEmbed(defaultGifs, msg, action)] });
-        }
+        msg.channel.send({ embeds: [simpleReactEmbed(defaultGifs, msg, action)] });
         addActionToStatistic(action, msg);
     });
 }

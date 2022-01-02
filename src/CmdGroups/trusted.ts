@@ -175,6 +175,20 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
+        userlimitedids:["465583365781717003"],
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "gib cuddle"),
+        async cmd(msg: Discord.Message) {
+            var mentions = getMentions(msg.content)[0];
+            var mention = (mentions ? "<@!" + mentions + ">" : undefined)
+            defaultReactionHandler(msg, { target: mention, key: "cuddle", singular: "cuddle", plural: "cuddles", defaultTemplate: "<@!"+clientBee.user.id+"> <%= action.plural %> <%= sender %>!" }, [
+                { link: "https://c.tenor.com/Cy8RWMcVDj0AAAAd/anime-hug.gif" },
+                { link: "https://c.tenor.com/DlW1R4d1NQAAAAAC/anime-cuddle.gif" },
+                { link: "https://c.tenor.com/ch1kq7TOxlkAAAAC/anime-cuddle.gif" },
+                { link: "https://c.tenor.com/GJ6oX6r0mZsAAAAC/chuunibyou-anime.gif" }
+            ])
+        }
+    },
+    {
         prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "cuddle"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
@@ -223,7 +237,8 @@ export let TrustedCommands: ICommand[] = [
             var mentions = getMentions(msg.content)[0];
             var mention = (mentions ? "<@!" + mentions + ">" : undefined)
             defaultReactionHandler(msg, {
-                target: mention, key: "hide", singular: "hide", plural: "hides",
+                target: mention, key: "hide", singular: "hide", plural: "hides", 
+                noTargetTemplate:"<%= sender %> <%= action.plural %>!",
                 defaultTemplate: "<%= sender %> <%= action.plural %> from <%= repliant %>!"
             }, [
                 { link: "https://c.tenor.com/T6X8wbaOGhIAAAAC/sagiri-bed.gif" },
@@ -435,18 +450,24 @@ function simpleReactEmbed(
     msg: Discord.Message,
     action: ActionInfo) {
     var fields = {
-        sender: MessageHelper.getSendersVisibleName(msg),
+        sender: "<@!"+msg.member.id+">",
         repliant: (!!action.target ? action.target : MessageHelper.getRepliantsVisibleName(msg)),
         action
     }
 
-    var header = "<%= action.singular %>!"
-    var template = "<%= sender %> <%= action.plural %> <%= repliant %>!"
-
-    if (action.defaultHeader)
+    
+    var header = "<%= _.upperFirst(action.singular) %>!"
+    var template = "<%= sender %> <%= action.plural %> <%= repliant %>!" 
+    
+    
+    if (action.defaultHeader) 
         header = action.defaultHeader
     if (action.defaultTemplate)
         template = action.defaultTemplate
+        if(!!action.noTargetTemplate)
+        if(action.target==msg.member.id || !action.target) {
+            template = action.noTargetTemplate    
+        }
 
     var linkId = Math.floor(Math.random() * links.length);
     var link = links[linkId].link
@@ -466,6 +487,7 @@ interface ActionInfo {
     singular: string;
     plural: string;
     defaultTemplate?: string;
+    noTargetTemplate?: string;
     defaultHeader?: string;
     target?: string;
 }
@@ -479,11 +501,7 @@ async function defaultReactionHandler(msg: Discord.Message, action: ActionInfo, 
         db.put(gifkey,defaultGifs)
     }*/
 
-    if (msg.mentions) {
-        msg.reply({ embeds: [simpleReactEmbed(defaultGifs, msg, action)] });
-    }
-    else {
-        await msg.channel.send({ embeds: [simpleReactEmbed(defaultGifs, msg, action)] });
-    }
+    msg.channel.send({ embeds: [simpleReactEmbed(defaultGifs, msg, action)] });
+
     addActionToStatistic(action, msg);
 }
