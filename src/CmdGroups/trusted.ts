@@ -67,7 +67,7 @@ export let TrustedCommands: ICommand[] = [
         prefix: true,
         typeofcmd: TypeOfCmd.Information,
         isHalting: true,
-        triggerwords: ["bee", "help"],
+        triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "bee help"),
         async cmd(msg: Discord.Message) {
             msg.reply("MasterCmds: '" +
                 MasterCommands.filter(v => { return v.messagecontent != undefined })?.map(v => { return "**" + v.messagecontent + "**" }).join("','") + "'.\n" +
@@ -88,7 +88,7 @@ export let TrustedCommands: ICommand[] = [
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Information,
-        triggerwords: ["bee", "profile"],
+        triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "bee profile"),
         async cmd(msg: Discord.Message, user) {
             try {
                 var mentions = getMentions(msg.content);

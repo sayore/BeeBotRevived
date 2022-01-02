@@ -103,7 +103,7 @@ exports.TrustedCommands = [
         prefix: true,
         typeofcmd: icommands_1.TypeOfCmd.Information,
         isHalting: true,
-        triggerwords: ["bee", "help"],
+        triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.toLower(msg.content), "bee help"),
         cmd(msg) {
             var _a, _b, _c, _d;
             return __awaiter(this, void 0, void 0, function* () {
@@ -129,7 +129,7 @@ exports.TrustedCommands = [
     {
         prefix: true,
         typeofcmd: icommands_1.TypeOfCmd.Information,
-        triggerwords: ["bee", "profile"],
+        triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.toLower(msg.content), "bee profile"),
         cmd(msg, user) {
             return __awaiter(this, void 0, void 0, function* () {
                 try {
