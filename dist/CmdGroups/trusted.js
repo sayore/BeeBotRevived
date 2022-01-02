@@ -154,7 +154,7 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.lowerCase(msg.content), "hug"),
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.toLower(msg.content), "hug"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
@@ -172,7 +172,7 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.lowerCase(msg.content), "boop"),
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.toLower(msg.content), "boop"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
@@ -189,7 +189,7 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.lowerCase(msg.content), "sex"),
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.toLower(msg.content), "sex"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
@@ -202,7 +202,7 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.lowerCase(msg.content), "kiss"),
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.toLower(msg.content), "kiss"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
@@ -217,7 +217,7 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.lowerCase(msg.content), "kiss cheek"),
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.toLower(msg.content), "kiss cheek"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
@@ -230,7 +230,7 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.lowerCase(msg.content), "cuddle"),
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.toLower(msg.content), "cuddle"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
@@ -245,7 +245,7 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.lowerCase(msg.content), "holdhands"),
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.toLower(msg.content), "holdhands"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
@@ -259,7 +259,7 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.lowerCase(msg.content), "pat"),
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.toLower(msg.content), "pat"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 //***happynoises are filling the room***
@@ -279,7 +279,7 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.lowerCase(msg.content), "hide"),
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.toLower(msg.content), "hide"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
@@ -296,7 +296,7 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.lowerCase(msg.content), "blush"),
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.toLower(msg.content), "blush"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
@@ -315,7 +315,7 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.lowerCase(msg.content), "love"),
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.toLower(msg.content), "love"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
@@ -334,7 +334,7 @@ exports.TrustedCommands = [
         }
     },
     {
-        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.lowerCase(msg.content), "nom"),
+        prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.toLower(msg.content), "nom"),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 var mentions = (0, command_helper_1.getMentions)(msg.content)[0];
@@ -366,7 +366,7 @@ exports.TrustedCommands = [
         }
     },
     {
-        triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.lowerCase(msg.content), "emoji vote "),
+        triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.toLower(msg.content), "emoji vote "),
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
                 if (msg.attachments.size == 1) {
