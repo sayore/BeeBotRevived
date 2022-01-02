@@ -2,6 +2,10 @@ import { DiscordAPIError } from "discord.js";
 import * as Discord from 'discord.js';
 import { Userdata } from "../Helper/user";
 
+export class CommandCollection {
+
+}
+
 export interface ICommand {
     prefix?:boolean
     ownerlimited?:boolean

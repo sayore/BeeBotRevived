@@ -366,6 +366,40 @@ exports.TrustedCommands = [
         }
     },
     {
+        triggerfunc: (msg) => lodash_1.default.startsWith(lodash_1.default.lowerCase(msg.content), "emoji vote "),
+        cmd(msg) {
+            return __awaiter(this, void 0, void 0, function* () {
+                if (msg.attachments.size == 1) {
+                    var atta = msg.attachments.first();
+                    msg.delete();
+                    if (atta.height == atta.width) {
+                        var votemsg = yield msg.channel.send({
+                            content: "<@!" + msg.member.id + "> would like to add :" + lodash_1.default.words(msg.content)[2] + ":",
+                            files: [atta.url]
+                        });
+                        votemsg.react("👍");
+                        votemsg.react("👎");
+                        var ej = [];
+                        var evk = "emojivotes";
+                        if (yield app_1.db.exists(evk))
+                            ej = yield app_1.db.get(evk);
+                        //ej.push({msgid:votemsg.id,finishes});
+                        var repliedmsg = yield msg.channel.send("`Vote started, and will conclude in 24hours! It will then automatically be added when at least 5 people upvoted.\nGood luck! (This info disappears in 60s.)`");
+                        setTimeout(() => { repliedmsg.delete(); }, 60000);
+                    }
+                    else {
+                        var repliedmsg = yield msg.reply("Please fix the proportion of the moji you do like to add! (It needs to be 1:1)");
+                        setTimeout(() => { repliedmsg.delete(); }, 10000);
+                    }
+                }
+                else {
+                    var repliedmsg = yield msg.reply("You need to have an image to use for the emoji!");
+                    setTimeout(() => { repliedmsg.delete(); }, 10000);
+                }
+            });
+        }
+    },
+    {
         prefix: true, typeofcmd: icommands_1.TypeOfCmd.Action, messagecontent: "marry",
         cmd(msg) {
             return __awaiter(this, void 0, void 0, function* () {
@@ -449,7 +483,7 @@ function addActionToStatistic(action, msg) {
 function simpleReactEmbed(links, msg, action) {
     var fields = {
         sender: mod_1.MessageHelper.getSendersVisibleName(msg),
-        repliant: (action.target ? action.target : mod_1.MessageHelper.getRepliantsVisibleName(msg)),
+        repliant: (!!action.target ? action.target : mod_1.MessageHelper.getRepliantsVisibleName(msg)),
         action
     };
     var header = "<%= action.singular %>!";

@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.TypeOfCmd = void 0;
+exports.TypeOfCmd = exports.CommandCollection = void 0;
+class CommandCollection {
+}
+exports.CommandCollection = CommandCollection;
 var TypeOfCmd;
 (function (TypeOfCmd) {
     TypeOfCmd[TypeOfCmd["Action"] = 0] = "Action";
