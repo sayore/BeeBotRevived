@@ -155,8 +155,13 @@ exports.TrustedCommands = [
                     //ctx.fillStyle.addColorStop(1,"#68df71")
                     ctx.fillStyle.addColorStop(1, (0, color_1.default)(user.hexcolor).darken(0.2).hex());
                     ctx.fillRect(0, 0, 720, 460);
-                    ctx.font = '80px Impact';
+                    let mult = 80;
+                    ctx.font = mult + 'px Impact';
                     ctx.fillStyle = "black";
+                    while (ctx.measureText(user.tag).width >= 710) {
+                        mult -= 5;
+                        ctx.font = mult + 'px Impact';
+                    }
                     ctx.fillText(user.tag, 10, 85);
                     ctx.font = '34px Mono';
                     ctx.fillStyle = "black";
