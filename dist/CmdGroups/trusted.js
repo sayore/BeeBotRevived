@@ -171,10 +171,15 @@ exports.TrustedCommands = [
                     writeStat(5, "LUK", user.rpg.luk);
                     ctx.font = '34px Mono';
                     ctx.fillStyle = "black";
-                    ctx.fillText("Actions".padEnd(10, " ") + " " + ("Sent").toString().padEnd(6, " ") + ("Got").toString().padEnd(6, " "), 280, 150);
+                    ctx.textAlign = "left";
+                    ctx.fillText("Actions", 280, 150);
+                    ctx.fillText("Sent", 500, 150);
+                    ctx.fillText("Got", 620, 150);
                     function writeAction(pos, action, text) {
                         return __awaiter(this, void 0, void 0, function* () {
-                            ctx.fillText(text.padEnd(10, " ") + " " + (yield user.getSent(action)).toString().padEnd(6, " ") + (yield user.getReceived(action)).toString().padEnd(6, " "), 280, 150 + (pos + 1) * 36);
+                            ctx.fillText(text, 280, 150 + (pos + 1) * 36);
+                            ctx.fillText((yield user.getSent(action)).toString(), 500, 150 + (pos + 1) * 36);
+                            ctx.fillText((yield user.getReceived(action)).toString(), 620, 150 + (pos + 1) * 36);
                         });
                     }
                     yield writeAction(0, "hugs", "Hugs");

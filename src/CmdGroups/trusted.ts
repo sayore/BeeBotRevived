@@ -134,9 +134,14 @@ export let TrustedCommands: ICommand[] = [
 
                 ctx.font = '34px Mono'
                 ctx.fillStyle="black"
-                ctx.fillText("Actions".padEnd(10, " ")+" "+("Sent").toString().padEnd(6, " ")+("Got").toString().padEnd(6, " "), 280, 150);
+                ctx.textAlign="left";
+                ctx.fillText("Actions", 280, 150);
+                ctx.fillText("Sent", 500, 150);
+                ctx.fillText("Got", 620, 150);
                 async function writeAction(pos:number,action:Actions,text:string) {
-                    ctx.fillText(text.padEnd(10, " ")+" "+(await user.getSent(action)).toString().padEnd(6, " ")+(await user.getReceived(action)).toString().padEnd(6, " "), 280, 150+(pos+1)*36);
+                    ctx.fillText(text, 280, 150+(pos+1)*36);
+                    ctx.fillText((await user.getSent(action)).toString(), 500, 150+(pos+1)*36);
+                    ctx.fillText((await user.getReceived(action)).toString(), 620, 150+(pos+1)*36);
                 }
 
                 await writeAction(0,"hugs","Hugs")
