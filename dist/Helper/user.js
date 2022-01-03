@@ -62,6 +62,19 @@ function getUser(userid, msg) {
             /*userdata.rpg = <RPG>_.assignIn(new RPG(), userdata.rpg);
             userdata.rpg.position = new Vector2(userdata.rpg.position.x,userdata.rpg.position.y);
             userdata.id = userid;*/
+            var user = msg.member;
+            userdata.fetchCounter++;
+            userdata.tag = user.displayName;
+            userdata.color = user.displayColor;
+            userdata.hexcolor = user.displayHexColor;
+            try {
+                yield user.user.fetch();
+                userdata.accentcolor = user.user.accentColor;
+                userdata.hexaccentcolor = user.user.hexAccentColor;
+            }
+            catch (e) {
+                console.log("Could not fetch user.\nWe got: ", userdata);
+            }
             return userdata;
         }
         else {
@@ -84,18 +97,6 @@ function setUser(user, userdata) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!userdata.id) {
             return yield app_1.db.del(exports.userkey + user.id);
-        }
-        userdata.fetchCounter++;
-        userdata.tag = user.displayName;
-        userdata.color = user.displayColor;
-        userdata.hexcolor = user.displayHexColor;
-        try {
-            yield user.user.fetch();
-            userdata.accentcolor = user.user.accentColor;
-            userdata.hexaccentcolor = user.user.hexAccentColor;
-        }
-        catch (e) {
-            console.log("Could not fetch user.\nWe got: ", userdata);
         }
         //console.log(user);
         return yield app_1.db.put(exports.userkey + user.id, JSON.stringify(userdata));

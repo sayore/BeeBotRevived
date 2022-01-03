@@ -55,7 +55,19 @@ export async function getUser(userid: string, msg?:Discord.Message): Promise<Use
         /*userdata.rpg = <RPG>_.assignIn(new RPG(), userdata.rpg);
         userdata.rpg.position = new Vector2(userdata.rpg.position.x,userdata.rpg.position.y);
         userdata.id = userid;*/
-        
+        var user = msg.member;
+        userdata.fetchCounter++;
+        userdata.tag = user.displayName;
+        userdata.color = user.displayColor;
+        userdata.hexcolor = user.displayHexColor;
+        try {
+            await user.user.fetch();
+            userdata.accentcolor = user.user.accentColor; 
+            userdata.hexaccentcolor = user.user.hexAccentColor;
+        } catch (e) {
+            console.log("Could not fetch user.\nWe got: ", userdata)
+        }
+
         return userdata;
     } else {
         console.log("New User")
@@ -73,17 +85,7 @@ export async function setUser(user: Discord.GuildMember, userdata: Userdata) {
     if(!userdata.id) {
         return await db.del(userkey + user.id);
     }
-    userdata.fetchCounter++;
-    userdata.tag = user.displayName;
-    userdata.color = user.displayColor;
-    userdata.hexcolor = user.displayHexColor;
-    try {
-        await user.user.fetch();
-        userdata.accentcolor = user.user.accentColor; 
-        userdata.hexaccentcolor = user.user.hexAccentColor;
-    } catch (e) {
-        console.log("Could not fetch user.\nWe got: ", userdata)
-    }
+
     //console.log(user);
     return await db.put(userkey + user.id, JSON.stringify(userdata));
 }
