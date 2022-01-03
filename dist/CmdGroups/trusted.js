@@ -44,6 +44,7 @@ const lodash_1 = __importDefault(require("lodash"));
 const user_1 = require("../Helper/user");
 const Logging_1 = require("supernode/Base/Logging");
 const canvas_1 = require("canvas");
+const color_1 = __importDefault(require("color"));
 exports.TrustedCommands = [
     {
         prefix: true,
@@ -146,12 +147,53 @@ exports.TrustedCommands = [
                         "\`" + "Pats        " + (await user.getSent("pats")).toString().padEnd(12, " ") + (await user.getReceived("pats")).toString().padEnd(12, " ") + "\`\n" +
                         "\`" + "Noms        " + (await user.getSent("noms")).toString().padEnd(12, " ") + (await user.getReceived("noms")).toString().padEnd(12, " ") + "\`\n" +
                         "\`" + "?           " + (await user.getSent("goodbees")).toString().padEnd(12, " ") + (await user.getReceived("goodbees")).toString().padEnd(12, " ") + "\`");**/
-                    var canvas = (0, canvas_1.createCanvas)(100, 100);
+                    var canvas = (0, canvas_1.createCanvas)(720, 460);
                     var ctx = canvas.getContext('2d');
-                    msg.reply({ attachments: [new Discord.MessageAttachment(canvas.createPNGStream(), 'temp.png')] });
+                    ctx.fillStyle = ctx.createLinearGradient(0, 0, 720, 460);
+                    //ctx.fillStyle.addColorStop(0,"#2fb16c")
+                    ctx.fillStyle.addColorStop(0, (0, color_1.default)(user.hexcolor).lighten(0.1).saturate(1.1).hex());
+                    //ctx.fillStyle.addColorStop(1,"#68df71")
+                    ctx.fillStyle.addColorStop(1, (0, color_1.default)(user.hexcolor).darken(0.2).hex());
+                    ctx.fillRect(0, 0, 720, 460);
+                    ctx.font = '80px Impact';
+                    ctx.fillStyle = "black";
+                    ctx.fillText(user.tag, 10, 85);
+                    ctx.font = '34px Mono';
+                    ctx.fillStyle = "black";
+                    function writeStat(pos, text, val) {
+                        ctx.fillText(text + " " + val.toString(), 20, 150 + pos * 40);
+                    }
+                    writeStat(0, "STR", user.rpg.str);
+                    writeStat(1, "AGI", user.rpg.agi);
+                    writeStat(2, "VIT", user.rpg.vit);
+                    writeStat(3, "INT", user.rpg.int);
+                    writeStat(4, "DEX", user.rpg.dex);
+                    writeStat(5, "LUK", user.rpg.luk);
+                    ctx.font = '34px Mono';
+                    ctx.fillStyle = "black";
+                    ctx.fillText("Actions".padEnd(10, " ") + " " + ("Sent").toString().padEnd(6, " ") + ("Got").toString().padEnd(6, " "), 280, 150);
+                    function writeAction(pos, action, text) {
+                        return __awaiter(this, void 0, void 0, function* () {
+                            ctx.fillText(text.padEnd(10, " ") + " " + (yield user.getSent(action)).toString().padEnd(6, " ") + (yield user.getReceived(action)).toString().padEnd(6, " "), 280, 150 + (pos + 1) * 36);
+                        });
+                    }
+                    yield writeAction(0, "hugs", "Hugs");
+                    yield writeAction(1, "pats", "Pats");
+                    yield writeAction(2, "cuddles", "Cuddles");
+                    yield writeAction(3, "noms", "Noms");
+                    yield writeAction(4, "goodbees", "Goodbees");
+                    ctx.resetTransform();
+                    ctx.font = '30px Impact';
+                    ctx.rotate(0.1);
+                    ctx.fillStyle = "yellow";
+                    ctx.fillText('Awesome!', 50, 100);
+                    ctx.fillStyle = "black";
+                    ctx.strokeText('Awesome!', 50, 100);
+                    msg.reply({ files: [new Discord.MessageAttachment(canvas.createPNGStream(), 'temp.png')] });
                 }
                 catch (e) {
                     Logging_1.Logging.log("Could not create User Profile", Logging_1.LogLevel.Verbose);
+                    console.log(e);
                 }
             });
         }

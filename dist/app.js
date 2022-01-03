@@ -127,11 +127,11 @@ class BeeApplication {
             var user = yield (0, user_1.getUser)(message.member.id, message);
             var resFullreport = new command_helper_1.ResultReport(false, false, 0, 0);
             resFullreport = (0, command_helper_1.SimplePerRules)(everyone_1.EveryoneCommands, message, user, resFullreport);
-            resFullreport.report();
+            //resFullreport.report()
             resFullreport = (0, command_helper_1.SimplePerRules)(master_1.MasterCommands, message, user, resFullreport);
-            resFullreport.report();
+            //resFullreport.report()
             resFullreport = (0, command_helper_1.SimplePerRules)(trusted_1.TrustedCommands, message, user, resFullreport);
-            resFullreport.report();
+            //resFullreport.report()
             resFullreport = (0, command_helper_1.SimplePerRules)(rpg_1.RPGCommands, message, user, resFullreport);
             resFullreport.report();
             (0, user_1.setUser)(message.member, user);
