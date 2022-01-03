@@ -43,7 +43,7 @@ const master_1 = require("./master");
 const lodash_1 = __importDefault(require("lodash"));
 const user_1 = require("../Helper/user");
 const Logging_1 = require("supernode/Base/Logging");
-const rpg_1 = require("../RPG/rpg");
+const canvas_1 = require("canvas");
 exports.TrustedCommands = [
     {
         prefix: true,
@@ -136,16 +136,19 @@ exports.TrustedCommands = [
                     var mentions = (0, command_helper_1.getMentions)(msg.content);
                     if (mentions.length == 1)
                         user = yield (0, user_1.getUser)(mentions[0]);
-                    msg.reply("\`" + user.tag + " -> Lvl " + user.rpg.level + "(" + Math.floor(rpg_1.RPG.expToNextLevel(user.rpg)) + "/" + rpg_1.RPG.getExpNeeded(user.rpg) + " EXP)" + "\`\n" +
+                    /**msg.reply("\`" + user.tag + " -> Lvl " + user.rpg.level + "(" + Math.floor(RPG.expToNextLevel(user.rpg)) + "/" + RPG.getExpNeeded(user.rpg) + " EXP)" + "\`\n" +
                         "\`" + "       STR AGI VIT INT DEX LUK      " + "\`\n" +
                         "\`" + "       " + user.rpg.str.toString().padEnd(3, " ") + " " + user.rpg.agi.toString().padEnd(3, " ") + " " + user.rpg.vit.toString().padEnd(3, " ") + " " + user.rpg.int.toString().padEnd(3, " ") + " " + user.rpg.dex.toString().padEnd(3, " ") + " " + user.rpg.luk.toString().padEnd(3, " ") + "      " + "\`\n" +
                         "\`" + "            Sent        Received    " + "\`\n" +
                         "\`------------------------------------\`\n" +
-                        "\`" + "Hugs        " + (yield user.getSent("hugs")).toString().padEnd(12, " ") + (yield user.getReceived("hugs")).toString().padEnd(12, " ") + "\`\n" +
-                        "\`" + "Cuddles     " + (yield user.getSent("cuddles")).toString().padEnd(12, " ") + (yield user.getReceived("cuddles")).toString().padEnd(12, " ") + "\`\n" +
-                        "\`" + "Pats        " + (yield user.getSent("pats")).toString().padEnd(12, " ") + (yield user.getReceived("pats")).toString().padEnd(12, " ") + "\`\n" +
-                        "\`" + "Noms        " + (yield user.getSent("noms")).toString().padEnd(12, " ") + (yield user.getReceived("noms")).toString().padEnd(12, " ") + "\`\n" +
-                        "\`" + "?           " + (yield user.getSent("goodbees")).toString().padEnd(12, " ") + (yield user.getReceived("goodbees")).toString().padEnd(12, " ") + "\`");
+                        "\`" + "Hugs        " + (await user.getSent("hugs")).toString().padEnd(12, " ") + (await user.getReceived("hugs")).toString().padEnd(12, " ") + "\`\n" +
+                        "\`" + "Cuddles     " + (await user.getSent("cuddles")).toString().padEnd(12, " ") + (await user.getReceived("cuddles")).toString().padEnd(12, " ") + "\`\n" +
+                        "\`" + "Pats        " + (await user.getSent("pats")).toString().padEnd(12, " ") + (await user.getReceived("pats")).toString().padEnd(12, " ") + "\`\n" +
+                        "\`" + "Noms        " + (await user.getSent("noms")).toString().padEnd(12, " ") + (await user.getReceived("noms")).toString().padEnd(12, " ") + "\`\n" +
+                        "\`" + "?           " + (await user.getSent("goodbees")).toString().padEnd(12, " ") + (await user.getReceived("goodbees")).toString().padEnd(12, " ") + "\`");**/
+                    var canvas = (0, canvas_1.createCanvas)(100, 100);
+                    var ctx = canvas.getContext('2d');
+                    msg.reply({ attachments: [new Discord.MessageAttachment(canvas.createPNGStream(), 'temp.png')] });
                 }
                 catch (e) {
                     Logging_1.Logging.log("Could not create User Profile", Logging_1.LogLevel.Verbose);

@@ -123,11 +123,11 @@ export class BeeApplication implements Application {
 
 			var resFullreport = new ResultReport(false,false,0,0)
 			resFullreport=SimplePerRules(EveryoneCommands, message,user, resFullreport);
-			resFullreport.report()
+			//resFullreport.report()
 			resFullreport=SimplePerRules(MasterCommands, message,user, resFullreport);
-			resFullreport.report()
+			//resFullreport.report()
 			resFullreport=SimplePerRules(TrustedCommands, message,user, resFullreport);
-			resFullreport.report()
+			//resFullreport.report()
 			resFullreport=SimplePerRules(RPGCommands, message,user, resFullreport);
 			resFullreport.report()
 

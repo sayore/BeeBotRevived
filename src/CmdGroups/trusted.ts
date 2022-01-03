@@ -8,9 +8,11 @@ import { MessageActionRow, MessageButton } from "discord.js";
 import { EveryoneCommands } from "./everyone";
 import { MasterCommands } from "./master";
 import _ from "lodash";
-import { getUser } from "../Helper/user";
+import { Actions, getUser } from "../Helper/user";
 import { LogLevel, Logging } from 'supernode/Base/Logging';
 import { RPG } from "../RPG/rpg";
+import { CanvasGradient, CanvasPattern, createCanvas } from "canvas";
+import Color from "color";
 
 
 export let TrustedCommands: ICommand[] = [
@@ -93,7 +95,7 @@ export let TrustedCommands: ICommand[] = [
             try {
                 var mentions = getMentions(msg.content);
                 if (mentions.length == 1) user = await getUser(mentions[0])
-                msg.reply("\`" + user.tag + " -> Lvl " + user.rpg.level + "(" + Math.floor(RPG.expToNextLevel(user.rpg)) + "/" + RPG.getExpNeeded(user.rpg) + " EXP)" + "\`\n" +
+                /**msg.reply("\`" + user.tag + " -> Lvl " + user.rpg.level + "(" + Math.floor(RPG.expToNextLevel(user.rpg)) + "/" + RPG.getExpNeeded(user.rpg) + " EXP)" + "\`\n" +
                     "\`" + "       STR AGI VIT INT DEX LUK      " + "\`\n" +
                     "\`" + "       " + user.rpg.str.toString().padEnd(3, " ") + " " + user.rpg.agi.toString().padEnd(3, " ") + " " + user.rpg.vit.toString().padEnd(3, " ") + " " + user.rpg.int.toString().padEnd(3, " ") + " " + user.rpg.dex.toString().padEnd(3, " ") + " " + user.rpg.luk.toString().padEnd(3, " ") + "      " + "\`\n" +
                     "\`" + "            Sent        Received    " + "\`\n" +
@@ -102,9 +104,62 @@ export let TrustedCommands: ICommand[] = [
                     "\`" + "Cuddles     " + (await user.getSent("cuddles")).toString().padEnd(12, " ") + (await user.getReceived("cuddles")).toString().padEnd(12, " ") + "\`\n" +
                     "\`" + "Pats        " + (await user.getSent("pats")).toString().padEnd(12, " ") + (await user.getReceived("pats")).toString().padEnd(12, " ") + "\`\n" +
                     "\`" + "Noms        " + (await user.getSent("noms")).toString().padEnd(12, " ") + (await user.getReceived("noms")).toString().padEnd(12, " ") + "\`\n" +
-                    "\`" + "?           " + (await user.getSent("goodbees")).toString().padEnd(12, " ") + (await user.getReceived("goodbees")).toString().padEnd(12, " ") + "\`");
+                    "\`" + "?           " + (await user.getSent("goodbees")).toString().padEnd(12, " ") + (await user.getReceived("goodbees")).toString().padEnd(12, " ") + "\`");**/
+                
+                var canvas = createCanvas(720,460);
+                var ctx = canvas.getContext('2d');
+                
+                ctx.fillStyle=ctx.createLinearGradient(0,0,720,460);
+                //ctx.fillStyle.addColorStop(0,"#2fb16c")
+                ctx.fillStyle.addColorStop(0,Color(user.hexcolor).lighten(0.1).saturate(1.1).hex())
+                //ctx.fillStyle.addColorStop(1,"#68df71")
+                ctx.fillStyle.addColorStop(1,Color(user.hexcolor).darken(0.2).hex())
+                ctx.fillRect(0,0,720,460)
+                
+                ctx.font = '80px Impact'
+                ctx.fillStyle="black"
+                ctx.fillText(user.tag, 10, 85)
+
+                ctx.font = '34px Mono'
+                ctx.fillStyle="black"
+                function writeStat(pos:number,text:string,val:number) {
+                    ctx.fillText(text+" "+val.toString(), 20, 150+pos*40);
+                }
+                writeStat(0,"STR",user.rpg.str)
+                writeStat(1,"AGI",user.rpg.agi)
+                writeStat(2,"VIT",user.rpg.vit)
+                writeStat(3,"INT",user.rpg.int)
+                writeStat(4,"DEX",user.rpg.dex)
+                writeStat(5,"LUK",user.rpg.luk)
+
+                ctx.font = '34px Mono'
+                ctx.fillStyle="black"
+                ctx.fillText("Actions".padEnd(10, " ")+" "+("Sent").toString().padEnd(6, " ")+("Got").toString().padEnd(6, " "), 280, 150);
+                async function writeAction(pos:number,action:Actions,text:string) {
+                    ctx.fillText(text.padEnd(10, " ")+" "+(await user.getSent(action)).toString().padEnd(6, " ")+(await user.getReceived(action)).toString().padEnd(6, " "), 280, 150+(pos+1)*36);
+                }
+
+                await writeAction(0,"hugs","Hugs")
+                await writeAction(1,"pats","Pats")
+                await writeAction(2,"cuddles","Cuddles")
+                await writeAction(3,"noms","Noms")
+                await writeAction(4,"goodbees","Goodbees")
+
+
+                ctx.resetTransform()
+
+                ctx.font = '30px Impact'
+                ctx.rotate(0.1)
+                ctx.fillStyle="yellow"
+                ctx.fillText('Awesome!', 50, 100)
+                ctx.fillStyle="black"
+                ctx.strokeText('Awesome!', 50, 100)
+
+                
+                msg.reply({files:[new Discord.MessageAttachment(canvas.createPNGStream(), 'temp.png')]})
             } catch (e) {
                 Logging.log("Could not create User Profile", LogLevel.Verbose);
+                console.log(e)
             }
         }
     },
