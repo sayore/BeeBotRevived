@@ -27,23 +27,33 @@ export let RPGCommands: ICommand[] = [
 
             var place = Places.find(p => p.mapPos.asString() == RPG.getPosition(user.rpg).asString());
             var found: ItemStack[] = []
+            var tempInv : ItemStack[] = [];
             place.foragable.forEach((fa) => {
                 //console.log(fa)
                 if (Math.random() <= fa.chance) {
                     //console.log(fa)
                     found.push(_.clone(fa.val))
+
                     var invFind = user.rpg.inventory.find(is=>is.Item.CanonicalId==fa.val.Item.CanonicalId);
                     if(!invFind){
                         user.rpg.inventory.push(fa.val);
                     } else
                     invFind.Amount+=fa.val.Amount;
+
+                    var tempInvFind = tempInv.find(is=>is.Item.CanonicalId==fa.val.Item.CanonicalId);
+                    if(!tempInvFind){
+                        tempInv.push(fa.val);
+                    } else
+                    tempInvFind.Amount+=fa.val.Amount;
                 }
             })
+
             msg.channel.send((found.length == 0 ? "Nothing found!" :
-                "Found:\n" + found.map((is) => is.Item.Name).join("\n"))
+                "Found:\n" + tempInv.map(v=>v.Amount+"x "+v.Item.Name).join('\n'))
             );
             if(user.extra == undefined) user.extra = {}
             //! NEEDS TO BE CHANGED BACK TO 5s FOR LIVE
+            if(msg.member.id!="562640877705756690") 
             user.extra['noForageUntil'] = Date.now() + 60 * 1000 * 5 - (user.rpg.agi / 1000 * 60 * 1000 * 5);
 
             user.rpg.money++;
