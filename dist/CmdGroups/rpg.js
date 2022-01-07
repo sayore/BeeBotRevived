@@ -71,7 +71,7 @@ exports.RPGCommands = [
     {
         triggerfunc: (msg) => lodash_1.default.toLower(msg.content) == "inv",
         cmd: (msg, user) => __awaiter(void 0, void 0, void 0, function* () {
-            msg.reply(user.rpg.inventory.map(v => v.Amount + " " + v.Item.Name).join('\n'));
+            msg.reply(user.rpg.inventory.map(v => v.Amount + "x " + v.Item.Name).join('\n'));
         })
     },
     {
