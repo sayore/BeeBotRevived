@@ -53,7 +53,7 @@ export let RPGCommands: ICommand[] = [
         }
     },
     {
-        triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "inv"),
+        triggerfunc: (msg) => _.toLower(msg.content) == "inv",
         cmd: async (msg, user) => {
             msg.reply(user.rpg.inventory.map(v=>v.Amount+" "+v.Item.Name).join('\n'))
         }
