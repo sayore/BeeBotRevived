@@ -34,7 +34,7 @@ export class ResultReport {
     }
     setNoConsoleLog() { this.noConsoleLog = true; return this; }
     setExecuted(arg0: boolean) { this.executed = arg0; return this; }
-    addScanned(arg0: number) { this.scanned = arg0; return this; }
+    addScanned(arg0: number) { this.scanned += arg0; return this; }
     addExecuted(isHalting: boolean = false) {
         this.executed = true;
         this.executedNum++;
@@ -47,7 +47,7 @@ export class ResultReport {
     }
 }
 
-export function SimplePerRules(cmds: ICommand[], msg: Discord.Message, user:Userdata, reports: ResultReport = new ResultReport(false, false, 0, 0, 0)): ResultReport {
+export async function SimplePerRules(cmds: ICommand[], msg: Discord.Message, user: Userdata, reports: ResultReport = new ResultReport(false, false, 0, 0, 0)): Promise<ResultReport> {
     //let report = { executed: (reports?reports.executedNum:0), errors: [], halting: (reports?reports.executed:false) }
 
     // This is Bee himself
@@ -61,48 +61,56 @@ export function SimplePerRules(cmds: ICommand[], msg: Discord.Message, user:User
 
 
     //Check that conditionals are met, then execute the cmd.
-    cmds.forEach((async v => {
+    for await (const v of cmds) {
         reports.matchedNum += 1;
-        if (v.userlimitedids != undefined)
-            if (v.userlimitedids.indexOf(msg.author.id) == -1) { return; } //This checks for privelege for the command on a per user basis
-        //Logging.log(v.userlimitedids)
+        if (!!v.userlimitedids) {
+            if (v.userlimitedids.indexOf(msg.author.id) == -1) { continue; }
+        } //This checks for privelege for the command on a per user basis
+        //Logging.log(JSON.stringify(v)) 
 
-        if (v.ownerlimited != undefined)
-            if (v.ownerlimited == true && msg.guild.ownerId != msg.author.id) { return reports; }
+        if (v.ownerlimited != undefined) {
+            if (v.ownerlimited == true && msg.guild.ownerId != msg.author.id) { continue; }
+        }
 
-        if (v.messagecontent != undefined)
+
+        if (v.triggerfunc != undefined) {
+            //console.log(v.userlimitedids)
+            if (v.triggerfunc(msg)) {
+                v.cmd(msg, (user));
+                reports.addExecuted(v.isHalting);
+
+                if (v.isHalting)
+                    return reports;
+                    
+            }
+        }
+
+        if (v.messagecontent != undefined) {
             if (msg.content.toLowerCase() == v.messagecontent.toLowerCase()) {
-                await v.cmd(msg, (user));
+                v.cmd(msg, (user));
                 reports.addExecuted(v.isHalting);
                 if (v.isHalting)
                     return reports
             }
+        }
 
         if (v.always == true) {
-            await v.cmd(msg, (user));
+            v.cmd(msg, (user));
             reports.addExecuted(v.isHalting);
             if (v.isHalting)
                 return reports;
         }
-
-        if (v.triggerwords != undefined && v.triggerwords.length >= 1)
+        
+        if (v.triggerwords != undefined && v.triggerwords.length >= 1) {
             if (CheckForManyWordsCI(msg.content, v.triggerwords)) {
-                await v.cmd(msg, (user));
+                v.cmd(msg, (user));
                 reports.addExecuted(v.isHalting);
                 if (v.isHalting)
                     return reports;
             }
+        }
+    }
 
-        if (v.triggerfunc != undefined)
-            if (v.triggerfunc(msg)) {
-                await v.cmd(msg, (user));
-                reports.addExecuted(v.isHalting);
-
-                if (v.isHalting)
-                    return reports;
-            }
-    }))
-    
     return reports;
 }
 
@@ -128,24 +136,24 @@ export function getRandom<T>(arr: T[]): T {
     return arr[Math.floor(Math.random() * arr.length)];
 }
 
-export function getMentions(msgstr:string):string[]{
-    let rets=[];
-    let safety=200;
-    var idscan="";
-    while(msgstr.includes("<@!")) {
+export function getMentions(msgstr: string): string[] {
+    let rets = [];
+    let safety = 200;
+    var idscan = "";
+    while (msgstr.includes("<@!")) {
         let pos = msgstr.indexOf("<@!");
-        idscan="";
+        idscan = "";
 
         do {
-            if("0123456789".includes(msgstr.charAt(pos))) idscan+=msgstr.charAt(pos)
+            if ("0123456789".includes(msgstr.charAt(pos))) idscan += msgstr.charAt(pos)
             /**console.log(msg.content.charAt(pos))*/
             safety--;
             pos++;
-            if(safety==0) {Logging.log("Needed to break"); break;}
-        } while (msgstr.charAt(pos)!=">");
+            if (safety == 0) { Logging.log("Needed to break"); break; }
+        } while (msgstr.charAt(pos) != ">");
 
         console.log(idscan);
-        msgstr = msgstr.replace("<@!"+idscan+">","");
+        msgstr = msgstr.replace("<@!" + idscan + ">", "");
         //msgstr.replace(idscan,"");
         rets.push(idscan);
     }

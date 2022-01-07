@@ -17,7 +17,7 @@ export declare class ResultReport {
     addExecuted(isHalting?: boolean): this;
     report(): void;
 }
-export declare function SimplePerRules(cmds: ICommand[], msg: Discord.Message, user: Userdata, reports?: ResultReport): ResultReport;
+export declare function SimplePerRules(cmds: ICommand[], msg: Discord.Message, user: Userdata, reports?: ResultReport): Promise<ResultReport>;
 export declare function CheckForManyWords(message: string, words: string[]): boolean;
 export declare function CheckForManyWordsCI(message: string, words: string[]): boolean;
 export declare function getRandom<T>(arr: T[]): T;

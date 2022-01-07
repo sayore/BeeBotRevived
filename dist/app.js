@@ -126,51 +126,19 @@ class BeeApplication {
             // Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
             var user = yield (0, user_1.getUser)(message.member.id, message);
             var resFullreport = new command_helper_1.ResultReport(false, false, 0, 0);
-            resFullreport = (0, command_helper_1.SimplePerRules)(everyone_1.EveryoneCommands, message, user, resFullreport);
+            //console.log(resFullreport)
+            resFullreport = yield (0, command_helper_1.SimplePerRules)(everyone_1.EveryoneCommands, message, user, resFullreport);
+            //console.log(resFullreport)
             //resFullreport.report()
-            resFullreport = (0, command_helper_1.SimplePerRules)(master_1.MasterCommands, message, user, resFullreport);
+            resFullreport = yield (0, command_helper_1.SimplePerRules)(master_1.MasterCommands, message, user, resFullreport);
+            //console.log(resFullreport)
             //resFullreport.report()
-            resFullreport = (0, command_helper_1.SimplePerRules)(trusted_1.TrustedCommands, message, user, resFullreport);
+            resFullreport = yield (0, command_helper_1.SimplePerRules)(trusted_1.TrustedCommands, message, user, resFullreport);
+            //console.log(resFullreport)
             //resFullreport.report()
-            resFullreport = (0, command_helper_1.SimplePerRules)(rpg_1.RPGCommands, message, user, resFullreport);
+            resFullreport = yield (0, command_helper_1.SimplePerRules)(rpg_1.RPGCommands, message, user, resFullreport);
             resFullreport.report();
-            (0, user_1.setUser)(message.member, user);
-            if (message.content.substr(0, 2) === 'b ' && message.member.roles.cache.some((a) => a.id == "854467063677976586")) {
-                if (message.content === 'b help') {
-                }
-                if (message.content === 'b ping') {
-                    // Send "pong" to the same channel
-                    const exampleEmbed = new Discord.MessageEmbed()
-                        //	.setColor('#0099ff')
-                        .setTitle('Pong!');
-                    //	.setURL('https://discord.js.org/')
-                    //	.setAuthor('Some name', 'https://i.imgur.com/wSTFkRM.png', 'https://discord.js.org')
-                    //	.setDescription('Some description here')
-                    //	.setThumbnail('https://i.imgur.com/wSTFkRM.png')
-                    //	.addFields(
-                    //		{ name: 'Regular field title', value: 'Some value here' },
-                    //		{ name: '\u200B', value: '\u200B' },
-                    //		{ name: 'Inline field title', value: 'Some value here', inline: true },
-                    //		{ name: 'Inline field title', value: 'Some value here', inline: true },
-                    //	)
-                    //	.addField('Inline field title', 'Some value here', true)
-                    //	.setImage('https://media1.tenor.com/images/a355767951753e940a3d814b297d3eb3/tenor.gif?itemid=17797226')
-                    //	.setTimestamp()
-                    //	.setFooter('Some footer text here', 'https://i.imgur.com/wSTFkRM.png');
-                    let m = yield message.channel.send({ embeds: [exampleEmbed] });
-                }
-                if (message.content.substr(0, 6) === 'b poll') {
-                    yield message.delete();
-                    let exampleEmbed = new Discord.MessageEmbed()
-                        .setTitle('Question!')
-                        .setAuthor(message.member.displayName)
-                        .setDescription(message.content.substr(7));
-                    let m = yield message.channel.send({ embeds: [exampleEmbed] });
-                    yield m.react('✅');
-                    yield m.react('🔘');
-                    m.react('❌');
-                }
-            }
+            yield (0, user_1.setUser)(message.member, user);
         }));
         exports.clientBee.on('interactionCreate', (interaction) => __awaiter(this, void 0, void 0, function* () {
             // 'accept-divorce'

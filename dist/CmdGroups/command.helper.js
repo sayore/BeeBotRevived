@@ -8,6 +8,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __asyncValues = (this && this.__asyncValues) || function (o) {
+    if (!Symbol.asyncIterator) throw new TypeError("Symbol.asyncIterator is not defined.");
+    var m = o[Symbol.asyncIterator], i;
+    return m ? m.call(o) : (o = typeof __values === "function" ? __values(o) : o[Symbol.iterator](), i = {}, verb("next"), verb("throw"), verb("return"), i[Symbol.asyncIterator] = function () { return this; }, i);
+    function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
+    function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.iterateSortedFilter = exports.getMentions = exports.getRandom = exports.CheckForManyWordsCI = exports.CheckForManyWords = exports.SimplePerRules = exports.ResultReport = void 0;
 const Logging_1 = require("supernode/Base/Logging");
@@ -34,7 +41,7 @@ class ResultReport {
     }
     setNoConsoleLog() { this.noConsoleLog = true; return this; }
     setExecuted(arg0) { this.executed = arg0; return this; }
-    addScanned(arg0) { this.scanned = arg0; return this; }
+    addScanned(arg0) { this.scanned += arg0; return this; }
     addExecuted(isHalting = false) {
         this.executed = true;
         this.executedNum++;
@@ -48,57 +55,77 @@ class ResultReport {
 }
 exports.ResultReport = ResultReport;
 function SimplePerRules(cmds, msg, user, reports = new ResultReport(false, false, 0, 0, 0)) {
-    //let report = { executed: (reports?reports.executedNum:0), errors: [], halting: (reports?reports.executed:false) }
-    // This is Bee himself
-    if (msg.author.id == app_2.clientBee.user.id || msg.author.id == app_2.clientBob.user.id) {
-        return reports.setNoConsoleLog();
-    }
-    // If any command wants to halt now, do it.
-    reports.addScanned(cmds.length);
-    if (reports)
-        if (reports.halting)
-            return reports;
-    //Check that conditionals are met, then execute the cmd.
-    cmds.forEach(((v) => __awaiter(this, void 0, void 0, function* () {
-        reports.matchedNum += 1;
-        if (v.userlimitedids != undefined)
-            if (v.userlimitedids.indexOf(msg.author.id) == -1) {
-                return;
-            } //This checks for privelege for the command on a per user basis
-        //Logging.log(v.userlimitedids)
-        if (v.ownerlimited != undefined)
-            if (v.ownerlimited == true && msg.guild.ownerId != msg.author.id) {
-                return reports;
-            }
-        if (v.messagecontent != undefined)
-            if (msg.content.toLowerCase() == v.messagecontent.toLowerCase()) {
-                yield v.cmd(msg, (user));
-                reports.addExecuted(v.isHalting);
-                if (v.isHalting)
-                    return reports;
-            }
-        if (v.always == true) {
-            yield v.cmd(msg, (user));
-            reports.addExecuted(v.isHalting);
-            if (v.isHalting)
-                return reports;
+    var cmds_1, cmds_1_1;
+    var e_1, _a;
+    return __awaiter(this, void 0, void 0, function* () {
+        //let report = { executed: (reports?reports.executedNum:0), errors: [], halting: (reports?reports.executed:false) }
+        // This is Bee himself
+        if (msg.author.id == app_2.clientBee.user.id || msg.author.id == app_2.clientBob.user.id) {
+            return reports.setNoConsoleLog();
         }
-        if (v.triggerwords != undefined && v.triggerwords.length >= 1)
-            if (CheckForManyWordsCI(msg.content, v.triggerwords)) {
-                yield v.cmd(msg, (user));
-                reports.addExecuted(v.isHalting);
-                if (v.isHalting)
-                    return reports;
+        // If any command wants to halt now, do it.
+        reports.addScanned(cmds.length);
+        if (reports)
+            if (reports.halting)
+                return reports;
+        try {
+            //Check that conditionals are met, then execute the cmd.
+            for (cmds_1 = __asyncValues(cmds); cmds_1_1 = yield cmds_1.next(), !cmds_1_1.done;) {
+                const v = cmds_1_1.value;
+                reports.matchedNum += 1;
+                if (!!v.userlimitedids) {
+                    if (v.userlimitedids.indexOf(msg.author.id) == -1) {
+                        continue;
+                    }
+                } //This checks for privelege for the command on a per user basis
+                //Logging.log(JSON.stringify(v)) 
+                if (v.ownerlimited != undefined) {
+                    if (v.ownerlimited == true && msg.guild.ownerId != msg.author.id) {
+                        continue;
+                    }
+                }
+                if (v.triggerfunc != undefined) {
+                    //console.log(v.userlimitedids)
+                    if (v.triggerfunc(msg)) {
+                        v.cmd(msg, (user));
+                        reports.addExecuted(v.isHalting);
+                        if (v.isHalting)
+                            return reports;
+                    }
+                }
+                if (v.messagecontent != undefined) {
+                    if (msg.content.toLowerCase() == v.messagecontent.toLowerCase()) {
+                        v.cmd(msg, (user));
+                        reports.addExecuted(v.isHalting);
+                        if (v.isHalting)
+                            return reports;
+                    }
+                }
+                if (v.always == true) {
+                    v.cmd(msg, (user));
+                    reports.addExecuted(v.isHalting);
+                    if (v.isHalting)
+                        return reports;
+                }
+                if (v.triggerwords != undefined && v.triggerwords.length >= 1) {
+                    if (CheckForManyWordsCI(msg.content, v.triggerwords)) {
+                        v.cmd(msg, (user));
+                        reports.addExecuted(v.isHalting);
+                        if (v.isHalting)
+                            return reports;
+                    }
+                }
             }
-        if (v.triggerfunc != undefined)
-            if (v.triggerfunc(msg)) {
-                yield v.cmd(msg, (user));
-                reports.addExecuted(v.isHalting);
-                if (v.isHalting)
-                    return reports;
+        }
+        catch (e_1_1) { e_1 = { error: e_1_1 }; }
+        finally {
+            try {
+                if (cmds_1_1 && !cmds_1_1.done && (_a = cmds_1.return)) yield _a.call(cmds_1);
             }
-    })));
-    return reports;
+            finally { if (e_1) throw e_1.error; }
+        }
+        return reports;
+    });
 }
 exports.SimplePerRules = SimplePerRules;
 function CheckForManyWords(message, words) {

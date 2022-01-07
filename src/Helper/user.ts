@@ -86,7 +86,7 @@ export async function setUser(user: Discord.GuildMember, userdata: Userdata) {
         return await db.del(userkey + user.id);
     }
 
-    //console.log(user);
+    console.log("Saved: "+ user.id);
     return await db.put(userkey + user.id, JSON.stringify(userdata));
 }
 

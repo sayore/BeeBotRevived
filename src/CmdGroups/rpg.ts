@@ -40,14 +40,22 @@ export let RPGCommands: ICommand[] = [
                 }
             })
             msg.channel.send((found.length == 0 ? "Nothing found!" :
-                "Found:\n" + found.map((is) => is.Item.Name + "\n").join())
+                "Found:\n" + found.map((is) => is.Item.Name).join("\n"))
             );
+            if(user.extra == undefined) user.extra = {}
+            //! NEEDS TO BE CHANGED BACK TO 5s FOR LIVE
             user.extra['noForageUntil'] = Date.now() + 60 * 1000 * 5 - (user.rpg.agi / 1000 * 60 * 1000 * 5);
 
             user.rpg.money++;
             //await setUser(msg.member,user); 
 
 
+        }
+    },
+    {
+        triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "inv"),
+        cmd: async (msg, user) => {
+            msg.reply(user.rpg.inventory.map(v=>v.Amount+" "+v.Item.Name).join('\n'))
         }
     },
     {

@@ -73,5 +73,6 @@ export class RPG {
          * Add the rest of the remaining EXP.
          */
         //rpg.currentexp += amount;
+        return rpg;
     }
 }

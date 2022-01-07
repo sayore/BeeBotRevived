@@ -98,7 +98,7 @@ function setUser(user, userdata) {
         if (!userdata.id) {
             return yield app_1.db.del(exports.userkey + user.id);
         }
-        //console.log(user);
+        console.log("Saved: " + user.id);
         return yield app_1.db.put(exports.userkey + user.id, JSON.stringify(userdata));
     });
 }

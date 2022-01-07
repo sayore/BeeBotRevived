@@ -55,11 +55,13 @@ exports.EveryoneCommands = [
                 var cachedUser = randomUserIdCache.find(e => e.id == userdata.id);
                 /** If the user isn't in the list, set a new timer, and also add EXP */
                 if (!cachedUser) {
-                    rpg_1.RPG.addExp(userdata.rpg, 7 * Math.random());
+                    userdata.rpg = rpg_1.RPG.addExp(userdata.rpg, 7 * Math.random());
                     randomUserIdCache.push({ id: userdata.id, time: Date.now() });
                 }
+                console.log(rpg_1.RPG.allExp(userdata.rpg));
                 //await setUser(msg.member,userdata);
                 //Logging.log(await db.get("user"+msg.member.id+".msgs"))
+                //return;
             });
         }
     }

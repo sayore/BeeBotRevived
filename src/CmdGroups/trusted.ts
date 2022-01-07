@@ -96,6 +96,9 @@ export let TrustedCommands: ICommand[] = [
                 var mentions = getMentions(msg.content);
                 if (mentions.length == 1) user = await getUser(mentions[0])
 
+                
+
+
                 // Luna ban
                 //if(user.id=="902232441748615201") return;
                 /**msg.reply("\`" + user.tag + " -> Lvl " + user.rpg.level + "(" + Math.floor(RPG.expToNextLevel(user.rpg)) + "/" + RPG.getExpNeeded(user.rpg) + " EXP)" + "\`\n" +
@@ -167,7 +170,6 @@ export let TrustedCommands: ICommand[] = [
                 ctx.fillText('Awesome!', 50, 100)
                 ctx.fillStyle="black"
                 ctx.strokeText('Awesome!', 50, 100)
-
                 
                 msg.reply({files:[new Discord.MessageAttachment(canvas.createPNGStream(), 'temp.png')]})
             } catch (e) {

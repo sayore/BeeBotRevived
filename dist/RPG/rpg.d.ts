@@ -43,5 +43,5 @@ export declare class RPG {
     static nextLevelExpRequired(rpg: RPGData): number;
     static _getExpNeeded(rpg: RPGData, level: number): number;
     static getExpNeeded(rpg: RPGData): number;
-    static addExp(rpg: RPGData, amount: number): void;
+    static addExp(rpg: RPGData, amount: number): RPGData;
 }
