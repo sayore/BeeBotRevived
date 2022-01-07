@@ -86,24 +86,24 @@ export let Monster = {
                 .setInt(9)
 }
 
-export let Places:IPlace[] = [
+export const Places:IPlace[] = [
     {
         shortname:"prontera",
         name:"Prontera",
         monster:[],
         foragable:[
-            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.8},
-            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.3},
-            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.2},
-            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.1},
-            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.1},
-            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.03},
-            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.03},
-            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.03},
-            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.03},
-            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.03},
-            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.03},
-            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.03},
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.8},   //1
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.3},   //2
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.1},   //3
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.08},   //4
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.05},   //5
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.06},   //6
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.05},   //7
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.04},   //8
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.02},   //9
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.02},   //10
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.01},   //11
+            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.003},   //12
             {val:BeeItemDB.createStackByCanonicalId("money1",1),chance:0.03},
         ],
         //npcs:[],

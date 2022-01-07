@@ -1,7 +1,7 @@
 import { Item } from 'supernode/Game/Item';
 import { ItemDB } from 'supernode/Game/ItemDB';
 
-let beedb = new ItemDB([
+const beedb = new ItemDB([
     new Item({ Id: -1, CanonicalId: "money1", Name: "1 $", Color: 'Yellow', Description: "Random money lying on the floor!", Extra: { money: 1 } }),
     new Item({ Id: 0, CanonicalId: "nothing", Name: "Nothing", Color: 'None', Description: "Literally nothing.", Extra: {}, Quality: 100 }),
     new Item({ Id: 1, CanonicalId: "honey", Name: "Honey", Color: 'Yellow', Description: "Sweet sugary Honey!", Extra: { heals: 10 } }),

@@ -63,7 +63,7 @@ export declare let Monster: {
     slime_base: BaseMonster;
     moth_base: BaseMonster;
 };
-export declare let Places: IPlace[];
+export declare const Places: IPlace[];
 export {};
 /**{
             name:"Slime",

@@ -25,29 +25,32 @@ export let RPGCommands: ICommand[] = [
                 return;
             }
 
-            var place = Places.find(p => p.mapPos.asString() == RPG.getPosition(user.rpg).asString());
+            var place = _.clone(Places.find(p => p.mapPos.asString() == RPG.getPosition(user.rpg).asString()));
             var found: ItemStack[] = []
             var tempInv : ItemStack[] = [];
+            //var execs = "";
             place.foragable.forEach((fa) => {
                 //console.log(fa)
                 if (Math.random() <= fa.chance) {
                     //console.log(fa)
-                    found.push(_.clone(fa.val))
+                    found.push(fa.val)
 
                     var invFind = user.rpg.inventory.find(is=>is.Item.CanonicalId==fa.val.Item.CanonicalId);
                     if(!invFind){
-                        user.rpg.inventory.push(fa.val);
+                        user.rpg.inventory.push(_.clone(fa.val));
                     } else
                     invFind.Amount+=fa.val.Amount;
 
                     var tempInvFind = tempInv.find(is=>is.Item.CanonicalId==fa.val.Item.CanonicalId);
                     if(!tempInvFind){
-                        tempInv.push(fa.val);
+                        tempInv.push(_.clone(fa.val));
                     } else
                     tempInvFind.Amount+=fa.val.Amount;
                 }
+                //execs+="chance:"+fa.chance+" ";
+                //execs+="amt"+fa.val.Amount+"\n";
             })
-
+            //console.log(execs)
             msg.channel.send((found.length == 0 ? "Nothing found!" :
                 "Found:\n" + tempInv.map(v=>v.Amount+"x "+v.Item.Name).join('\n'))
             );

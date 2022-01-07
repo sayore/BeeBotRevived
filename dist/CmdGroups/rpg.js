@@ -42,28 +42,32 @@ exports.RPGCommands = [
                         msg.channel.send("You already foraged! (You can forage in " + canForageAgain.getMinutes() + ":" + canForageAgain.getSeconds().toString().padEnd(2, "0") + " min again)");
                         return;
                     }
-                var place = monster_1.Places.find(p => p.mapPos.asString() == rpg_1.RPG.getPosition(user.rpg).asString());
+                var place = lodash_1.default.clone(monster_1.Places.find(p => p.mapPos.asString() == rpg_1.RPG.getPosition(user.rpg).asString()));
                 var found = [];
                 var tempInv = [];
+                //var execs = "";
                 place.foragable.forEach((fa) => {
                     //console.log(fa)
                     if (Math.random() <= fa.chance) {
                         //console.log(fa)
-                        found.push(lodash_1.default.clone(fa.val));
+                        found.push(fa.val);
                         var invFind = user.rpg.inventory.find(is => is.Item.CanonicalId == fa.val.Item.CanonicalId);
                         if (!invFind) {
-                            user.rpg.inventory.push(fa.val);
+                            user.rpg.inventory.push(lodash_1.default.clone(fa.val));
                         }
                         else
                             invFind.Amount += fa.val.Amount;
                         var tempInvFind = tempInv.find(is => is.Item.CanonicalId == fa.val.Item.CanonicalId);
                         if (!tempInvFind) {
-                            tempInv.push(fa.val);
+                            tempInv.push(lodash_1.default.clone(fa.val));
                         }
                         else
                             tempInvFind.Amount += fa.val.Amount;
                     }
+                    //execs+="chance:"+fa.chance+" ";
+                    //execs+="amt"+fa.val.Amount+"\n";
                 });
+                //console.log(execs)
                 msg.channel.send((found.length == 0 ? "Nothing found!" :
                     "Found:\n" + tempInv.map(v => v.Amount + "x " + v.Item.Name).join('\n')));
                 if (user.extra == undefined)

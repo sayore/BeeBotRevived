@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BeeItemDB = void 0;
 const Item_1 = require("supernode/Game/Item");
 const ItemDB_1 = require("supernode/Game/ItemDB");
-let beedb = new ItemDB_1.ItemDB([
+const beedb = new ItemDB_1.ItemDB([
     new Item_1.Item({ Id: -1, CanonicalId: "money1", Name: "1 $", Color: 'Yellow', Description: "Random money lying on the floor!", Extra: { money: 1 } }),
     new Item_1.Item({ Id: 0, CanonicalId: "nothing", Name: "Nothing", Color: 'None', Description: "Literally nothing.", Extra: {}, Quality: 100 }),
     new Item_1.Item({ Id: 1, CanonicalId: "honey", Name: "Honey", Color: 'Yellow', Description: "Sweet sugary Honey!", Extra: { heals: 10 } }),
