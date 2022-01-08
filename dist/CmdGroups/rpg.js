@@ -35,6 +35,7 @@ function arrive(channel, user) {
     user.rpg.position = user.extra.walkingTo;
     delete user.extra.walkingTo;
     delete user.extra.walkingUntil;
+    user.save();
     var chan = app_1.clientBee.channels.resolve(channel);
     if (!chan.isText())
         return;
