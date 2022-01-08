@@ -206,10 +206,10 @@ setTimeout(() => {
         let botApp = new BeeApplication(Env.beeToken, Env.bobToken);
         botApp.init();
         botApp.run({});
-        let beewebApp = new BeeWebserverApplication(80);
-        beewebApp.standalone = true;
-        beewebApp.init();
-        beewebApp.run();
+        //let beewebApp = new BeeWebserverApplication(80);
+        //beewebApp.standalone=true;
+        //beewebApp.init();
+        //beewebApp.run();
     }
 }, 1200);
 //# sourceMappingURL=app.js.map
