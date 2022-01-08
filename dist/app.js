@@ -194,7 +194,7 @@ class _BeeBotApps extends ApplicationCollection_1.ApplicationCollection {
     init() {
         this.applications = [
             new BeeApplication(Env.beeToken, Env.bobToken),
-            new BeeWebserverApplication(80)
+            //new BeeWebserverApplication(80)
         ];
     }
 }

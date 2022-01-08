@@ -196,7 +196,7 @@ export class _BeeBotApps extends ApplicationCollection {
 	init() {
 		this.applications = [
 			new BeeApplication(Env.beeToken, Env.bobToken),
-			new BeeWebserverApplication(80)
+			//new BeeWebserverApplication(80)
 		];
 	}
 	applications: Application[];
