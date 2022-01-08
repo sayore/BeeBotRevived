@@ -22,4 +22,4 @@ export declare function CheckForManyWords(message: string, words: string[]): boo
 export declare function CheckForManyWordsCI(message: string, words: string[]): boolean;
 export declare function getRandom<T>(arr: T[]): T;
 export declare function getMentions(msgstr: string): string[];
-export declare function iterateSortedFilter(enumeF: (v: Userdata, k: string) => boolean): Promise<void>;
+export declare function getAllUsers(): Promise<Userdata[]>;

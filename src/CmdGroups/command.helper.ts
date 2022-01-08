@@ -160,7 +160,6 @@ export function getMentions(msgstr: string): string[] {
     return rets;
 }
 
-
-export async function iterateSortedFilter(enumeF: (v: Userdata, k: string) => boolean) {
-    let listed = await (await db.iterateFilter((v) => { return (!!v.msgs); })).sort();
+export async function getAllUsers() : Promise<Userdata[]> {
+    return (await db.iterateFilter((v,k) => { return _.startsWith(k,"userj"); })).map(v=>JSON.parse(v)).sort();
 }

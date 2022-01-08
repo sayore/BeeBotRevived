@@ -91,7 +91,7 @@ exports.MasterCommands = [
             return __awaiter(this, void 0, void 0, function* () {
                 console.log(msg.content);
                 msg.delete();
-                let toplist = yield app_1.db.iterateFilter((v) => { var _a; return (!!((_a = v.rpg) === null || _a === void 0 ? void 0 : _a.money) && !!v.id); });
+                let toplist = (yield (0, command_helper_1.getAllUsers)());
                 toplist = yield toplist.sort((a, b) => {
                     if (a.rpg.money == b.rpg.money)
                         return 0;
@@ -123,7 +123,8 @@ exports.MasterCommands = [
             return __awaiter(this, void 0, void 0, function* () {
                 console.log(msg.content);
                 msg.delete();
-                let toplist = (yield app_1.db.iterateFilter((v) => { return (!!v.rpg && !!v.id); }));
+                let toplist = (yield (0, command_helper_1.getAllUsers)());
+                console.log(toplist.map(tl => tl.rpg.currentexp));
                 toplist = yield toplist.sort((a, b) => {
                     let axp = rpg_1.RPG.allExp(a.rpg);
                     let bxp = rpg_1.RPG.allExp(b.rpg);

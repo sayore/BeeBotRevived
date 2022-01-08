@@ -28,14 +28,14 @@ const rpg_1 = require("../RPG/rpg");
 const Vector2_1 = require("supernode/Math/Vector2");
 const command_helper_1 = require("./command.helper");
 function timeLeft(dtn) {
-    let dt = new Date(dtn);
+    var dt = new Date(dtn);
     return dt.getMinutes() + ":" + dt.getSeconds().toString().padEnd(2, "0");
 }
 function arrive(channel, user) {
     user.rpg.position = user.extra.walkingTo;
     delete user.extra.walkingTo;
     delete user.extra.walkingUntil;
-    let chan = app_1.clientBee.channels.resolve(channel);
+    var chan = app_1.clientBee.channels.resolve(channel);
     if (!chan.isText())
         return;
     chan.send("<@!" + user.id + "> arrived at " + rpg_1.RPG.getPositionPlace(new Vector2_1.Vector2(user.rpg.position.x, user.rpg.position.y)).name);
@@ -110,7 +110,7 @@ exports.RPGCommands = [
                     return;
                 }
             var words = lodash_1.default.words(msg.content.toLowerCase());
-            let movVec = new Vector2_1.Vector2(0, 0);
+            var movVec = new Vector2_1.Vector2(0, 0);
             if (words.length != 2)
                 return;
             switch (words[1]) {
@@ -134,10 +134,10 @@ exports.RPGCommands = [
             }
             if (!user.rpg.position)
                 user.rpg.position = new Vector2_1.Vector2(0, 0);
-            let targetPos = new Vector2_1.Vector2(0, 0).add(user.rpg.position).add(movVec);
-            let tPlace = rpg_1.RPG.getPositionPlace(targetPos);
+            var targetPos = new Vector2_1.Vector2(0, 0).add(user.rpg.position).add(movVec);
+            var tPlace = rpg_1.RPG.getPositionPlace(targetPos);
             if (tPlace) {
-                let walkTime = 40 * 1000 - (user.rpg.agi / 1000 * 40 * 1000);
+                var walkTime = 40 * 1000 - (user.rpg.agi / 1000 * 40 * 1000);
                 user.extra['walkingUntil'] = Date.now() + walkTime;
                 user.extra['walkingTo'] = targetPos;
                 msg.reply("You start walking towards " + tPlace.name + "(" + tPlace.shortname + ")! This will take you " + timeLeft(walkTime));
@@ -164,7 +164,7 @@ exports.RPGCommands = [
                     return;
                 }
             var words = lodash_1.default.words(msg.content.toLowerCase());
-            let movVec = new Vector2_1.Vector2(0, 0);
+            var movVec = new Vector2_1.Vector2(0, 0);
             if (words.length != 2)
                 return;
             switch (words[1]) {
@@ -192,8 +192,8 @@ exports.RPGCommands = [
             }
             if (!user.rpg.position)
                 user.rpg.position = new Vector2_1.Vector2(0, 0);
-            let targetPos = new Vector2_1.Vector2(0, 0).add(user.rpg.position).add(movVec);
-            let tPlace = monster_1.Places.find(p => {
+            var targetPos = new Vector2_1.Vector2(0, 0).add(user.rpg.position).add(movVec);
+            var tPlace = monster_1.Places.find(p => {
                 return p.mapPos.asString() == targetPos.asString();
             });
             if (tPlace)
@@ -214,7 +214,7 @@ exports.RPGCommands = [
         cmd: (msg, user) => __awaiter(void 0, void 0, void 0, function* () {
             var e_1, _a;
             Logging_1.Logging.setLogTarget(Logging_1.LogLevel.Testing, Logging_1.LogTarget.Textfile);
-            let iterator = app_1.db.iterate({ all: "user", keys: true });
+            var iterator = app_1.db.iterate({ all: "user", keys: true });
             try {
                 for (var iterator_1 = __asyncValues(iterator), iterator_1_1; iterator_1_1 = yield iterator_1.next(), !iterator_1_1.done;) {
                     const { key, value } = iterator_1_1.value;

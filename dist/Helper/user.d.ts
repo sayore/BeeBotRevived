@@ -22,4 +22,4 @@ export declare class Userdata {
 export declare function getUser(userid: string, msg?: Discord.Message): Promise<Userdata>;
 export declare function setUserByID(userid: string, userdata: Userdata): Promise<any>;
 export declare function setUser(user: Discord.GuildMember, userdata: Userdata): Promise<any>;
-export declare function iterateSortedFilter(enumeF: (v: Userdata, k: string) => boolean): Promise<void>;
+export declare function getAllUsers(): Promise<Userdata[]>;

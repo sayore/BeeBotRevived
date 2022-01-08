@@ -12,7 +12,7 @@ import * as Discord from 'discord.js';
 
 
 function timeLeft(dtn: number) {
-    let dt = new Date(dtn);
+    var dt = new Date(dtn);
     return dt.getMinutes() + ":" + dt.getSeconds().toString().padEnd(2, "0")
 }
 function arrive(channel: string, user: Userdata) {
@@ -20,13 +20,13 @@ function arrive(channel: string, user: Userdata) {
     delete user.extra.walkingTo;
     delete user.extra.walkingUntil;
 
-    let chan = clientBee.channels.resolve(channel);
+    var chan = clientBee.channels.resolve(channel);
     if (!chan.isText()) return;
 
     chan.send("<@!" + user.id + "> arrived at " + RPG.getPositionPlace(new Vector2(user.rpg.position.x,user.rpg.position.y)).name)
 }
 
-export let RPGCommands: ICommand[] = [
+export var RPGCommands: ICommand[] = [
     {
         messagecontent: "forage",
         async cmd(msg, user) {
@@ -99,7 +99,7 @@ export let RPGCommands: ICommand[] = [
                 }
 
             var words = _.words(msg.content.toLowerCase());
-            let movVec = new Vector2(0, 0);
+            var movVec = new Vector2(0, 0);
             if (words.length != 2) return;
             switch (words[1]) {
                 case "nord":
@@ -118,11 +118,11 @@ export let RPGCommands: ICommand[] = [
             }
 
             if (!user.rpg.position) user.rpg.position = new Vector2(0, 0);
-            let targetPos = new Vector2(0, 0).add(user.rpg.position as Vector2).add(movVec);
-            let tPlace = RPG.getPositionPlace(targetPos)
+            var targetPos = new Vector2(0, 0).add(user.rpg.position as Vector2).add(movVec);
+            var tPlace = RPG.getPositionPlace(targetPos)
 
             if (tPlace) {
-                let walkTime = 40 * 1000 - (user.rpg.agi / 1000 * 40 * 1000);
+                var walkTime = 40 * 1000 - (user.rpg.agi / 1000 * 40 * 1000);
                 user.extra['walkingUntil'] = Date.now() + walkTime; 
                 user.extra['walkingTo'] = targetPos;
                 msg.reply("You start walking towards " + tPlace.name + "(" + tPlace.shortname + ")! This will take you " + timeLeft(walkTime));
@@ -150,7 +150,7 @@ export let RPGCommands: ICommand[] = [
                 }
 
             var words = _.words(msg.content.toLowerCase());
-            let movVec = new Vector2(0, 0);
+            var movVec = new Vector2(0, 0);
             if (words.length != 2) return;
             switch (words[1]) {
                 case "nord":
@@ -172,9 +172,9 @@ export let RPGCommands: ICommand[] = [
             }
 
             if (!user.rpg.position) user.rpg.position = new Vector2(0, 0);
-            let targetPos = new Vector2(0, 0).add(user.rpg.position as Vector2).add(movVec);
+            var targetPos = new Vector2(0, 0).add(user.rpg.position as Vector2).add(movVec);
 
-            let tPlace = Places.find(p => {
+            var tPlace = Places.find(p => {
                 return p.mapPos.asString() == targetPos.asString()
             });
             if (tPlace)
@@ -194,7 +194,7 @@ export let RPGCommands: ICommand[] = [
         triggerfunc: (msg) => _.startsWith(msg.content, "debug"),
         cmd: async (msg, user) => {
             Logging.setLogTarget(LogLevel.Testing, LogTarget.Textfile)
-            let iterator = db.iterate({ all: "user", keys: true });
+            var iterator = db.iterate({ all: "user", keys: true });
 
             for await (const { key, value } of iterator) {
                 Logging.log(key + ": " + JSON.stringify(value), LogLevel.Testing)

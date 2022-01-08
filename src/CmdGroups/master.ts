@@ -1,6 +1,6 @@
 import { ICommand } from "./icommands";
 import * as Discord from 'discord.js';
-import { CheckForManyWords, getMentions, iterateSortedFilter } from "./command.helper";
+import { CheckForManyWords, getMentions, getAllUsers } from "./command.helper";
 import { clientBee, db, EnvFile, randomEvents } from "../app";
 import { MessageHelper } from "supernode/Discord/MessageHelper";
 import { Environment } from "supernode/Base/Environment";
@@ -67,7 +67,7 @@ export let MasterCommands : ICommand[] = [
         async cmd(msg:Discord.Message){
             console.log(msg.content)
             msg.delete();
-            let toplist= await db.iterateFilter((v) => { return (!!v.rpg?.money && !!v.id); });
+            let toplist= <Userdata[]>(await getAllUsers());
             
             toplist = await toplist.sort((a, b) => {
                 if(a.rpg.money == b.rpg.money) return 0;
@@ -101,8 +101,9 @@ export let MasterCommands : ICommand[] = [
         async cmd(msg:Discord.Message){
             console.log(msg.content)
             msg.delete();
-            let toplist= <Userdata[]>(await db.iterateFilter((v) => { return (!!v.rpg && !!v.id); }));
+            let toplist= <Userdata[]>(await getAllUsers());
             
+            console.log(toplist.map(tl=>tl.rpg.currentexp))
 
             toplist = await toplist.sort((a, b) => {
                 let axp = RPG.allExp(a.rpg);

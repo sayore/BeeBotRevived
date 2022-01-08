@@ -15,11 +15,15 @@ var __asyncValues = (this && this.__asyncValues) || function (o) {
     function verb(n) { i[n] = o[n] && function (v) { return new Promise(function (resolve, reject) { v = o[n](v), settle(resolve, reject, v.done, v.value); }); }; }
     function settle(resolve, reject, d, v) { Promise.resolve(v).then(function(v) { resolve({ value: v, done: d }); }, reject); }
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.iterateSortedFilter = exports.getMentions = exports.getRandom = exports.CheckForManyWordsCI = exports.CheckForManyWords = exports.SimplePerRules = exports.ResultReport = void 0;
+exports.getAllUsers = exports.getMentions = exports.getRandom = exports.CheckForManyWordsCI = exports.CheckForManyWords = exports.SimplePerRules = exports.ResultReport = void 0;
 const Logging_1 = require("supernode/Base/Logging");
 const app_1 = require("../app");
 const app_2 = require("../app");
+const lodash_1 = __importDefault(require("lodash"));
 class ResultReport {
     constructor(executed, halting = false, scanned = 0, executedNum = 0, matchedNum = 0) {
         this.executed = executed;
@@ -178,10 +182,10 @@ function getMentions(msgstr) {
     return rets;
 }
 exports.getMentions = getMentions;
-function iterateSortedFilter(enumeF) {
+function getAllUsers() {
     return __awaiter(this, void 0, void 0, function* () {
-        let listed = yield (yield app_1.db.iterateFilter((v) => { return (!!v.msgs); })).sort();
+        return (yield app_1.db.iterateFilter((v, k) => { return lodash_1.default.startsWith(k, "userj"); })).map(v => JSON.parse(v)).sort();
     });
 }
-exports.iterateSortedFilter = iterateSortedFilter;
+exports.getAllUsers = getAllUsers;
 //# sourceMappingURL=command.helper.js.map

@@ -90,6 +90,6 @@ export async function setUser(user: Discord.GuildMember, userdata: Userdata) {
     return await db.put(userkey + user.id, JSON.stringify(userdata));
 }
 
-export async function iterateSortedFilter(enumeF: (v: Userdata, k: string) => boolean) {
-    let listed = await (await db.iterateFilter((v) => { return (!!v.msgs); })).sort();
+export async function getAllUsers() : Promise<Userdata[]> {
+    return (await db.iterateFilter((v,k) => { return _.startsWith(k,"userj"); })).map(v=>JSON.parse(v)).sort();
 }

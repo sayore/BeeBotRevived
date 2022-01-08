@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.iterateSortedFilter = exports.setUser = exports.setUserByID = exports.getUser = exports.Userdata = exports.userkey = void 0;
+exports.getAllUsers = exports.setUser = exports.setUserByID = exports.getUser = exports.Userdata = exports.userkey = void 0;
 const rpg_1 = require("../RPG/rpg");
 const app_1 = require("../app");
 const lodash_1 = __importDefault(require("lodash"));
@@ -103,10 +103,10 @@ function setUser(user, userdata) {
     });
 }
 exports.setUser = setUser;
-function iterateSortedFilter(enumeF) {
+function getAllUsers() {
     return __awaiter(this, void 0, void 0, function* () {
-        let listed = yield (yield app_1.db.iterateFilter((v) => { return (!!v.msgs); })).sort();
+        return (yield app_1.db.iterateFilter((v, k) => { return lodash_1.default.startsWith(k, "userj"); })).map(v => JSON.parse(v)).sort();
     });
 }
-exports.iterateSortedFilter = iterateSortedFilter;
+exports.getAllUsers = getAllUsers;
 //# sourceMappingURL=user.js.map
