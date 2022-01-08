@@ -50,7 +50,7 @@ declare class BaseMonster {
     onEncounter?(): any;
     onDefeat?(): any;
 }
-interface IPlace {
+export interface IPlace {
     shortname: string;
     name: string;
     monster: Chanceable<BaseMonster>[];

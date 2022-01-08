@@ -1,5 +1,6 @@
 import { ItemStack } from 'supernode/Game/ItemStack';
 import { Vector2 } from 'supernode/Math/Vector2';
+import { IPlace } from './monster';
 export declare class RPGData {
     money: number;
     position: {
@@ -44,4 +45,5 @@ export declare class RPG {
     static _getExpNeeded(rpg: RPGData, level: number): number;
     static getExpNeeded(rpg: RPGData): number;
     static addExp(rpg: RPGData, amount: number): RPGData;
+    static getPositionPlace(vec: Vector2): IPlace;
 }

@@ -25,6 +25,21 @@ const lodash_1 = __importDefault(require("lodash"));
 const Logging_1 = require("supernode/Base/Logging");
 const app_1 = require("../app");
 const rpg_1 = require("../RPG/rpg");
+const Vector2_1 = require("supernode/Math/Vector2");
+const command_helper_1 = require("./command.helper");
+function timeLeft(dtn) {
+    let dt = new Date(dtn);
+    return dt.getMinutes() + ":" + dt.getSeconds().toString().padEnd(2, "0");
+}
+function arrive(channel, user) {
+    user.rpg.position = user.extra.walkingTo;
+    delete user.extra.walkingTo;
+    delete user.extra.walkingUntil;
+    let chan = app_1.clientBee.channels.resolve(channel);
+    if (!chan.isText())
+        return;
+    chan.send("<@!" + user.id + "> arrived at " + rpg_1.RPG.getPositionPlace(new Vector2_1.Vector2(user.rpg.position.x, user.rpg.position.y)).name);
+}
 exports.RPGCommands = [
     {
         messagecontent: "forage",
@@ -39,7 +54,7 @@ exports.RPGCommands = [
                 if (!!user.extra && !!user.extra.noForageUntil)
                     if (Date.now() < user.extra.noForageUntil) {
                         var canForageAgain = new Date(user.extra.noForageUntil - Date.now());
-                        msg.channel.send("You already foraged! (You can forage in " + canForageAgain.getMinutes() + ":" + canForageAgain.getSeconds().toString().padEnd(2, "0") + " min again)");
+                        msg.channel.send("You already foraged! (You can forage in " + timeLeft(canForageAgain.getTime()) + " min again)");
                         return;
                     }
                 var place = lodash_1.default.clone(monster_1.Places.find(p => p.mapPos.asString() == rpg_1.RPG.getPosition(user.rpg).asString()));
@@ -95,9 +110,103 @@ exports.RPGCommands = [
                     return;
                 }
             var words = lodash_1.default.words(msg.content.toLowerCase());
-            if (words.some(w => "north")) { }
-            user.extra['walkingUntil'] = Date.now() + 20 * 1000 - (user.rpg.agi / 1000 * 20 * 1000);
+            let movVec = new Vector2_1.Vector2(0, 0);
+            if (words.length != 2)
+                return;
+            switch (words[1]) {
+                case "nord":
+                case "up":
+                case "north":
+                    movVec = new Vector2_1.Vector2(0, -1);
+                    break;
+                case "south":
+                case "down":
+                    movVec = new Vector2_1.Vector2(0, 1);
+                    break;
+                case "right":
+                case "east":
+                    movVec = new Vector2_1.Vector2(1, 0);
+                    break;
+                case "left":
+                case "west":
+                    movVec = new Vector2_1.Vector2(-1, 0);
+                    break;
+            }
+            if (!user.rpg.position)
+                user.rpg.position = new Vector2_1.Vector2(0, 0);
+            let targetPos = new Vector2_1.Vector2(0, 0).add(user.rpg.position).add(movVec);
+            let tPlace = rpg_1.RPG.getPositionPlace(targetPos);
+            if (tPlace) {
+                let walkTime = 40 * 1000 - (user.rpg.agi / 1000 * 40 * 1000);
+                user.extra['walkingUntil'] = Date.now() + walkTime;
+                user.extra['walkingTo'] = targetPos;
+                msg.reply("You start walking towards " + tPlace.name + "(" + tPlace.shortname + ")! This will take you " + timeLeft(walkTime));
+                setTimeout(() => arrive(msg.channel.id, user), walkTime);
+            }
+            else
+                msg.reply((0, command_helper_1.getRandom)([
+                    "You only see darkness.",
+                    "A void is starring back at you.",
+                    "A dark wall is blocking your path.",
+                    "You could die walking into this darkness.",
+                    "You can see a light in the far out. But the darkness is still closer.",
+                    "This darkness lingers and will eat you if you go here. Dont."
+                ]));
             //await user.save();
+        })
+    },
+    {
+        triggerfunc: (msg) => lodash_1.default.startsWith(msg.content, "look"),
+        cmd: (msg, user) => __awaiter(void 0, void 0, void 0, function* () {
+            if (!!user.extra && user.extra.walkingUntil)
+                if (Date.now() < user.extra.walkingUntil) {
+                    msg.channel.send("You are currently walking!");
+                    return;
+                }
+            var words = lodash_1.default.words(msg.content.toLowerCase());
+            let movVec = new Vector2_1.Vector2(0, 0);
+            if (words.length != 2)
+                return;
+            switch (words[1]) {
+                case "nord":
+                case "up":
+                case "north":
+                    movVec = new Vector2_1.Vector2(0, -1);
+                    break;
+                case "south":
+                case "down":
+                    movVec = new Vector2_1.Vector2(0, 1);
+                    break;
+                case "right":
+                case "east":
+                    movVec = new Vector2_1.Vector2(1, 0);
+                    break;
+                case "left":
+                case "west":
+                    movVec = new Vector2_1.Vector2(-1, 0);
+                    break;
+                case "here":
+                default:
+                    movVec = new Vector2_1.Vector2(0, 0);
+                    break;
+            }
+            if (!user.rpg.position)
+                user.rpg.position = new Vector2_1.Vector2(0, 0);
+            let targetPos = new Vector2_1.Vector2(0, 0).add(user.rpg.position).add(movVec);
+            let tPlace = monster_1.Places.find(p => {
+                return p.mapPos.asString() == targetPos.asString();
+            });
+            if (tPlace)
+                msg.reply("You see " + tPlace.name + " ||`" + tPlace.shortname + "`||\n" + "There are " + (!!tPlace.monster ? (tPlace.monster.length >= 1 ? "mobs" : "no mobs") : "no mobs") + " and there are " + (!!tPlace.foragable ? (tPlace.foragable.length >= 1 ? "forageables(" + tPlace.foragable.length + ")" : "no forageables") : "no mobs") + " goods!");
+            else
+                msg.reply((0, command_helper_1.getRandom)([
+                    "You only see darkness.",
+                    "A void is starring back at you.",
+                    "A dark wall is blocking your path.",
+                    "You could die walking into this darkness.",
+                    "You can see a light in the far out. But the darkness is still closer.",
+                    "This darkness lingers and will eat you if you go here. Dont."
+                ]));
         })
     },
     {

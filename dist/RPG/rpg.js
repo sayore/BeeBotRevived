@@ -1,7 +1,12 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.RPG = exports.RPGData = void 0;
+const lodash_1 = __importDefault(require("lodash"));
 const Vector2_1 = require("supernode/Math/Vector2");
+const monster_1 = require("./monster");
 class RPGData {
     constructor() {
         this.money = 50;
@@ -75,6 +80,12 @@ class RPG {
          */
         //rpg.currentexp += amount;
         return rpg;
+    }
+    static getPositionPlace(vec) {
+        let tarLoc = lodash_1.default.clone(monster_1.Places.find(p => {
+            return p.mapPos.asString() == vec.asString();
+        }));
+        return tarLoc;
     }
 }
 exports.RPG = RPG;

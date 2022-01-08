@@ -61,7 +61,7 @@ class BaseMonster {
     onDefeat?()
 }
 
-interface IPlace {
+export interface IPlace {
     shortname:string;
     name:string;
     monster:Chanceable<BaseMonster>[];
@@ -93,18 +93,19 @@ export const Places:IPlace[] = [
         monster:[],
         foragable:[
             {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.8},   //1
-            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.3},   //2
+            {val:BeeItemDB.createStackByCanonicalId("trash",1),chance:0.3},   //2
             {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.1},   //3
-            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.08},   //4
+            {val:BeeItemDB.createStackByCanonicalId("trash",1),chance:0.08},   //4
             {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.05},   //5
-            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.06},   //6
+            {val:BeeItemDB.createStackByCanonicalId("trash",1),chance:0.06},   //6
             {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.05},   //7
-            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.04},   //8
+            {val:BeeItemDB.createStackByCanonicalId("trash",1),chance:0.04},   //8
             {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.02},   //9
-            {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.02},   //10
+            {val:BeeItemDB.createStackByCanonicalId("trash",1),chance:0.02},   //10
             {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.01},   //11
             {val:BeeItemDB.createStackByCanonicalId("stone",1),chance:0.003},   //12
-            {val:BeeItemDB.createStackByCanonicalId("money1",1),chance:0.03},
+            {val:BeeItemDB.createStackByCanonicalId("money1",1),chance:0.02},
+            {val:BeeItemDB.createStackByCanonicalId("money1",3),chance:0.01},
         ],
         //npcs:[],
         mapPos:new Vector2(0,0)
@@ -115,6 +116,24 @@ export const Places:IPlace[] = [
             {val:Monster.raco_base,chance:3},
             {val:Monster.slime_base,chance:7},
             {val:Monster.moth_base,chance:1}
+        ],
+        foragable:[
+            {val:BeeItemDB.createStackByCanonicalId("wheat",5),chance:0.03},   //1
+            {val:BeeItemDB.createStackByCanonicalId("wheat",2),chance:0.02},   //1
+            {val:BeeItemDB.createStackByCanonicalId("wheat",1),chance:0.09},   //1
+            {val:BeeItemDB.createStackByCanonicalId("wheat",1),chance:0.20},   //1
+            {val:BeeItemDB.createStackByCanonicalId("wheat",1),chance:0.08},   //1
+            {val:BeeItemDB.createStackByCanonicalId("wheat",1),chance:0.06},   //1
+            {val:BeeItemDB.createStackByCanonicalId("tomato",3),chance:0.03},   //2
+            {val:BeeItemDB.createStackByCanonicalId("tomato",1),chance:0.09},   //2
+            {val:BeeItemDB.createStackByCanonicalId("tomato",1),chance:0.03},   //2
+            {val:BeeItemDB.createStackByCanonicalId("tomato",1),chance:0.03},   //2
+            {val:BeeItemDB.createStackByCanonicalId("cucumber",3),chance:0.03},   //3
+            {val:BeeItemDB.createStackByCanonicalId("cucumber",1),chance:0.03},   //3
+            {val:BeeItemDB.createStackByCanonicalId("cucumber",1),chance:0.09},   //3
+            {val:BeeItemDB.createStackByCanonicalId("cucumber",1),chance:0.09},   //3 
+            {val:BeeItemDB.createStackByCanonicalId("cucumber",1),chance:0.03},   //3
+            {val:BeeItemDB.createStackByCanonicalId("cabage",3),chance:0.002},   //4
         ],
         mapPos:new Vector2(0,1)
     }

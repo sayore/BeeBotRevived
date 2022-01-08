@@ -1,5 +1,7 @@
+import _ from 'lodash';
 import { ItemStack } from 'supernode/Game/ItemStack';
 import { Vector2 } from 'supernode/Math/Vector2';
+import { IPlace, Places } from './monster';
 
 export class RPGData {
     money: number = 50;
@@ -74,5 +76,11 @@ export class RPG {
          */
         //rpg.currentexp += amount;
         return rpg;
+    }
+    static getPositionPlace(vec:Vector2) : IPlace {
+        let tarLoc = _.clone(Places.find(p => {
+            return p.mapPos.asString() == vec.asString()
+        }));
+        return tarLoc;
     }
 }
