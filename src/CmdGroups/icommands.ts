@@ -17,7 +17,11 @@ export interface ICommand {
     triggerfunc?:(msg:Discord.Message) => boolean;
     typeofcmd?:TypeOfCmd
     cmd:(msg: Discord.Message, user?:Userdata) => Promise<void>;
-    isHalting?:boolean
+    isHalting?:boolean,
+
+    visibleInHelp?:boolean,
+    simpleHelpName?:string,
+    helpDescription?:string
 }
 
 export enum TypeOfCmd {

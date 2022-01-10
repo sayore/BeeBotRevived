@@ -44,7 +44,7 @@ export var RPGCommands: ICommand[] = [
                     return;
                 }
 
-            var place = _.clone(Places.find(p => p.mapPos.asString() == RPG.getPosition(user.rpg).asString()));
+            var place = _.clone(Places.find(p => p.mapPos.equals(RPG.getPosition(user.rpg))));
             var found: ItemStack[] = []
             var tempInv: ItemStack[] = [];
             //var execs = "";
@@ -118,7 +118,7 @@ export var RPGCommands: ICommand[] = [
                     movVec = new Vector2(-1, 0); break;
             }
 
-            if (!user.rpg.position) user.rpg.position = new Vector2(0, 0);
+            if (!user.rpg.position) user.rpg.position = Vector2.Zero;
             var targetPos = new Vector2(0, 0).add(user.rpg.position as Vector2).add(movVec);
             var tPlace = RPG.getPositionPlace(targetPos)
 
@@ -173,7 +173,7 @@ export var RPGCommands: ICommand[] = [
             }
 
             if (!user.rpg.position) user.rpg.position = new Vector2(0, 0);
-            var targetPos = new Vector2(0, 0).add(user.rpg.position as Vector2).add(movVec);
+            var targetPos = Vector2.from(user.rpg.position).add(movVec);
 
             var tPlace = Places.find(p => {
                 return p.mapPos.asString() == targetPos.asString()

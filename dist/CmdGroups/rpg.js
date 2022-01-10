@@ -58,7 +58,7 @@ exports.RPGCommands = [
                         msg.channel.send("You already foraged! (You can forage in " + timeLeft(canForageAgain.getTime()) + " min again)");
                         return;
                     }
-                var place = lodash_1.default.clone(monster_1.Places.find(p => p.mapPos.asString() == rpg_1.RPG.getPosition(user.rpg).asString()));
+                var place = lodash_1.default.clone(monster_1.Places.find(p => p.mapPos.equals(rpg_1.RPG.getPosition(user.rpg))));
                 var found = [];
                 var tempInv = [];
                 //var execs = "";
@@ -134,7 +134,7 @@ exports.RPGCommands = [
                     break;
             }
             if (!user.rpg.position)
-                user.rpg.position = new Vector2_1.Vector2(0, 0);
+                user.rpg.position = Vector2_1.Vector2.Zero;
             var targetPos = new Vector2_1.Vector2(0, 0).add(user.rpg.position).add(movVec);
             var tPlace = rpg_1.RPG.getPositionPlace(targetPos);
             if (tPlace) {
@@ -193,7 +193,7 @@ exports.RPGCommands = [
             }
             if (!user.rpg.position)
                 user.rpg.position = new Vector2_1.Vector2(0, 0);
-            var targetPos = new Vector2_1.Vector2(0, 0).add(user.rpg.position).add(movVec);
+            var targetPos = Vector2_1.Vector2.from(user.rpg.position).add(movVec);
             var tPlace = monster_1.Places.find(p => {
                 return p.mapPos.asString() == targetPos.asString();
             });

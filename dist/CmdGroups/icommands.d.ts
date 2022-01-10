@@ -14,6 +14,9 @@ export interface ICommand {
     typeofcmd?: TypeOfCmd;
     cmd: (msg: Discord.Message, user?: Userdata) => Promise<void>;
     isHalting?: boolean;
+    visibleInHelp?: boolean;
+    simpleHelpName?: string;
+    helpDescription?: string;
 }
 export declare enum TypeOfCmd {
     Action = 0,
