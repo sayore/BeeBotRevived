@@ -106,7 +106,7 @@ export class RandomEvents {
         getRandom(RandomEvents.actions)();
 
         // calculate the next event's moment
-        let nextAction = 25 * 60 * 1000 + Math.random() * 200 * 60 * 1000;
+        let nextAction = 25 * 60 * 1000 + Math.random() * 900 * 60 * 1000;
         //let nextAction = 0.5 * 60 * 1000 //+ Math.random() * 30 * 60 * 1000;
         // create the timestamp for the next event to save
         let timestampNextAction = new Date().getTime() + nextAction;
