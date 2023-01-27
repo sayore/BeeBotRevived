@@ -58,7 +58,6 @@ async function GenerealReadyAsync(e: Discord.Client) {
 
 
 class MarrigeHelper{
-
 	jsonObj: any;
 	constructor(json:any) {
 		this.jsonObj = json;
@@ -83,10 +82,7 @@ class MarrigeHelper{
 		}else{
 			return false;
 		}
-
-
 	}
-
 }
 
 export class BeeApplication implements Application {
@@ -139,17 +135,13 @@ export class BeeApplication implements Application {
 		});
 
 		clientBee.on('interactionCreate', async interaction => {
-
+			// Expected:
 			// 'accept-divorce'
 			// 'reject-divorce'
-			
 			let simpreacts = SimpleReactionsPerRules(TestReactions,interaction,new ResultReport(false,false,0,0));
 			if(simpreacts.executed) return;
 			simpreacts.add(SimpleReactionsPerRules(MarriageReactions,interaction,new ResultReport(false,false,0,0)))
 			simpreacts.report();
-
-
-
 		});
 
 		clientBob.on('messageCreate', async message => {
