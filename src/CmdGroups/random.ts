@@ -33,8 +33,6 @@ export class RandomEvents {
             { val: "ask 'bee what actions are there' to get a list of actions i got in store!", chance: 3 },
             { val: "i hope im doing a good job o7", chance: 5 },
             { val: "i love eating salted popcorn", chance: 3 },
-            { val: "*hugs <@465583365781717003>", chance: 1 },
-            { val: "*hugs <@902232441748615201>", chance: 1 },
             { val: "*dances happily* :3", chance: 5 },
             { val: "suckin' at something is the first step towards being sorta good at something.", chance: 6 },
             { val: "bee confident in yourself!", chance: 5 },
