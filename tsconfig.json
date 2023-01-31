@@ -9,6 +9,7 @@
       ],
       "sourceMap": true,
       "declaration": true,
+      "strictNullChecks": true,
       "noEmit": false,
       "checkJs": false,
       "outDir": "./dist",
