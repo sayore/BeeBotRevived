@@ -1,90 +1,41 @@
 ﻿export let EnvFile = "BeeToken.json";
 import { Logging, LogLevel, LogTarget } from 'supernode/Base/Logging';
-import { Environment } from 'supernode/Base/Environment';
-import process from 'process';
-var defaultEnv = { envV: 0, beeToken: "NoTokenYet", bobToken: "NoTokenYet", domain:"sayore.de", subdomain:"bee" }
-if (!Environment.checkExists(EnvFile)) {
-	Environment.save(EnvFile, defaultEnv)
-	Logging.log("There was no config File yet, it has been written to: " + Environment.getEnvFilePath(EnvFile + "\nBe sure to add the Tokens there."));
-	process.exit(-1);
-}
-let Env = <{ envV: number, beeToken: string, bobToken: string,domain?:string,subdomain?:string }>Environment.load("BeeToken.json");
-if (Env.beeToken == "NoTokenYet") {
-	Logging.log("There was a config File yet, but it's missing the Tokens, find it here: " + Environment.getEnvFilePath(EnvFile + "\nBe sure to add the Tokens there."));
-	process.exit(-1);
-}
-Env = Object.assign(defaultEnv, Env);
+import envLoader from "./Helper/config"
+var Env = envLoader(EnvFile);
+
 import * as Discord from 'discord.js';
 import level from 'level-ts';
 import { MasterCommands } from './CmdGroups/master';
 import { ResultReport, SimplePerRules } from './CmdGroups/command.helper';
-import { SimpleReactionsPerRules } from './InteractionReactions/interaction.helper';
-import { TestReactions } from './InteractionReactions/testreactions';
-import { MarriageReactions } from './InteractionReactions/marriage';
-import Level from 'level-ts';
+import { SimpleReactionsPerRules, TestReactions, MarriageReactions } from './InteractionReactions/mod';
 import { DBHelper } from './db.helper';
 
-import { EveryoneCommands } from './CmdGroups/everyone';
-import { TrustedCommands } from './CmdGroups/trusted';
-import { RandomEvents } from './CmdGroups/random';
-import { RPGCommands } from './CmdGroups/rpg';
-import { BobCommands } from './CmdGroups/bobjokes';
-
+import { EveryoneCommands, TrustedCommands, RandomEvents, RPGCommands,  BobCommands } from './CmdGroups/mod';
 import { TypeOfApplication, SafetyMode, Application } from 'supernode/Base/Application';
-import { ApplicationCollection } from 'supernode/Base/ApplicationCollection';
-import { ExpressApplication } from 'supernode/Base/ExpressApplication';
+import { ApplicationCollection, ExpressApplication } from 'supernode/Base/mod';
 
-import { MessageHelper } from 'supernode/Discord/mod';
 import { getUser, setUser } from './Helper/user';
-
 
 export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 export let db = new level('./database');
 import "./DBUpdates/user-to-jsonuser";
+
 export let randomEvents = new RandomEvents();
 Logging.setLogTarget(LogLevel.Unknown , LogTarget.All);
 Logging.setLogTarget(LogLevel.Testing , LogTarget.Textfile);
 
-
-
+//Gets run by bots per default
 async function GenerealReadyAsync(e: Discord.Client) {
 	Logging.log(`Logged in as ${e.user.tag}!`);
 
 	let logins = await DBHelper.getCheckd(db, "logins", 1);
 	await db.put('logins', ++logins);
 	randomEvents.start();
+
 }
 
-
-class MarrigeHelper{
-	jsonObj: any;
-	constructor(json:any) {
-		this.jsonObj = json;
-	}
-
-	addData(uuid:string){
-
-		if(!!this.jsonObj["MarrigeID"]){
-			return false;
-		}else{
-			this.jsonObj.MarrigeID = uuid;
-			return this.jsonObj;
-		}
-
-	}
-
-	removeData(){  
-
-		if(!!this.jsonObj["MarrigeID"]){
-			delete this.jsonObj["MarrigeID"];
-			return this.jsonObj;
-		}else{
-			return false;
-		}
-	}
-}
-
+//Main Application
 export class BeeApplication implements Application {
 	beeToken: string;
 	bobToken: string;

@@ -7,7 +7,13 @@ import { DBHelper } from "../db.helper";
 import { IReaction } from "./ireaction";
 import { getUser } from "../Helper/user";
 
-
+/**
+ * 
+ * @param cmds 
+ * @param interaction 
+ * @param reports 
+ * @returns 
+ */
 export function SimpleReactionsPerRules(cmds: IReaction[], interaction: Discord.Interaction, reports?: ResultReport): ResultReport {
     let report = { executed: 0, errors: [], halting: false }
     //if (interaction.user.id == clientBee.user.id || interaction.user.id == clientBob.user.id) { Logging.log("This is me or bob."); return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed); } // This is Bee himself

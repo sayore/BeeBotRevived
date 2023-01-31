@@ -95,22 +95,6 @@ export let TrustedCommands: ICommand[] = [
             try {
                 var mentions = getMentions(msg.content);
                 if (mentions.length == 1) user = await getUser(mentions[0])
-
-                
-
-
-                // Luna ban
-                //if(user.id=="902232441748615201") return;
-                /**msg.reply("\`" + user.tag + " -> Lvl " + user.rpg.level + "(" + Math.floor(RPG.expToNextLevel(user.rpg)) + "/" + RPG.getExpNeeded(user.rpg) + " EXP)" + "\`\n" +
-                    "\`" + "       STR AGI VIT INT DEX LUK      " + "\`\n" +
-                    "\`" + "       " + user.rpg.str.toString().padEnd(3, " ") + " " + user.rpg.agi.toString().padEnd(3, " ") + " " + user.rpg.vit.toString().padEnd(3, " ") + " " + user.rpg.int.toString().padEnd(3, " ") + " " + user.rpg.dex.toString().padEnd(3, " ") + " " + user.rpg.luk.toString().padEnd(3, " ") + "      " + "\`\n" +
-                    "\`" + "            Sent        Received    " + "\`\n" +
-                    "\`------------------------------------\`\n" +
-                    "\`" + "Hugs        " + (await user.getSent("hugs")).toString().padEnd(12, " ") + (await user.getReceived("hugs")).toString().padEnd(12, " ") + "\`\n" +
-                    "\`" + "Cuddles     " + (await user.getSent("cuddles")).toString().padEnd(12, " ") + (await user.getReceived("cuddles")).toString().padEnd(12, " ") + "\`\n" +
-                    "\`" + "Pats        " + (await user.getSent("pats")).toString().padEnd(12, " ") + (await user.getReceived("pats")).toString().padEnd(12, " ") + "\`\n" +
-                    "\`" + "Noms        " + (await user.getSent("noms")).toString().padEnd(12, " ") + (await user.getReceived("noms")).toString().padEnd(12, " ") + "\`\n" +
-                    "\`" + "?           " + (await user.getSent("goodbees")).toString().padEnd(12, " ") + (await user.getReceived("goodbees")).toString().padEnd(12, " ") + "\`");**/
                 
                 var canvas = createCanvas(720,460);
                 var ctx = canvas.getContext('2d');
