@@ -370,4 +370,7 @@ env.ts
 env.js
 env.js.map
 
-/dist
+dist/**/*.js
+dist/**/*.ts
+dist/**/*.d.ts
+./dist/**/*

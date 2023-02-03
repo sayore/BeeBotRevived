@@ -1,7 +1,7 @@
 ﻿export let EnvFile = "BeeToken.json";
 import { Logging, LogLevel, LogTarget } from 'supernode/Base/Logging';
 import envLoader from "./Helper/config"
-var Env = envLoader(EnvFile);
+export var Env = envLoader(EnvFile);
 
 import * as Discord from 'discord.js';
 import level from 'level-ts';
@@ -12,7 +12,7 @@ import { DBHelper } from './db.helper';
 
 import { EveryoneCommands, TrustedCommands, RandomEvents, RPGCommands,  BobCommands } from './CmdGroups/mod';
 import { TypeOfApplication, SafetyMode, Application } from 'supernode/Base/Application';
-import { ApplicationCollection, ExpressApplication } from 'supernode/Base/mod';
+import { ApplicationCollection } from 'supernode/Base/mod';
 
 import { getUser, setUser } from './Helper/user';
 
@@ -108,28 +108,6 @@ export class BeeApplication implements Application {
 	}
 }
 
-export class BeeWebserverApplication extends ExpressApplication {
-	subdomain = Env.subdomain;
-	domain = Env.domain;
-	standalone = false;
-	Type: TypeOfApplication.Express;
-	uid = `BeeWebserver (${this.subdomain}.${this.domain})`;
-	error?(eventdata?: any): void {
-		Logging.log(eventdata)
-	}
-	exit?(eventdata?: any): void {
-		Logging.log(eventdata)
-	}
-	needsSafeMode?: SafetyMode = SafetyMode.NeedsCatch;
-
-	init(eventdata?: any): void {
-		this.app.get('/', (req, res) => {
-			res.send('Hello World!')
-		})
-	}
-	typeOfApplication = TypeOfApplication.Express
-}
-
 export class _BeeBotApps extends ApplicationCollection {
 	public beeToken: string;
 	public bobToken: string;
@@ -146,7 +124,6 @@ export class _BeeBotApps extends ApplicationCollection {
 }
 
 export let BeeBotApps: _BeeBotApps = new _BeeBotApps();
-
 
 /** Autorun if not started externally */
 setTimeout(() => {
