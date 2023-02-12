@@ -8,11 +8,12 @@ import { MessageActionRow, MessageButton } from "discord.js";
 import { EveryoneCommands } from "./everyone";
 import { MasterCommands } from "./master";
 import _ from "lodash";
-import { Actions, getUser } from "../Helper/user";
+import { Actions, getUser, Userdata } from "../Helper/user";
 import { LogLevel, Logging } from 'supernode/Base/Logging';
 import { RPG } from "../RPG/rpg";
 import { CanvasGradient, CanvasPattern, createCanvas } from "canvas";
 import Color from "color";
+import {DivorceRequest} from "../Data/DivorceRequest";
 
 
 export let TrustedCommands: ICommand[] = [
@@ -28,10 +29,10 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
-        messagecontent: "hello bee",
+        messagecontent: "hi katze",
         async cmd(msg: Discord.Message) {
             switch (msg.member.id) {
-                case "562640877705756690":
+                case "100656035718516736":
                     msg.reply("Hi master uwu");
                     break;
                 case "465583365781717003":
@@ -82,7 +83,7 @@ export let TrustedCommands: ICommand[] = [
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Information,
-        triggerwords: ["i love", "bee"],
+        triggerwords: ["ich mag", "katze"],
         async cmd(msg: Discord.Message) {
             msg.reply(getRandom(["	☜(⌒▽⌒)☞", "(⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄", "(〃￣ω￣〃ゞ"]));
         }
@@ -402,7 +403,8 @@ export let TrustedCommands: ICommand[] = [
     },
     {
         prefix: true, typeofcmd: TypeOfCmd.Action, messagecontent: "marry",
-        async cmd(msg: Discord.Message) {
+        async cmd(msg: Discord.Message, user : Userdata) {
+            if(!msg.mentions.repliedUser) return;
 
             let links = [
                 "https://c.tenor.com/aJjnVhJ1k_0AAAAd/melamar-geisha.gif",
@@ -428,15 +430,33 @@ export let TrustedCommands: ICommand[] = [
                         .setLabel('Reject')
                         .setStyle('DANGER'),
                 );
-            msg.reply({ embeds: [exampleEmbed], components: [row] });
 
+            if(!user.extra.requestedMarriageTo) user.extra.requestedMarriageTo = [];
+            user.extra.requestedMarriageTo.push(msg.mentions.repliedUser.id);
+            user.extra.requestedMarriageTo=_.uniq(user.extra.requestedMarriageTo);
+            user.save();
+
+            //Get the user data of the person who is being proposed to
+            var targetUser = await getUser(msg.mentions.repliedUser.id);
+            if(!targetUser.extra.requestedMarriageFrom) targetUser.extra.requestedMarriageFrom = [];
+            targetUser.extra.requestedMarriageFrom.push(msg.member.id);
+            targetUser.extra.requestedMarriageFrom=_.uniq(targetUser.extra.requestedMarriageFrom);
+            targetUser.save();
+
+            msg.reply({ embeds: [exampleEmbed], components: [row] });
         }
     },
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Action,
         messagecontent: "divorce",
-        async cmd(msg: Discord.Message) {
+        async cmd(msg: Discord.Message, user : Userdata) {
+            if(!msg.mentions.repliedUser) return;
+
+            if(!user.marriedTo.includes(msg.mentions.repliedUser.id)) {
+                msg.reply("You are not married to that person!")
+                return;
+             }
 
             let links = [
                 "https://c.tenor.com/zr2rab_BRioAAAAC/schtroumpf-peyo.gif"
@@ -448,18 +468,23 @@ export let TrustedCommands: ICommand[] = [
                 .setDescription(`${MessageHelper.getSendersVisibleName(msg)} wants to divorce ${MessageHelper.getRepliantsVisibleName(msg)}.`)
                 .setImage(links[Math.floor(Math.random() * links.length)])
 
+            user.extra.requestedDivorceFrom= new DivorceRequest(msg.member.id,msg.mentions.repliedUser.id)
+
             const row = new MessageActionRow()
                 .addComponents(
                     new MessageButton()
-                        .setCustomId('accept-divorce')
-                        .setLabel('Yes')
+                        .setCustomId('accept-divorce-'+user.extra.requestedDivorceFrom.id)
+                        .setLabel('Confirm')
                         .setStyle('SUCCESS'),
                 ).addComponents(
                     new MessageButton()
-                        .setCustomId('reject-divorce')
-                        .setLabel('NOOO')
+                        .setCustomId('reject-divorce-'+user.extra.requestedDivorceFrom.id)
+                        .setLabel('Deny')
                         .setStyle('DANGER'),
                 );
+            
+            user.save();
+
             msg.reply({ embeds: [exampleEmbed], components: [row] });
 
         }

@@ -3,6 +3,7 @@ import { clientBee, db } from '../app';
 import _ from "lodash";
 import * as Discord from 'discord.js';
 import { Vector2 } from "supernode/Math/Vector2";
+import { LogLevel, Logging } from 'supernode/Base/Logging';
 
 export type Actions = ("hugs" | "cuddles" | "noms" | "goodbees" | "pats");
 export var userkey = "userj";
@@ -15,14 +16,23 @@ export class Userdata {
     accentcolor:number;
     hexcolor:string;
     hexaccentcolor:string;
+    marriedTo:string[]=[];
     fetchCounter=0;
     extra:any;
     rpg: RPGData = new RPGData();
     constructor() {
 
     }
-    test(){
-        
+    
+    //Get visible Name of user
+    get name() {
+        return clientBee.users.cache.get(this.id)?.username;
+    }
+
+    marry(userid:string){
+        if(!this.marriedTo)
+        {this.marriedTo=[];}
+        this.marriedTo.push(userid);
     }
 
     async getSent(type:Actions) : Promise<number>{
@@ -45,28 +55,115 @@ export class Userdata {
         await setUserByID(this.id,this);
         console.log(this);
     }
+
+    static async getUser(userid: string, msg?:Discord.Message): Promise<Userdata> {
+        var key = userkey + userid;
+        if (await db.exists(key)) {
+            let userdata =new Userdata()
+            userdata.tag = "No display name";
+            userdata.color = 0;
+            userdata.hexcolor = "#000000";
+            userdata.extra={};
+            _.assignIn(userdata,await (JSON.parse(await db.get(key))));
+            /*userdata.rpg = <RPG>_.assignIn(new RPG(), userdata.rpg);
+            userdata.rpg.position = new Vector2(userdata.rpg.position.x,userdata.rpg.position.y);
+            userdata.id = userid;*/
+            
+            try {
+                var user = msg.member;
+                userdata.fetchCounter++;
+                userdata.tag = user.displayName;
+                userdata.color = user.displayColor;
+                userdata.hexcolor = user.displayHexColor;
+                await user.user.fetch();
+                userdata.accentcolor = user.user.accentColor; 
+                userdata.hexaccentcolor = user.user.hexAccentColor;
+            } catch (e) {
+                console.log("Could not fetch user.")//\nWe got: ", userdata)
+            }
+    
+            return userdata;
+        } else {
+            console.log("New User")
+            var userdata = new Userdata();
+            userdata.id = userid;
+    
+            return userdata;
+        }
+    }
+    static async getUserById(userid: string): Promise<Userdata> {
+        var key = userkey + userid;
+        if (await db.exists(key)) {
+            let userdata =new Userdata()
+            _.assignIn(userdata,await (JSON.parse(await db.get(key))));
+    
+            return userdata;
+        } else {
+            console.log("New User")
+            var userdata = new Userdata();
+            userdata.id = userid;
+    
+            return userdata;
+        }
+    }
+    static async setUserByID(userid: string, userdata: Userdata) {
+        console.log("saved" + " user" + userid+ JSON.stringify(userdata)); 
+        return await db.put(userkey + userid, JSON.stringify(userdata));
+    }
+    static async setUser(user: Discord.GuildMember, userdata: Userdata) {
+        if(!userdata.id) {
+            return await db.del(userkey + user.id);
+        }
+    
+        Logging.log("Saved: "+ user.id, "User");
+        return await db.put(userkey + user.id, JSON.stringify(userdata));
+    }
+    
+    static async getAllUsers() : Promise<Userdata[]> {
+        return (await db.iterateFilter((v,k) => { return _.startsWith(k,"userj"); })).map(v=>JSON.parse(v)).sort();
+    }
 }
 
 export async function getUser(userid: string, msg?:Discord.Message): Promise<Userdata> {
     var key = userkey + userid;
     if (await db.exists(key)) {
         let userdata =new Userdata()
+        userdata.tag = "No display name";
+        userdata.color = 0;
+        userdata.hexcolor = "#000000";
+        userdata.extra={};
         _.assignIn(userdata,await (JSON.parse(await db.get(key))));
         /*userdata.rpg = <RPG>_.assignIn(new RPG(), userdata.rpg);
         userdata.rpg.position = new Vector2(userdata.rpg.position.x,userdata.rpg.position.y);
         userdata.id = userid;*/
-        var user = msg.member;
-        userdata.fetchCounter++;
-        userdata.tag = user.displayName;
-        userdata.color = user.displayColor;
-        userdata.hexcolor = user.displayHexColor;
+        
         try {
+            var user = msg.member;
+            userdata.fetchCounter++;
+            userdata.tag = user.displayName;
+            userdata.color = user.displayColor;
+            userdata.hexcolor = user.displayHexColor;
             await user.user.fetch();
             userdata.accentcolor = user.user.accentColor; 
             userdata.hexaccentcolor = user.user.hexAccentColor;
         } catch (e) {
-            console.log("Could not fetch user.\nWe got: ", userdata)
+            console.log("Could not fetch user.")//\nWe got: ", userdata)
         }
+
+        return userdata;
+    } else {
+        console.log("New User")
+        var userdata = new Userdata();
+        userdata.id = userid;
+
+        return userdata;
+    }
+}
+export async function getUserById(userid: string): Promise<Userdata> {
+    var key = userkey + userid;
+    if (await db.exists(key)) {
+        let userdata =new Userdata()
+        _.assignIn(userdata,await (JSON.parse(await db.get(key))));
 
         return userdata;
     } else {
@@ -86,7 +183,7 @@ export async function setUser(user: Discord.GuildMember, userdata: Userdata) {
         return await db.del(userkey + user.id);
     }
 
-    console.log("Saved: "+ user.id);
+    Logging.log("Saved: "+ user.id, "User");
     return await db.put(userkey + user.id, JSON.stringify(userdata));
 }
 

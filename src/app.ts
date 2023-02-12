@@ -15,11 +15,13 @@ import { TypeOfApplication, SafetyMode, Application } from 'supernode/Base/Appli
 import { ApplicationCollection } from 'supernode/Base/mod';
 
 import { getUser, setUser } from './Helper/user';
+import { getGuildById } from './Helper/guild';
 
 export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 export let db = new level('./database');
 import "./DBUpdates/user-to-jsonuser";
+import { ChannelTypes } from 'discord.js/typings/enums';
 
 export let randomEvents = new RandomEvents();
 Logging.setLogTarget(LogLevel.Unknown , LogTarget.All);
@@ -62,6 +64,21 @@ export class BeeApplication implements Application {
 		BeeApplication.hasStarted = true;
 		clientBee.on('ready', GenerealReadyAsync);
 		clientBob.on('ready', GenerealReadyAsync);
+
+		clientBee.on('guildMemberAdd', async member => {
+			var user = await getUser(member.id);
+			user.extra.joinedAt = member.joinedAt;
+			user.save();
+
+			let guild = await getGuildById(member.guild.id);
+
+			if(guild.welcomeMessageEnabled) {
+				let welcChannel	= await clientBee.channels.fetch(guild.welcomeMessageChannel)
+				if(welcChannel.isText()) {
+					welcChannel.send(guild.welcomeMessage + " <@!"+member.id+">");
+				}
+			}
+		})
 
 		clientBee.on('messageCreate', async message => {
 			//Logging.log("message..." + (await message.content))

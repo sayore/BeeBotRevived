@@ -8,6 +8,7 @@ import { Logging } from "supernode/Base/Logging";
 import _ from "lodash";
 import { getUser, setUser, Userdata } from '../Helper/user';
 import { RPG } from '../RPG/rpg';
+import { getGuildById, setGuildByID } from "../Helper/guild";
 
 export let MasterCommands : ICommand[] = [
     {
@@ -207,10 +208,10 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
-        triggerwords:["who","master","is","bee"],
+        triggerwords:["wer","dein meister","ist","katze"],
         async cmd(msg:Discord.Message){
             setTimeout(async()=>{
-                await msg.reply("sayore is my master ***blushes*** owo");
+                await msg.reply("<@!100656035718516736> is my master ***blushes*** owo");
             },500)
         }
     },
@@ -260,6 +261,20 @@ export let MasterCommands : ICommand[] = [
         triggerwords:["bee","understood","me"],
         async cmd(msg:Discord.Message){
             msg.reply("yea i think so (⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄");
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["bee","set","welcome","message"],
+        async cmd(msg:Discord.Message){
+            let guild = await getGuildById(msg.guild.id);
+            if(guild) {
+                guild.welcomeMessage = msg.content.replace("bee set welcome message ","");
+                guild.welcomeMessageChannel = msg.channel.id;
+                guild.welcomeMessageEnabled = true;
+                setGuildByID(msg.guild.id,guild);
+                msg.reply("done");
+            }
         }
     },
 ];
