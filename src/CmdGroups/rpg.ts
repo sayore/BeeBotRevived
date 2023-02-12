@@ -2,7 +2,7 @@ import { ICommand } from '../CmdGroups/icommands';
 import { Places } from '../RPG/monster';
 import { ItemStack } from 'supernode/Game/ItemStack';
 import _ from 'lodash';
-import { setUser, Userdata } from '../Helper/user';
+import { Userdata } from '../Helper/user';
 import { Logging, LogLevel, LogTarget } from 'supernode/Base/Logging';
 import { clientBee, db } from '../app';
 import { RPG } from '../RPG/rpg';

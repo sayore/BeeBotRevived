@@ -8,7 +8,7 @@ import { MessageActionRow, MessageButton } from "discord.js";
 import { EveryoneCommands } from "./everyone";
 import { MasterCommands } from "./master";
 import _ from "lodash";
-import { Actions, getUser, Userdata } from "../Helper/user";
+import { Actions, Userdata } from "../Helper/user";
 import { LogLevel, Logging } from 'supernode/Base/Logging';
 import { RPG } from "../RPG/rpg";
 import { CanvasGradient, CanvasPattern, createCanvas } from "canvas";
@@ -95,7 +95,7 @@ export let TrustedCommands: ICommand[] = [
         async cmd(msg: Discord.Message, user) {
             try {
                 var mentions = getMentions(msg.content);
-                if (mentions.length == 1) user = await getUser(mentions[0])
+                if (mentions.length == 1) user = await Userdata.getUser(mentions[0])
                 
                 var canvas = createCanvas(720,460);
                 var ctx = canvas.getContext('2d');
@@ -437,7 +437,7 @@ export let TrustedCommands: ICommand[] = [
             user.save();
 
             //Get the user data of the person who is being proposed to
-            var targetUser = await getUser(msg.mentions.repliedUser.id);
+            var targetUser = await Userdata.getUser(msg.mentions.repliedUser.id);
             if(!targetUser.extra.requestedMarriageFrom) targetUser.extra.requestedMarriageFrom = [];
             targetUser.extra.requestedMarriageFrom.push(msg.member.id);
             targetUser.extra.requestedMarriageFrom=_.uniq(targetUser.extra.requestedMarriageFrom);

@@ -52,7 +52,7 @@ export class Userdata {
         return (ret?ret:0);
     }
     async save() {
-        await setUserByID(this.id,this);
+        await Userdata.setUserByID(this.id,this);
         console.log(this);
     }
 
@@ -122,71 +122,4 @@ export class Userdata {
     static async getAllUsers() : Promise<Userdata[]> {
         return (await db.iterateFilter((v,k) => { return _.startsWith(k,"userj"); })).map(v=>JSON.parse(v)).sort();
     }
-}
-
-export async function getUser(userid: string, msg?:Discord.Message): Promise<Userdata> {
-    var key = userkey + userid;
-    if (await db.exists(key)) {
-        let userdata =new Userdata()
-        userdata.tag = "No display name";
-        userdata.color = 0;
-        userdata.hexcolor = "#000000";
-        userdata.extra={};
-        _.assignIn(userdata,await (JSON.parse(await db.get(key))));
-        /*userdata.rpg = <RPG>_.assignIn(new RPG(), userdata.rpg);
-        userdata.rpg.position = new Vector2(userdata.rpg.position.x,userdata.rpg.position.y);
-        userdata.id = userid;*/
-        
-        try {
-            var user = msg.member;
-            userdata.fetchCounter++;
-            userdata.tag = user.displayName;
-            userdata.color = user.displayColor;
-            userdata.hexcolor = user.displayHexColor;
-            await user.user.fetch();
-            userdata.accentcolor = user.user.accentColor; 
-            userdata.hexaccentcolor = user.user.hexAccentColor;
-        } catch (e) {
-            console.log("Could not fetch user.")//\nWe got: ", userdata)
-        }
-
-        return userdata;
-    } else {
-        console.log("New User")
-        var userdata = new Userdata();
-        userdata.id = userid;
-
-        return userdata;
-    }
-}
-export async function getUserById(userid: string): Promise<Userdata> {
-    var key = userkey + userid;
-    if (await db.exists(key)) {
-        let userdata =new Userdata()
-        _.assignIn(userdata,await (JSON.parse(await db.get(key))));
-
-        return userdata;
-    } else {
-        console.log("New User")
-        var userdata = new Userdata();
-        userdata.id = userid;
-
-        return userdata;
-    }
-}
-export async function setUserByID(userid: string, userdata: Userdata) {
-    console.log("saved" + " user" + userid+ JSON.stringify(userdata)); 
-    return await db.put(userkey + userid, JSON.stringify(userdata));
-}
-export async function setUser(user: Discord.GuildMember, userdata: Userdata) {
-    if(!userdata.id) {
-        return await db.del(userkey + user.id);
-    }
-
-    Logging.log("Saved: "+ user.id, "User");
-    return await db.put(userkey + user.id, JSON.stringify(userdata));
-}
-
-export async function getAllUsers() : Promise<Userdata[]> {
-    return (await db.iterateFilter((v,k) => { return _.startsWith(k,"userj"); })).map(v=>JSON.parse(v)).sort();
 }

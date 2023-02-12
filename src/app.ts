@@ -14,7 +14,6 @@ import { EveryoneCommands, TrustedCommands, RandomEvents, RPGCommands,  BobComma
 import { TypeOfApplication, SafetyMode, Application } from 'supernode/Base/Application';
 import { ApplicationCollection } from 'supernode/Base/mod';
 
-import { getUser, setUser } from './Helper/user';
 import { getGuildById } from './Helper/guild';
 
 export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
@@ -22,6 +21,7 @@ export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES"
 export let db = new level('./database');
 import "./DBUpdates/user-to-jsonuser";
 import { ChannelTypes } from 'discord.js/typings/enums';
+import { Userdata } from './Helper/user';
 
 export let randomEvents = new RandomEvents();
 Logging.setLogTarget(LogLevel.Unknown , LogTarget.All);
@@ -66,7 +66,7 @@ export class BeeApplication implements Application {
 		clientBob.on('ready', GenerealReadyAsync);
 
 		clientBee.on('guildMemberAdd', async member => {
-			var user = await getUser(member.id);
+			var user = await Userdata.getUser(member.id);
 			user.extra.joinedAt = member.joinedAt;
 			user.save();
 
@@ -83,7 +83,7 @@ export class BeeApplication implements Application {
 		clientBee.on('messageCreate', async message => {
 			//Logging.log("message..." + (await message.content))
 			// Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
-			var user = await getUser(message.member.id,message);
+			var user = await Userdata.getUser(message.member.id,message);
 
 			var resFullreport = new ResultReport(false,false,0,0)
 			//console.log(resFullreport)
@@ -99,7 +99,7 @@ export class BeeApplication implements Application {
 			resFullreport=await SimplePerRules(RPGCommands, message,user, resFullreport);
 			resFullreport.report()
 
-			await setUser(message.member, user);
+			await Userdata.setUser(message.member, user);
 		});
 
 		clientBee.on('interactionCreate', async interaction => {
@@ -113,7 +113,7 @@ export class BeeApplication implements Application {
 		});
 
 		clientBob.on('messageCreate', async message => {
-			var user = await getUser(message.member.id,message);
+			var user = await Userdata.getUser(message.member.id,message);
 			SimplePerRules(BobCommands, message, user);
 			//setUser(message.member, user);
 		});

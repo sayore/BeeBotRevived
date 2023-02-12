@@ -5,7 +5,7 @@ import { clientBee, clientBob, db } from "../app";
 import { CheckForManyWordsCI, ResultReport } from "../CmdGroups/command.helper";
 import { DBHelper } from "../db.helper";
 import { IReaction } from "./ireaction";
-import { getUser } from "../Helper/user";
+import { Userdata } from "../Helper/user";
 
 /**
  * 
@@ -40,27 +40,27 @@ export function SimpleReactionsPerRules(cmds: IReaction[], interaction: Discord.
 
         if (v.customId != undefined && interaction.isButton())
             if (interaction.customId.toLowerCase() == v.customId.toLowerCase()) {
-                v.reaction(interaction, (await getUser(interaction.user.id)));
+                v.reaction(interaction, (await Userdata.getUser(interaction.user.id)));
                 report.executed++;
                 if (v.isHalting == true) { report.halting = true; return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed); }
             }
 
         if (v.always == true) {
-            v.reaction(interaction, (await getUser(interaction.user.id)));
+            v.reaction(interaction, (await Userdata.getUser(interaction.user.id)));
             report.executed++;
             if (v.isHalting == true) { report.halting = true; return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed); }
         }
 
         if (v.triggerwords != undefined  && interaction.isButton() && v.triggerwords.length >= 1)
             if (CheckForManyWordsCI(interaction.customId, v.triggerwords)) {
-                v.reaction(interaction, (await getUser(interaction.user.id)));
+                v.reaction(interaction, (await Userdata.getUser(interaction.user.id)));
                 report.executed++;
                 if (v.isHalting == true) { report.halting = true; return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed); }
             }
 
         if (v.triggerfunc != undefined)
             if (v.triggerfunc(interaction)) {
-                v.reaction(interaction, (await getUser(interaction.user.id)));
+                v.reaction(interaction, (await Userdata.getUser(interaction.user.id)));
 
                 report.executed++;
                 if (v.isHalting == true) { report.halting = true; return new ResultReport(report.executed == 1, report.halting, cmds.length, report.executed); }

@@ -6,7 +6,7 @@ import { MessageHelper } from "supernode/Discord/MessageHelper";
 import { Environment } from "supernode/Base/Environment";
 import { Logging } from "supernode/Base/Logging";
 import _ from "lodash";
-import { getUser, setUser, Userdata } from '../Helper/user';
+import { Userdata } from '../Helper/user';
 import { RPG } from '../RPG/rpg';
 import { getGuildById, setGuildByID } from "../Helper/guild";
 
@@ -36,7 +36,7 @@ export let MasterCommands : ICommand[] = [
             let mentioned = getMentions(msg.content)
             
             if(mentioned.length==1)
-            {let askedFor=await getUser(mentioned[0]);
+            {let askedFor=await Userdata.getUser(mentioned[0]);
             msg.channel.send(mentioned[0]);
             msg.channel.send(JSON.stringify(askedFor));}
             else {
@@ -88,7 +88,7 @@ export let MasterCommands : ICommand[] = [
                 {
                     var member = await msg.guild.members.fetch({user:v.id});
                     membername = member.displayName
-                    setUser(member,toplist[i]);
+                    Userdata.setUser(member,toplist[i]);
                 }
                 sToplist+=`\` ${(Math.floor(v.rpg.money).toString()+" $").padEnd(15," ")} ${(membername?membername:"NFI").padEnd(40," ")} \`\n`;
             }
@@ -126,7 +126,7 @@ export let MasterCommands : ICommand[] = [
                 {
                     var member = await msg.guild.members.fetch({user:v.id});
                     membername = member.displayName
-                    setUser(member,toplist[i]);
+                    Userdata.setUser(member,toplist[i]);
                 }
                 if(!membername) msg.channel.send(i+": "+JSON.stringify(v));
                 sToplist+=`\` ${(Math.floor(RPG.allExp(v.rpg)).toString()+" EXP").padEnd(15," ")} ${(membername?membername:"NFI").padEnd(40," ")} \`\n`;

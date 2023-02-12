@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { MessageHelper } from 'supernode/Discord/MessageHelper';
 import { db } from '../app';
 import { DivorceRequest } from '../Data/DivorceRequest';
-import { getUser, Userdata, userkey } from '../Helper/user';
+import { Userdata, userkey } from '../Helper/user';
 import { IReaction } from "./ireaction";
 
 export let MarriageReactions: IReaction[] = [
@@ -26,10 +26,10 @@ export let MarriageReactions: IReaction[] = [
             var msg = <Discord.Message>interaction.message;
 
             // Hier bekommen wir den User, der auf den Button geklickt hat
-            const interactor = await getUser(interaction.member.user.id)
+            const interactor = await Userdata.getUser(interaction.member.user.id)
 
             // Hier bekommen wir den User, der die Nachricht geschrieben hat
-            const sender = await getUser((await (await msg.channel.messages.fetch(msg.reference.messageId)).member.fetch()).user.id);
+            const sender = await Userdata.getUser((await (await msg.channel.messages.fetch(msg.reference.messageId)).member.fetch()).user.id);
 
             //interaction.channel.send(sender.name + " " + interactor.name);
 
@@ -68,10 +68,10 @@ export let MarriageReactions: IReaction[] = [
             var msg = <Discord.Message>interaction.message;
 
             // Hier bekommen wir den User, der auf den Button geklickt hat
-            const interactor = await getUser(interaction.member.user.id)
+            const interactor = await Userdata.getUser(interaction.member.user.id)
 
             // Hier bekommen wir den User, der die Nachricht geschrieben hat
-            const sender = await getUser((await (await msg.channel.messages.fetch(msg.reference.messageId)).member.fetch()).user.id);
+            const sender = await Userdata.getUser((await (await msg.channel.messages.fetch(msg.reference.messageId)).member.fetch()).user.id);
 
             //interaction.channel.send(sender.name + " " + interactor.name);
 
@@ -106,9 +106,9 @@ export let MarriageReactions: IReaction[] = [
             //interaction.channel.send("button press");
 
             // Hier bekommen wir den User, der auf den Button geklickt hat
-            const interactor = await getUser(interaction.member.user.id)
+            const interactor = await Userdata.getUser(interaction.member.user.id)
             if(!interactor.extra.requestedDivorceFrom) { interaction.channel.send("no request found: data"+JSON.stringify(interactor.extra.requestedDivorceFrom)); return;}
-            var divorcee = await getUser((<DivorceRequest>interactor.extra.requestedDivorceFrom).target)
+            var divorcee = await Userdata.getUser((<DivorceRequest>interactor.extra.requestedDivorceFrom).target)
 
             if(!interactor.marriedTo.includes(divorcee.id)){interaction.channel.send("not married to "+divorcee.id); return;}
             if(interactor.marriedTo.includes(divorcee.id)){
@@ -140,10 +140,10 @@ export let MarriageReactions: IReaction[] = [
             var msg = <Discord.Message>interaction.message;
 
             // Hier bekommen wir den User, der auf den Button geklickt hat
-            const interactor = await getUser(interaction.member.user.id)
+            const interactor = await Userdata.getUser(interaction.member.user.id)
 
             // Hier bekommen wir den User, der die Nachricht geschrieben hat
-            const sender = await getUser((await (await msg.channel.messages.fetch(msg.reference.messageId)).member.fetch()).user.id);
+            const sender = await Userdata.getUser((await (await msg.channel.messages.fetch(msg.reference.messageId)).member.fetch()).user.id);
 
             //interaction.channel.send(sender.name + " " + interactor.name);
 

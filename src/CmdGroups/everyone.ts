@@ -4,7 +4,6 @@ import { clientBee, db } from "../app";
 import { MessageHelper } from "supernode/Discord/mod";
 import { DBHelper } from "../db.helper";
 import { Logging } from "supernode/Base/Logging";
-import { setUser, Userdata } from "../Helper/user";
 import { RPG, RPGData } from "../RPG/rpg";
 import _ from "lodash";
 //import { getUser, setUser } from "./command.helper";
