@@ -66,10 +66,13 @@ export class BeeApplication implements Application {
 		clientBob.on('ready', GenerealReadyAsync);
 
 		clientBee.on('guildMemberAdd', async member => {
-			var user = await Userdata.getUser(member.id);
-			user.extra.joinedAt = member.joinedAt;
-			user.save();
-
+			try{
+				var user = await Userdata.getUser(member.id);
+				user.extra.joinedAt = member.joinedAt;
+				user.save();
+			} catch(e) {
+				Logging.log("Error in guildMemberAdd",LogLevel.Report)
+			}
 			let guild = await getGuildById(member.guild.id);
 
 			if(guild.welcomeMessageEnabled) {

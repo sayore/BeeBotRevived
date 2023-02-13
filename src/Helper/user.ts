@@ -60,14 +60,13 @@ export class Userdata {
         var key = userkey + userid;
         if (await db.exists(key)) {
             let userdata =new Userdata()
+            let rpgdata =new RPGData()
             userdata.tag = "No display name";
             userdata.color = 0;
             userdata.hexcolor = "#000000";
             userdata.extra={};
             _.assignIn(userdata,await (JSON.parse(await db.get(key))));
-            /*userdata.rpg = <RPG>_.assignIn(new RPG(), userdata.rpg);
-            userdata.rpg.position = new Vector2(userdata.rpg.position.x,userdata.rpg.position.y);
-            userdata.id = userid;*/
+            _.assignIn(rpgdata, userdata.rpg);
             
             try {
                 var user = msg.member;

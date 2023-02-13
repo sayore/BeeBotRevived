@@ -14,6 +14,7 @@ import { RPG } from "../RPG/rpg";
 import { CanvasGradient, CanvasPattern, createCanvas } from "canvas";
 import Color from "color";
 import {DivorceRequest} from "../Data/DivorceRequest";
+import { getGuildById } from "../Helper/guild";
 
 
 export let TrustedCommands: ICommand[] = [
@@ -91,11 +92,12 @@ export let TrustedCommands: ICommand[] = [
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Information,
-        triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "bee profile"),
+        triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "katze profile"),
         async cmd(msg: Discord.Message, user) {
             try {
                 var mentions = getMentions(msg.content);
                 if (mentions.length == 1) user = await Userdata.getUser(mentions[0])
+                let guild = await getGuildById(msg.guild.id)
                 
                 var canvas = createCanvas(720,460);
                 var ctx = canvas.getContext('2d');
@@ -156,7 +158,12 @@ export let TrustedCommands: ICommand[] = [
                 ctx.fillStyle="black"
                 ctx.strokeText('Awesome!', 50, 100)
                 
-                msg.reply({files:[new Discord.MessageAttachment(canvas.createPNGStream(), 'temp.png')]})
+                // 
+
+                msg.reply({
+                            content:(user.marriedTo.length>=1?user.name+" ist verheiratet mit "+(await Promise.all(user.marriedTo.map(async (v) => { return (await msg.guild.members.fetch(v)).displayName; }))).join(", "):"")+" 💍❤️",
+                            files:[new Discord.MessageAttachment(canvas.createPNGStream(), 'temp.png')]
+                })
             } catch (e) {
                 Logging.log("Could not create User Profile", LogLevel.Verbose);
                 console.log(e)

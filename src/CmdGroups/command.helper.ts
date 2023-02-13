@@ -7,7 +7,7 @@ import { DBHelper } from '../db.helper';
 import { ICommand } from "./icommands";
 import { clientBee, clientBob } from "../app";
 import _, { startsWith } from "lodash";
-import { getUser, Userdata } from '../Helper/user';
+import { Userdata } from '../Helper/user';
 import { report } from 'process';
 
 export class ResultReport {
