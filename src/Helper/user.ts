@@ -29,6 +29,7 @@ export class Userdata {
         return clientBee.users.cache.get(this.id)?.username;
     }
 
+    // Force marry to user, one sided
     marry(userid:string){
         if(!this.marriedTo)
         {this.marriedTo=[];}
@@ -100,7 +101,7 @@ export class Userdata {
             console.log("User ID not declared while saving user data. Aborting save. (setUserByID)")
             return;
         }
-        console.log("saved" + " user" + (userid ?? userdata.id)+ JSON.stringify(userdata)); 
+        Logging.log("saved" + " user" + (userid ?? userdata.id), LogLevel.Report); 
         return await db.put(userkey + (userid ?? userdata.id), JSON.stringify(userdata));
     }
     static async setUser(user: Discord.GuildMember, userdata: Userdata) {

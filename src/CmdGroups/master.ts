@@ -29,6 +29,13 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
+        triggerwords:["katze update"],
+        async cmd(msg:Discord.Message){
+            process.exit();
+        }
+    },
+    {
+        ownerlimited:true,
         triggerwords:["bee","stats"],
         async cmd(msg:Discord.Message,user){
             console.log(msg.content)
