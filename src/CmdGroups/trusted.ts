@@ -225,6 +225,17 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "kiss cheek"),
+        async cmd(msg: Discord.Message) {
+            var mentions = getMentions(msg.content)[0];
+            var mention = (mentions ? mentions : undefined)
+            defaultReactionHandler(msg, { target: mention, key: "kisscheek", singular: "kiss", plural: "kisses" }, [
+                { link: "https://c.tenor.com/OC54_DJOXRAAAAAC/love-anime.gif" },
+                { link: "https://c.tenor.com/etSTc3aWspcAAAAC/yuri-kiss.gif" }
+            ])
+        }
+    },
+    {
         prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "kiss"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
@@ -234,17 +245,6 @@ export let TrustedCommands: ICommand[] = [
                 { link: "https://c.tenor.com/v4Ur0OCvaXcAAAAd/koi-to-uso-kiss.gif" },
                 { link: "https://c.tenor.com/WxITy4XYFVUAAAAC/kiss-yuri.gif" },
                 { link: "https://c.tenor.com/sihR3Fv5t8AAAAAd/bloom-into-you-yagate-kimi-ni-naru.gif" },
-            ])
-        }
-    },
-    {
-        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "kiss cheek"),
-        async cmd(msg: Discord.Message) {
-            var mentions = getMentions(msg.content)[0];
-            var mention = (mentions ? mentions : undefined)
-            defaultReactionHandler(msg, { target: mention, key: "kisscheek", singular: "kiss", plural: "kisses" }, [
-                { link: "https://c.tenor.com/OC54_DJOXRAAAAAC/love-anime.gif" },
-                { link: "https://c.tenor.com/etSTc3aWspcAAAAC/yuri-kiss.gif" }
             ])
         }
     },
@@ -577,43 +577,44 @@ async function simpleReactEmbed(
     msg: Discord.Message,
     action: ActionInfo) {
         console.log(action)
-    var target = await msg.guild.members.fetch(action.target);
-    let targetVisName = target?.user.username ?? target?.user.tag;
+        
+        var target = await msg.guild.members.fetch(action.target);
+        let targetVisName = target?.user?.username ?? target?.user?.tag ?? MessageHelper.getRepliantsVisibleName(msg);
 
-    console.log(msg.guild.name)
-    console.log(targetVisName)
+        console.log(msg.guild.name)
+        console.log(targetVisName)
 
-    var fields = {
-        sender: "<@!"+msg.member.id+">",
-        repliant: (!!targetVisName ? targetVisName : MessageHelper.getRepliantsVisibleName(msg)),
-        action
-    }
-
-    
-    var header = "<%= _.upperFirst(action.singular) %>!"
-    var template = "<%= sender %> <%= action.plural %> <%= repliant %>!" 
-    
-    
-    if (action.defaultHeader) 
-        header = action.defaultHeader
-    if (action.defaultTemplate)
-        template = action.defaultTemplate
-        if(!!action.noTargetTemplate)
-        if(action.target==msg.member.id || !action.target) {
-            template = action.noTargetTemplate    
+        var fields = {
+            sender: "<@!"+msg.member.id+">",
+            repliant: targetVisName,
+            action
         }
 
-    var linkId = Math.floor(Math.random() * links.length);
-    var link = links[linkId].link
+        
+        var header = "<%= _.upperFirst(action.singular) %>!"
+        var template = "<%= sender %> <%= action.plural %> <%= repliant %>!" 
+        
+        
+        if (action.defaultHeader) 
+            header = action.defaultHeader
+        if (action.defaultTemplate)
+            template = action.defaultTemplate
+            if(!!action.noTargetTemplate)
+            if(action.target==msg.member.id || !action.target) {
+                template = action.noTargetTemplate    
+            }
 
-    if (links[linkId].template) template = getRandom(links[linkId].template);
-    if (links[linkId].header) header = getRandom(links[linkId].header);
+        var linkId = Math.floor(Math.random() * links.length);
+        var link = links[linkId].link
 
-    return new Discord.MessageEmbed()
-        .setColor('#FFD35D')
-        .setTitle(_.template(header)(fields))
-        .setDescription(_.template(template)(fields))
-        .setImage(link);
+        if (links[linkId].template) template = getRandom(links[linkId].template);
+        if (links[linkId].header) header = getRandom(links[linkId].header);
+
+        return new Discord.MessageEmbed()
+            .setColor('#FFD35D')
+            .setTitle(_.template(header)(fields))
+            .setDescription(_.template(template)(fields))
+            .setImage(link);
 }
 
 interface ActionInfo {

@@ -31,7 +31,7 @@ export let MasterCommands : ICommand[] = [
         ownerlimited:true,
         triggerwords:["katze update"],
         async cmd(msg:Discord.Message){
-            process.exit();
+            process.exit(-1);
         }
     },
     {
