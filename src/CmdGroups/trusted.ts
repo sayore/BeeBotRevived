@@ -543,22 +543,26 @@ async function addActionToStatistic(action: ActionInfo, msg: Discord.Message) {
     user.extra.reactionsStats.send[action.key]++;
     user.save();
 
-    if (msg.mentions && msg.mentions.repliedUser) {
-        var receiver = await Userdata.getUser(msg.mentions.repliedUser.id);
-        receiver.extra.reactionsStats ??= {}
-        receiver.extra.reactionsStats.received ??= {}
-        receiver.extra.reactionsStats.received[action.key] ??= 0;
-        receiver.extra.reactionsStats.received[action.key]++;
-        receiver.save();
-    }
-    if(action.target) {
+    if (!!msg.mentions && !!msg.mentions.repliedUser) {
         try {
-        var receiver = await Userdata.getUser(action.target);
-        receiver.extra.reactionsStats ??= {}
-        receiver.extra.reactionsStats.received ??= {}
-        receiver.extra.reactionsStats.received[action.key] ??= 0;
-        receiver.extra.reactionsStats.received[action.key]++;
-        receiver.save();
+            var receiver = await Userdata.getUser(msg.mentions.repliedUser.id);
+            receiver.extra.reactionsStats ??= {}
+            receiver.extra.reactionsStats.received ??= {}
+            receiver.extra.reactionsStats.received[action.key] ??= 0;
+            receiver.extra.reactionsStats.received[action.key]++;
+            receiver.save();
+        } catch(e) {
+            Logging.log(action.target+ "is not a valid user id");
+        }
+    }
+    if(!!action.target) {
+        try {
+            var receiver = await Userdata.getUser(action.target);
+            receiver.extra.reactionsStats ??= {}
+            receiver.extra.reactionsStats.received ??= {}
+            receiver.extra.reactionsStats.received[action.key] ??= 0;
+            receiver.extra.reactionsStats.received[action.key]++;
+            receiver.save();
         } catch(e) {
             Logging.log(action.target+ "is not a valid user id");
         }
