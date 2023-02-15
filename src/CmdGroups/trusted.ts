@@ -578,7 +578,7 @@ function simpleReactEmbed(
 
     var fields = {
         sender: "<@!"+msg.member.id+">",
-        repliant: (targetVisName ? targetVisName : MessageHelper.getRepliantsVisibleName(msg)),
+        repliant: (!!targetVisName ? targetVisName : MessageHelper.getRepliantsVisibleName(msg)),
         action
     }
 
