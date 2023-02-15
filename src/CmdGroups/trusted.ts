@@ -168,8 +168,9 @@ export let TrustedCommands: ICommand[] = [
                 
                 // 
 
+                let reply = (user.marriedTo.length>=1?user.name+" ist verheiratet mit "+(await Promise.all(user.marriedTo.map(async (v) => { return (await msg.guild.members.fetch(v)).displayName; }))).join(", ")+" 💍❤️":"");
                 msg.reply({
-                            content:(user.marriedTo.length>=1?user.name+" ist verheiratet mit "+(await Promise.all(user.marriedTo.map(async (v) => { return (await msg.guild.members.fetch(v)).displayName; }))).join(", ")+" 💍❤️":""),
+                            content:(reply?reply:"Profile"),
                             files:[new Discord.MessageAttachment(canvas.createPNGStream(), 'temp.png')]
                 })
             } catch (e) {
