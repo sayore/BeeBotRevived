@@ -96,16 +96,24 @@ export class Userdata {
         }
     }
     static async setUserByID(userid: string, userdata: Userdata) {
-        console.log("saved" + " user" + userid+ JSON.stringify(userdata)); 
-        return await db.put(userkey + userid, JSON.stringify(userdata));
+        if(!!(userid ?? userdata.id)) { // Wenn beides nicht gesetzt ist SOFORT returnen, wir wollen keine null id's
+            console.log("User ID not declared while saving user data. Aborting save. (setUserByID)")
+            return;
+        }
+        console.log("saved" + " user" + (userid ?? userdata.id)+ JSON.stringify(userdata)); 
+        return await db.put(userkey + (userid ?? userdata.id), JSON.stringify(userdata));
     }
     static async setUser(user: Discord.GuildMember, userdata: Userdata) {
         if(!userdata.id) {
-            return await db.del(userkey + user.id);
+            return await db.del(userkey + (user.id ?? userdata.id));
         }
     
-        Logging.log("Saved: "+ user.id, "User");
-        return await db.put(userkey + user.id, JSON.stringify(userdata));
+        Logging.log("Saved: "+ (user.id ?? userdata.id), "User");
+        if(!!(user.id ?? userdata.id)) { // Wenn beides nicht gesetzt ist SOFORT returnen, wir wollen keine null id's
+            console.log("User ID not declared while saving user data. Aborting save. (setUser)")
+            return;
+        }
+        return await db.put(userkey + (user.id ?? userdata.id), JSON.stringify(userdata));
     }
     
     static async getAllUsers() : Promise<Userdata[]> {
