@@ -168,7 +168,10 @@ export let TrustedCommands: ICommand[] = [
                 
                 // 
 
-                let reply = (user.marriedTo.length>=1?user.name+" ist verheiratet mit "+(await Promise.all(user.marriedTo.map(async (v) => { return (await msg.guild.members.fetch(v)).displayName; }))).join(", ")+" 💍❤️":"");
+                let reply = (user.marriedTo.length>=1?user.name+" ist verheiratet mit "+(await Promise.all(user.marriedTo.map(async (v) => { 
+                    try {return (await msg.guild.members.fetch(v)).displayName;}
+                    catch(e) {return "???";}
+                 }))).join(", ")+" 💍❤️":"");
                 msg.reply({
                             content:(reply?reply:"Profile"),
                             files:[new Discord.MessageAttachment(canvas.createPNGStream(), 'temp.png')]
@@ -183,7 +186,7 @@ export let TrustedCommands: ICommand[] = [
         prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "hug"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
-            var mention = (mentions ? "<@!" + mentions + ">" :undefined)
+            var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, { target: mention, key: "hug", singular: "hug", plural: "hugs" }, [
                 { link: "https://c.tenor.com/OXCV_qL-V60AAAAC/mochi-peachcat-mochi.gif" },
                 { link: 'https://c.tenor.com/9e1aE_xBLCsAAAAC/anime-hug.gif' },
@@ -199,7 +202,7 @@ export let TrustedCommands: ICommand[] = [
         prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "boop"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
-            var mention = (mentions ? "<@!" + mentions + ">" : undefined)
+            var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, { target: mention, key: "boop", singular: "boop", plural: "boops" }, [
                 { link: "https://c.tenor.com/l5XjHcppGN0AAAAd/boop.gif" },
                 { link: "https://c.tenor.com/B1ohHuPJIpgAAAAS/anime-cuteness.gif" },
@@ -214,7 +217,7 @@ export let TrustedCommands: ICommand[] = [
         prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "sex"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
-            var mention = (mentions ? "<@!" + mentions + ">" : undefined)
+            var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, { target: mention, key: "sex", singular: "sex", plural: "sexes" }, [
                 { link: "https://c.tenor.com/-XrLQFqn8N0AAAAC/yuri-lewd.gif" },
                 { link: "https://c.tenor.com/XCLEsDZBeBQAAAAC/kissxsis-anime.gif" },
@@ -225,7 +228,7 @@ export let TrustedCommands: ICommand[] = [
         prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "kiss"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
-            var mention = (mentions ? "<@!" + mentions + ">" : undefined)
+            var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, { target: mention, key: "kiss", singular: "kiss", plural: "kisses" }, [
                 { link: "https://c.tenor.com/_ttVgUDKJL0AAAAC/anime-couple.gif" },
                 { link: "https://c.tenor.com/v4Ur0OCvaXcAAAAd/koi-to-uso-kiss.gif" },
@@ -238,7 +241,7 @@ export let TrustedCommands: ICommand[] = [
         prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "kiss cheek"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
-            var mention = (mentions ? "<@!" + mentions + ">" : undefined)
+            var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, { target: mention, key: "kisscheek", singular: "kiss", plural: "kisses" }, [
                 { link: "https://c.tenor.com/OC54_DJOXRAAAAAC/love-anime.gif" },
                 { link: "https://c.tenor.com/etSTc3aWspcAAAAC/yuri-kiss.gif" }
@@ -250,7 +253,7 @@ export let TrustedCommands: ICommand[] = [
         prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "gib cuddle"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
-            var mention = (mentions ? "<@!" + mentions + ">" : undefined)
+            var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, { target: mention, key: "cuddle", singular: "cuddle", plural: "cuddles", defaultTemplate: "<@!"+clientBee.user.id+"> <%= action.plural %> <%= sender %>!" }, [
                 { link: "https://c.tenor.com/Cy8RWMcVDj0AAAAd/anime-hug.gif" },
                 { link: "https://c.tenor.com/DlW1R4d1NQAAAAAC/anime-cuddle.gif" },
@@ -263,7 +266,7 @@ export let TrustedCommands: ICommand[] = [
         prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "cuddle"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
-            var mention = (mentions ? "<@!" + mentions + ">" : undefined)
+            var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, { target: mention, key: "cuddle", singular: "cuddle", plural: "cuddles" }, [
                 { link: "https://c.tenor.com/Cy8RWMcVDj0AAAAd/anime-hug.gif" },
                 { link: "https://c.tenor.com/DlW1R4d1NQAAAAAC/anime-cuddle.gif" },
@@ -276,7 +279,7 @@ export let TrustedCommands: ICommand[] = [
         prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "holdhands"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
-            var mention = (mentions ? "<@!" + mentions + ">" : undefined)
+            var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, { target: mention, key: "handhold", singular: "Handholding", plural: "handholds" }, [
                 { link: "https://c.tenor.com/WUZAwo5KFdMAAAAd/love-holding-hands.gif" },
                 { link: "https://c.tenor.com/rU3xZo2_jaIAAAAC/anime-hold.gif" },
@@ -289,7 +292,7 @@ export let TrustedCommands: ICommand[] = [
         async cmd(msg: Discord.Message) {
             //***happynoises are filling the room***
             var mentions = getMentions(msg.content)[0];
-            var mention = (mentions ? "<@!" + mentions + ">" : undefined)
+            var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, { target: mention, key: "pats", singular: "Pats", plural: "pats" }, [
                 { template: ["PATPATPATPATPAT"], special: {}, link: "https://c.tenor.com/tYS5DBIos-UAAAAS/kyo-ani-musaigen.gif" },
                 { template: ["PATPATPATPATPAT?"], special: {}, link: "https://c.tenor.com/EtvotzSToyMAAAAd/petra-rezero.gif" },
@@ -306,7 +309,7 @@ export let TrustedCommands: ICommand[] = [
         prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "hide"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
-            var mention = (mentions ? "<@!" + mentions + ">" : undefined)
+            var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, {
                 target: mention, key: "hide", singular: "hide", plural: "hides", 
                 noTargetTemplate:"<%= sender %> <%= action.plural %>!",
@@ -322,7 +325,7 @@ export let TrustedCommands: ICommand[] = [
         prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "blush"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
-            var mention = (mentions ? "<@!" + mentions + ">" : undefined)
+            var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, {
                 target: mention, key: "blush", singular: "blush", plural: "blushes",
                 defaultTemplate: "<%= sender %> <%= action.plural %> because of <%= repliant %>!"
@@ -339,7 +342,7 @@ export let TrustedCommands: ICommand[] = [
         prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "love"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
-            var mention = (mentions ? "<@!" + mentions + ">" : undefined)
+            var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, {
                 target: mention, key: "love", singular: "love", plural: "loves",
                 defaultTemplate: "<%= sender %> <%= action.plural %> because of <%= repliant %>!"
@@ -569,12 +572,16 @@ async function addActionToStatistic(action: ActionInfo, msg: Discord.Message) {
     }
 }
 
-function simpleReactEmbed(
+async function simpleReactEmbed(
     links: { link: string, template?: string[], header?: string[], special?: any }[],
     msg: Discord.Message,
     action: ActionInfo) {
-    var target = msg.guild.members.cache.get(action.target);
+        console.log(action)
+    var target = await msg.guild.members.fetch(action.target);
     let targetVisName = target?.user.username ?? target?.user.tag;
+
+    console.log(msg.guild.name)
+    console.log(targetVisName)
 
     var fields = {
         sender: "<@!"+msg.member.id+">",
@@ -628,7 +635,7 @@ async function defaultReactionHandler(msg: Discord.Message, action: ActionInfo, 
         db.put(gifkey,defaultGifs)
     }*/
 
-    msg.channel.send({ embeds: [simpleReactEmbed(defaultGifs, msg, action)] });
+    msg.channel.send({ embeds: [await simpleReactEmbed(defaultGifs, msg, action)] });
 
     addActionToStatistic(action, msg);
 }
