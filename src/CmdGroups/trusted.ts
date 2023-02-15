@@ -356,7 +356,7 @@ export let TrustedCommands: ICommand[] = [
         prefix: true, typeofcmd: TypeOfCmd.Action, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "nom"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
-            var mention = (mentions ? "<@!" + mentions + ">" : undefined)
+            var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, {
                 target: mention, key: "nom", singular: "nom", plural: "noms",
                 defaultTemplate: "<%= sender %> <%= action.plural %> because of <%= repliant %>!"
@@ -551,15 +551,26 @@ async function addActionToStatistic(action: ActionInfo, msg: Discord.Message) {
         receiver.extra.reactionsStats.received[action.key]++;
         receiver.save();
     }
+    if(action.target) {
+        var receiver = await Userdata.getUser(action.target);
+        receiver.extra.reactionsStats ??= {}
+        receiver.extra.reactionsStats.received ??= {}
+        receiver.extra.reactionsStats.received[action.key] ??= 0;
+        receiver.extra.reactionsStats.received[action.key]++;
+        receiver.save();
+    }
 }
 
 function simpleReactEmbed(
     links: { link: string, template?: string[], header?: string[], special?: any }[],
     msg: Discord.Message,
     action: ActionInfo) {
+    var target = msg.guild.members.cache.get(action.target);
+    let targetVisName = target?.displayName ?? target?.user.tag;
+
     var fields = {
         sender: "<@!"+msg.member.id+">",
-        repliant: (!!action.target ? action.target : MessageHelper.getRepliantsVisibleName(msg)),
+        repliant: (targetVisName ? targetVisName : MessageHelper.getRepliantsVisibleName(msg)),
         action
     }
 
