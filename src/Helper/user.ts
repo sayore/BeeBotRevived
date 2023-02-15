@@ -109,6 +109,6 @@ export class Userdata {
     }
     
     static async getAllUsers() : Promise<Userdata[]> {
-        return (await db.iterateFilter((v,k) => { return _.startsWith(k,"userj"); })).map(v=>JSON.parse(v)).sort();
+        return (await db.iterateFilter((v,k) => { return _.startsWith(k,"userj") && !(v as Userdata).extra?.left; })).map(v=>JSON.parse(v)).sort();
     }
 }
