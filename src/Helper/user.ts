@@ -103,8 +103,8 @@ export class Userdata {
             console.log("User ID not declared while saving user data. Aborting save. (setUserByID)")
             return;
         }
-        Logging.log("saved" + " user" + (!!userid ? user.id : userdata.id), LogLevel.Report); 
-        return await db.put(userkey + (!!userid ? user.id : userdata.id), JSON.stringify(userdata));
+        Logging.log("saved" + " user" + (!!userid ? userid : userdata.id), LogLevel.Report); 
+        return await db.put(userkey + (!!userid ? userid : userdata.id), JSON.stringify(userdata));
     }
     static async setUser(user: Discord.GuildMember, userdata: Userdata) {
         if(!userdata.id) {
