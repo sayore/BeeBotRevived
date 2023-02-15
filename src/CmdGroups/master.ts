@@ -95,7 +95,7 @@ export let MasterCommands : ICommand[] = [
                     membername = member?.displayName
                     membername ??= "Unknown User"
                     toplist[i].extra.left = true;
-                    await toplist[i].save();
+                    Userdata.setUser(member,toplist[i]);
                 }
                 sToplist+=`\` ${(Math.floor(v.rpg.money).toString()+" $").padEnd(15," ")} ${(membername?membername:"NFI").padEnd(40," ")} \`\n`;
             }
@@ -138,6 +138,8 @@ export let MasterCommands : ICommand[] = [
                         member = null;
                     }
                     membername = member?.displayName
+                    membername ??= "Unknown User"
+                    toplist[i].extra.left = true;
                     Userdata.setUser(member,toplist[i]);
                 }
                 if(!membername) msg.channel.send(i+": "+JSON.stringify(v));
