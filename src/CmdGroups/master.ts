@@ -86,9 +86,16 @@ export let MasterCommands : ICommand[] = [
                 }
                 else
                 {
-                    var member = await msg.guild.members.fetch({user:v.id});
-                    membername = member.displayName
-                    Userdata.setUser(member,toplist[i]);
+                    var member : null | Discord.GuildMember = null;
+                    try {
+                        member = await msg.guild.members.fetch({user:v.id});
+                    } catch (error) { 
+                        member = null;
+                    }
+                    membername = member?.displayName
+                    membername ??= "Unknown User"
+                    toplist[i].extra.left = true;
+                    await toplist[i].save();
                 }
                 sToplist+=`\` ${(Math.floor(v.rpg.money).toString()+" $").padEnd(15," ")} ${(membername?membername:"NFI").padEnd(40," ")} \`\n`;
             }
@@ -124,8 +131,13 @@ export let MasterCommands : ICommand[] = [
                 }
                 else
                 {
-                    var member = await msg.guild.members.fetch({user:v.id});
-                    membername = member.displayName
+                    var member : null | Discord.GuildMember = null;
+                    try {
+                        member = await msg.guild.members.fetch({user:v.id});
+                    } catch (error) { 
+                        member = null;
+                    }
+                    membername = member?.displayName
                     Userdata.setUser(member,toplist[i]);
                 }
                 if(!membername) msg.channel.send(i+": "+JSON.stringify(v));
