@@ -91,6 +91,15 @@ export let TrustedCommands: ICommand[] = [
     },
     {
         prefix: true,
+        ownerlimited: true,
+        typeofcmd: TypeOfCmd.Information,
+        triggerwords: ["katze mention test"],
+        async cmd(msg: Discord.Message) {
+            msg.reply(JSON.stringify(getMentions(msg.content)));
+        }
+    },
+    {
+        prefix: true,
         typeofcmd: TypeOfCmd.Information,
         triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "katze profile"),
         async cmd(msg: Discord.Message, user) {
