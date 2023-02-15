@@ -44,7 +44,7 @@ export class Userdata {
     }
     async save() {
         await Userdata.setUserByID(this.id,this);
-        console.log(this);
+        //console.log(this);
     }
 
     static async getUser(userid: string, msg?:Discord.Message): Promise<Userdata> {
@@ -59,17 +59,19 @@ export class Userdata {
             _.assignIn(userdata,await (JSON.parse(await db.get(key))));
             _.assignIn(rpgdata, userdata.rpg);
             
-            try {
-                var user = msg.member;
-                userdata.fetchCounter++;
-                userdata.tag = user.displayName;
-                userdata.color = user.displayColor;
-                userdata.hexcolor = user.displayHexColor;
-                await user.user.fetch();
-                userdata.accentcolor = user.user.accentColor; 
-                userdata.hexaccentcolor = user.user.hexAccentColor;
-            } catch (e) {
-                console.log("Could not fetch user.")//\nWe got: ", userdata)
+            if(!!msg) {
+                try {
+                    var user = msg.member;
+                    userdata.fetchCounter++;
+                    userdata.tag = user.displayName;
+                    userdata.color = user.displayColor;
+                    userdata.hexcolor = user.displayHexColor;
+                    await user.user.fetch();
+                    userdata.accentcolor = user.user.accentColor; 
+                    userdata.hexaccentcolor = user.user.hexAccentColor;
+                } catch (e) {
+                    console.log("Could not fetch user.")//\nWe got: ", userdata)
+                }
             }
     
             return userdata;
@@ -97,7 +99,7 @@ export class Userdata {
         }
     }
     static async setUserByID(userid: string, userdata: Userdata) {
-        if(!!(userid ?? userdata.id)) { // Wenn beides nicht gesetzt ist SOFORT returnen, wir wollen keine null id's
+        if(!(userid ?? userdata.id)) { // Wenn beides nicht gesetzt ist SOFORT returnen, wir wollen keine null id's
             console.log("User ID not declared while saving user data. Aborting save. (setUserByID)")
             return;
         }
@@ -110,8 +112,8 @@ export class Userdata {
         }
     
         Logging.log("Saved: "+ (user.id ?? userdata.id), "User");
-        if(!!(user.id ?? userdata.id)) { // Wenn beides nicht gesetzt ist SOFORT returnen, wir wollen keine null id's
-            console.log("User ID not declared while saving user data. Aborting save. (setUser)")
+        if(!(user.id ?? userdata.id)) { // Wenn beides nicht gesetzt ist SOFORT returnen, wir wollen keine null id's
+            console.log("User ID not declared while saving user data. Aborting save. (setUser "+user.id+" | "+userdata.id+")")
             return;
         }
         return await db.put(userkey + (user.id ?? userdata.id), JSON.stringify(userdata));
