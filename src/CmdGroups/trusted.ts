@@ -552,12 +552,16 @@ async function addActionToStatistic(action: ActionInfo, msg: Discord.Message) {
         receiver.save();
     }
     if(action.target) {
+        try {
         var receiver = await Userdata.getUser(action.target);
         receiver.extra.reactionsStats ??= {}
         receiver.extra.reactionsStats.received ??= {}
         receiver.extra.reactionsStats.received[action.key] ??= 0;
         receiver.extra.reactionsStats.received[action.key]++;
         receiver.save();
+        } catch(e) {
+            Logging.log(action.target+ "is not a valid user id");
+        }
     }
 }
 
