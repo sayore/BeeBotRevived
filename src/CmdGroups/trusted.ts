@@ -574,7 +574,7 @@ function simpleReactEmbed(
     msg: Discord.Message,
     action: ActionInfo) {
     var target = msg.guild.members.cache.get(action.target);
-    let targetVisName = target?.displayName ?? target?.user.tag;
+    let targetVisName = target?.user.username ?? target?.user.tag;
 
     var fields = {
         sender: "<@!"+msg.member.id+">",
