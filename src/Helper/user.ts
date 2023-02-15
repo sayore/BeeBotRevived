@@ -5,7 +5,7 @@ import * as Discord from 'discord.js';
 import { Vector2 } from "supernode/Math/Vector2";
 import { LogLevel, Logging } from 'supernode/Base/Logging';
 
-export type Actions = ("hugs" | "cuddles" | "noms" | "goodbees" | "pats");
+export type Actions = ("hug" | "cuddle" | "nom" | "goodbee" | "pats");
 export var userkey = "userj";
 
 export class Userdata {
@@ -36,20 +36,10 @@ export class Userdata {
     }
 
     async getSent(type:Actions) : Promise<number>{
-        var key="action::"+type+"Sent::"+this.id
-        let ret = 0;
-        if(await db.exists(key))
-        {ret = await db.get(key) as number;}
-
-        return (ret?ret:0);
+        return this.extra?.reactionsStats?.send[type] ?? 0;
     }
     async getReceived(type:Actions) : Promise<number> {
-        var key="action::"+type+"Received::"+this.id
-        let ret = 0;
-        if(await db.exists(key))
-        {ret = await db.get(key) as number;}
-
-        return (ret?ret:0);
+        return this.extra?.reactionsStats?.received[type] ?? 0;
     }
     async save() {
         await Userdata.setUserByID(this.id,this);

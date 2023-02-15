@@ -99,7 +99,7 @@ export let TrustedCommands: ICommand[] = [
                 if (mentions.length == 1) user = await Userdata.getUser(mentions[0])
                 let guild = await getGuildById(msg.guild.id)
                 
-                var canvas = createCanvas(720,460);
+                var canvas = createCanvas(720,380);
                 var ctx = canvas.getContext('2d');
                 
                 ctx.fillStyle=ctx.createLinearGradient(0,0,720,460);
@@ -142,11 +142,10 @@ export let TrustedCommands: ICommand[] = [
                     ctx.fillText((await user.getReceived(action)).toString(), 620, 150+(pos+1)*36);
                 }
 
-                await writeAction(0,"hugs","Hugs")
+                await writeAction(0,"hug","Hugs")
                 await writeAction(1,"pats","Pats")
-                await writeAction(2,"cuddles","Cuddles")
-                await writeAction(3,"noms","Noms")
-                await writeAction(4,"goodbees","Goodbees")
+                await writeAction(2,"cuddle","Cuddles")
+                await writeAction(3,"nom","Noms")
 
 
                 ctx.resetTransform()
@@ -161,7 +160,7 @@ export let TrustedCommands: ICommand[] = [
                 // 
 
                 msg.reply({
-                            content:(user.marriedTo.length>=1?user.name+" ist verheiratet mit "+(await Promise.all(user.marriedTo.map(async (v) => { return (await msg.guild.members.fetch(v)).displayName; }))).join(", "):"")+" 💍❤️",
+                            content:(user.marriedTo.length>=1?user.name+" ist verheiratet mit "+(await Promise.all(user.marriedTo.map(async (v) => { return (await msg.guild.members.fetch(v)).displayName; }))).join(", ")+" 💍❤️":""),
                             files:[new Discord.MessageAttachment(canvas.createPNGStream(), 'temp.png')]
                 })
             } catch (e) {
@@ -366,10 +365,11 @@ export let TrustedCommands: ICommand[] = [
         async cmd(msg: Discord.Message) {
             msg.reply("yay \(◦'⌣'◦)/.");
 
-            var action = "goodbee";
-            DBHelper.increase(db, "action::" + action + "sSent::" + msg.member.id + "", 1);
-            if (msg.mentions)
-                DBHelper.increase(db, "action::" + action + "sReceived::" + msg.mentions.repliedUser.id, 1);
+            var user = await Userdata.getUser(msg.member.id);
+            user.extra.reactionsStats ??= {}
+            user.extra.reactionsStats.send ??= {}
+            user.extra.reactionsStats.send["goodbee"] ??= 0;
+            user.extra.reactionsStats.send["goodbee"]++;
         }
     },
     {
@@ -525,10 +525,22 @@ export let TrustedCommands: ICommand[] = [
     },
 ]
 
-function addActionToStatistic(action: ActionInfo, msg: Discord.Message) {
-    DBHelper.increase(db, "action::" + action.key + "sSent::" + msg.member.id + "", 1);
-    if (msg.mentions && msg.mentions.repliedUser)
-        DBHelper.increase(db, "action::" + action.key + "sReceived::" + (action.target ? action.target : msg.mentions.repliedUser.id), 1);
+async function addActionToStatistic(action: ActionInfo, msg: Discord.Message) {
+    var user = await Userdata.getUser(msg.member.id);
+    user.extra.reactionsStats ??= {}
+    user.extra.reactionsStats.send ??= {}
+    user.extra.reactionsStats.send[action.key] ??= 0;
+    user.extra.reactionsStats.send[action.key]++;
+    user.save();
+
+    if (msg.mentions && msg.mentions.repliedUser) {
+        var receiver = await Userdata.getUser(msg.mentions.repliedUser.id);
+        receiver.extra.reactionsStats ??= {}
+        receiver.extra.reactionsStats.received ??= {}
+        receiver.extra.reactionsStats.received[action.key] ??= 0;
+        receiver.extra.reactionsStats.received[action.key]++;
+        receiver.save();
+    }
 }
 
 function simpleReactEmbed(
