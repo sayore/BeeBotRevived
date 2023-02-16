@@ -279,6 +279,31 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
+        triggerfunc(msg) {
+            return msg.content.toLowerCase().startsWith("katze redirect")
+        },
+        async cmd(msg:Discord.Message){
+            let msgsplit = msg.content.split(" ");
+            if(msgsplit.length == 4) {
+                //check if argument is number and if channel exists
+                if(!isNaN(parseInt(msgsplit[3])) && msgsplit[2] == "to") {
+                    let channel = await clientBee.channels.fetch(msgsplit[3]);
+                    if(channel) {
+                        let guild = await GuildData.getGuildById(msg.guild.id);
+                        if(guild) {
+                            guild.extra ??= {}; //if guild.extra is undefined, set it to an empty object
+                            guild.extra.messageRedirects ??= {}; //if guild.extra.messageRedirects is undefined, set it to an empty object
+                            guild.extra.messageRedirects[msg.channelId] = {to: msgsplit[3]};
+                            GuildData.setGuildById(msg.guild.id,guild);
+                            msg.reply("done");
+                        }
+                    }
+                }
+            }
+        }
+    },
+    {
+        ownerlimited:true,
         triggerwords:["bee","understood","me"],
         async cmd(msg:Discord.Message){
             msg.reply("yea i think so (⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄");
@@ -293,7 +318,7 @@ export let MasterCommands : ICommand[] = [
                 guild.welcomeMessage = msg.content.replace("bee set welcome message ","");
                 guild.welcomeMessageChannel = msg.channel.id;
                 guild.welcomeMessageEnabled = true;
-                GuildData.setGuildByID(msg.guild.id,guild);
+                GuildData.setGuildById(msg.guild.id,guild);
                 msg.reply("done");
             }
         }

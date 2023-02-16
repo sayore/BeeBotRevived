@@ -9,6 +9,7 @@ import { clientBee, clientBob } from "../app";
 import _, { startsWith } from "lodash";
 import { Userdata } from '../Helper/user';
 import { report } from 'process';
+import { GuildData } from '../Helper/guild';
 
 export class ResultReport {
 
@@ -47,7 +48,7 @@ export class ResultReport {
     }
 }
 
-export async function SimplePerRules(cmds: ICommand[], msg: Discord.Message, user: Userdata, reports: ResultReport = new ResultReport(false, false, 0, 0, 0)): Promise<ResultReport> {
+export async function SimplePerRules(cmds: ICommand[], msg: Discord.Message, user: Userdata, guild:GuildData, reports: ResultReport = new ResultReport(false, false, 0, 0, 0)): Promise<ResultReport> {
     //let report = { executed: (reports?reports.executedNum:0), errors: [], halting: (reports?reports.executed:false) }
 
     // This is Bee himself
@@ -59,6 +60,27 @@ export async function SimplePerRules(cmds: ICommand[], msg: Discord.Message, use
     reports.addScanned(cmds.length);
     if (reports) if (reports.halting) return reports;
 
+    let exec = async (v:ICommand) => {
+        // When a command is executed, it can halt the execution of other commands.
+        // This is useful for commands like "help" that should be the only thing that executes.
+        //
+        // Commands are able to either halt by default when they are executed (and the conditions are met for execution),
+        // OR they can halt if they return true.
+        //
+        // Commands that do not return anything will just be executed and not halt. Making them "fire and forget" commands. (Improves performance)
+        var halt;
+        if(v.canHalt) halt = await v.cmd(msg, (user), (guild));
+        else { v.cmd(msg, (user), (guild)); }
+
+        halt = v.isHalting || halt;
+        console.log(halt)
+
+        reports.addExecuted(halt);
+        if (halt)
+            { return reports; }
+        else
+            { return undefined; }
+    }
 
     //Check that conditionals are met, then execute the cmd.
     for await (const v of cmds) {
@@ -72,49 +94,28 @@ export async function SimplePerRules(cmds: ICommand[], msg: Discord.Message, use
             if (v.ownerlimited == true && msg.guild.ownerId != msg.author.id) { continue; }
         }
 
-        let exec = async () => {
-            // When a command is executed, it can halt the execution of other commands.
-            // This is useful for commands like "help" that should be the only thing that executes.
-            //
-            // Commands are able to either halt by default when they are executed (and the conditions are met for execution),
-            // OR they can halt if they return true.
-            //
-            // Commands that do not return anything will just be executed and not halt. Making them "fire and forget" commands. (Improves performance)
-            var halt;
-            if(v.canHalt) halt = await v.cmd(msg, (user));
-            else { v.cmd(msg, (user)); }
-
-            halt = v.isHalting || halt==true;
-
-            reports.addExecuted(halt);
-            if (halt)
-                return reports;
-            else
-                return undefined;
-        }
-
         // If the command has a trigger function, execute it.
         if (v.triggerfunc != undefined && v.triggerfunc(msg)) {
-            let res = exec();
-            if(res) return await res;
+            let res = await exec(v);
+            if(res!=undefined) return await res;
         }
 
         // If the message is exactly the same as the command, execute it.
         if (v.messagecontent != undefined && (msg.content.toLowerCase() == v.messagecontent.toLowerCase())) {
-            let res = exec();
-            if(res) return await res;
+            let res = await exec(v);
+            if(res!=undefined) return await res;
         }
 
-        // Always Commands are basically helpful for statistics.
+        // Always Commands are helpful for statistics.
         if (v.always == true) {
-            let res = exec();
-            if(res) return await res;
+            let res = await exec(v);
+            if(res!=undefined) {console.log(res); return await res;}
         }
         
         // If a message contains the words in the triggerwords array, execute it.
         if (v.triggerwords != undefined && v.triggerwords.length >= 1 && CheckForManyWordsCI(msg.content, v.triggerwords)) {
-            let res = exec();
-            if(res) return await res;
+            let res = await exec(v);
+            if(res!=undefined) return await res;
         }
     }
 

@@ -1,6 +1,7 @@
 import { DiscordAPIError } from "discord.js";
 import * as Discord from 'discord.js';
 import { Userdata } from "../Helper/user";
+import { GuildData } from "../Helper/guild";
 
 export class CommandCollection {
 
@@ -16,7 +17,7 @@ export interface ICommand {
     triggerwords?:string[]
     triggerfunc?:(msg:Discord.Message) => boolean;
     typeofcmd?:TypeOfCmd
-    cmd:(msg: Discord.Message, user?:Userdata) => Promise<void|boolean>
+    cmd:(msg: Discord.Message, user?:Userdata, guild?:GuildData) => Promise<void|boolean>
     isHalting?:boolean
     canHalt?:boolean
 

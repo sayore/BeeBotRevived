@@ -8,10 +8,12 @@ export class GuildData {
   welcomeMessageChannel: string;
   welcomeMessage: string;
   welcomeMessageEnabled: boolean;
+  extra:any;
   constructor() {
     this.welcomeMessageChannel = "";
     this.welcomeMessage = "";
     this.welcomeMessageEnabled = false;
+    this.extra = {};
   }
 
   setWelcomeMessageChannel(channel: string) {
@@ -34,8 +36,8 @@ export class GuildData {
         return userdata;
     }
   }
-  static async setGuildByID(guildid: string, guilddata: GuildData) {
-    console.log("saved" + " user" + guildid+ JSON.stringify(guilddata)); 
+  static async setGuildById(guildid: string, guilddata: GuildData) {
+    console.log("saved" + guildkey + guildid+ JSON.stringify(guilddata)); 
     return await db.put(guildkey + guildid, JSON.stringify(guilddata));
   }
 }

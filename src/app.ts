@@ -87,19 +87,20 @@ export class BeeApplication implements Application {
 			//Logging.log("message..." + (await message.content))
 			// Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
 			var user = await Userdata.getUser(message.member.id,message);
+			var guild = await GuildData.getGuildById(message.guildId);
 
 			var resFullreport = new ResultReport(false,false,0,0)
 			//console.log(resFullreport)
-			resFullreport=await SimplePerRules(EveryoneCommands, message,user, resFullreport);
+			resFullreport=await SimplePerRules(EveryoneCommands, message,user,guild, resFullreport);
 			//console.log(resFullreport)
 			//resFullreport.report()
-			resFullreport=await SimplePerRules(MasterCommands, message,user, resFullreport);
+			resFullreport=await SimplePerRules(MasterCommands, message,user,guild, resFullreport);
 			//console.log(resFullreport)
 			//resFullreport.report()
-			resFullreport=await SimplePerRules(TrustedCommands, message,user, resFullreport);
+			resFullreport=await SimplePerRules(TrustedCommands, message,user,guild, resFullreport);
 			//console.log(resFullreport)
 			//resFullreport.report()
-			resFullreport=await SimplePerRules(RPGCommands, message,user, resFullreport);
+			resFullreport=await SimplePerRules(RPGCommands, message,user,guild, resFullreport);
 			resFullreport.report()
 
 			await Userdata.setUser(message.member, user);
@@ -117,7 +118,9 @@ export class BeeApplication implements Application {
 
 		clientBob.on('messageCreate', async message => {
 			var user = await Userdata.getUser(message.member.id,message);
-			SimplePerRules(BobCommands, message, user);
+			var guild = await GuildData.getGuildById(message.guildId);
+			SimplePerRules(BobCommands, message, user, guild);
+
 			//setUser(message.member, user);
 		});
 
