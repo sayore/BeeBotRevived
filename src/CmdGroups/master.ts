@@ -313,12 +313,46 @@ export let MasterCommands : ICommand[] = [
     {
         ownerlimited:true,
         triggerwords:["bee","set","welcome","message"],
-        async cmd(msg:Discord.Message){
-            let guild = await GuildData.getGuildById(msg.guild.id);
+        async cmd(msg:Discord.Message,user,guild){
             if(guild) {
                 guild.welcomeMessage = msg.content.replace("bee set welcome message ","");
-                guild.welcomeMessageChannel = msg.channel.id;
                 guild.welcomeMessageEnabled = true;
+                GuildData.setGuildById(msg.guild.id,guild);
+                msg.reply("done");
+            }
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["bee","set","welcome","channel"],
+        async cmd(msg:Discord.Message,user,guild){
+            let msgsplit = msg.content.split(" ");
+            if(guild) {
+                guild.welcomeMessageChannel = msgsplit[4];
+                GuildData.setGuildById(msg.guild.id,guild);
+                msg.reply("done");
+            }
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["bee","set","welcome","enable"],
+        async cmd(msg:Discord.Message,user,guild){
+            let msgsplit = msg.content.split(" ");
+            if(guild) {
+                guild.welcomeMessageEnabled = true;
+                GuildData.setGuildById(msg.guild.id,guild);
+                msg.reply("done");
+            }
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["bee","set","welcome","disable"],
+        async cmd(msg:Discord.Message,user,guild){
+            let msgsplit = msg.content.split(" ");
+            if(guild) {
+                guild.welcomeMessageEnabled = false;
                 GuildData.setGuildById(msg.guild.id,guild);
                 msg.reply("done");
             }
