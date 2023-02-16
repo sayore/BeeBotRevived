@@ -293,6 +293,7 @@ export let MasterCommands : ICommand[] = [
                         if(guild) {
                             guild.extra ??= {}; //if guild.extra is undefined, set it to an empty object
                             guild.extra.messageRedirects ??= {}; //if guild.extra.messageRedirects is undefined, set it to an empty object
+                            if(_.isArray(guild.extra.messageRedirects)) guild.extra.messageRedirects = {};
                             guild.extra.messageRedirects[msg.channelId] = {to: msgsplit[3]};
                             GuildData.setGuildById(msg.guild.id,guild);
                             msg.reply("done");
