@@ -14,7 +14,7 @@ import { RPG } from "../RPG/rpg";
 import { CanvasGradient, CanvasPattern, createCanvas } from "canvas";
 import Color from "color";
 import {DivorceRequest} from "../Data/DivorceRequest";
-import { getGuildById } from "../Helper/guild";
+import { GuildData } from "../Helper/guild";
 
 
 export let TrustedCommands: ICommand[] = [
@@ -106,7 +106,7 @@ export let TrustedCommands: ICommand[] = [
             try {
                 var mentions = getMentions(msg.content);
                 if (mentions.length == 1) user = await Userdata.getUser(mentions[0])
-                let guild = await getGuildById(msg.guild.id)
+                let guild = await GuildData.getGuildById(msg.guild.id)
                 
                 var canvas = createCanvas(720,380);
                 var ctx = canvas.getContext('2d');
@@ -296,6 +296,7 @@ export let TrustedCommands: ICommand[] = [
             defaultReactionHandler(msg, { target: mention, key: "pats", singular: "Pats", plural: "pats" }, [
                 { template: ["PATPATPATPATPAT"], special: {}, link: "https://c.tenor.com/tYS5DBIos-UAAAAS/kyo-ani-musaigen.gif" },
                 { template: ["PATPATPATPATPAT?"], special: {}, link: "https://c.tenor.com/EtvotzSToyMAAAAd/petra-rezero.gif" },
+                { template: ["GET SHARK PATS!"], special: {}, link: "https://media.tenor.com/JpairZOomiEAAAAd/bl%C3%A5haj-ikea-shark.gif" },
                 { template: ["PATPATPATPATPAT!"], special: {}, link: "https://c.tenor.com/rc8PwWHaV9gAAAAC/headpat-patpat.gif" },
                 { template: ["PATPATPATPATPAT MAAAI"], special: {}, link: "https://c.tenor.com/wLqFGYigJuIAAAAC/mai-sakurajima.gif" },
                 { template: ["PATPATPATPATPAT"], special: {}, link: "https://c.tenor.com/0XzZ4R16RaQAAAAC/anime-smile.gif" },

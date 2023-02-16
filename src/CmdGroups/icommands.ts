@@ -16,11 +16,12 @@ export interface ICommand {
     triggerwords?:string[]
     triggerfunc?:(msg:Discord.Message) => boolean;
     typeofcmd?:TypeOfCmd
-    cmd:(msg: Discord.Message, user?:Userdata) => Promise<void>;
-    isHalting?:boolean,
+    cmd:(msg: Discord.Message, user?:Userdata) => Promise<void|boolean>
+    isHalting?:boolean
+    canHalt?:boolean
 
-    visibleInHelp?:boolean,
-    simpleHelpName?:string,
+    visibleInHelp?:boolean
+    simpleHelpName?:string
     helpDescription?:string
 }
 

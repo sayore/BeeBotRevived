@@ -72,42 +72,49 @@ export async function SimplePerRules(cmds: ICommand[], msg: Discord.Message, use
             if (v.ownerlimited == true && msg.guild.ownerId != msg.author.id) { continue; }
         }
 
+        let exec = async () => {
+            // When a command is executed, it can halt the execution of other commands.
+            // This is useful for commands like "help" that should be the only thing that executes.
+            //
+            // Commands are able to either halt by default when they are executed (and the conditions are met for execution),
+            // OR they can halt if they return true.
+            //
+            // Commands that do not return anything will just be executed and not halt. Making them "fire and forget" commands. (Improves performance)
+            var halt;
+            if(v.canHalt) halt = await v.cmd(msg, (user));
+            else { v.cmd(msg, (user)); }
 
-        if (v.triggerfunc != undefined) {
-            //console.log(v.userlimitedids)
-            if (v.triggerfunc(msg)) {
-                v.cmd(msg, (user));
-                reports.addExecuted(v.isHalting);
+            halt = v.isHalting || halt==true;
 
-                if (v.isHalting)
-                    return reports;
-                    
-            }
-        }
-
-        if (v.messagecontent != undefined) {
-            if (msg.content.toLowerCase() == v.messagecontent.toLowerCase()) {
-                v.cmd(msg, (user));
-                reports.addExecuted(v.isHalting);
-                if (v.isHalting)
-                    return reports
-            }
-        }
-
-        if (v.always == true) {
-            v.cmd(msg, (user));
-            reports.addExecuted(v.isHalting);
-            if (v.isHalting)
+            reports.addExecuted(halt);
+            if (halt)
                 return reports;
+            else
+                return undefined;
+        }
+
+        // If the command has a trigger function, execute it.
+        if (v.triggerfunc != undefined && v.triggerfunc(msg)) {
+            let res = exec();
+            if(res) return await res;
+        }
+
+        // If the message is exactly the same as the command, execute it.
+        if (v.messagecontent != undefined && (msg.content.toLowerCase() == v.messagecontent.toLowerCase())) {
+            let res = exec();
+            if(res) return await res;
+        }
+
+        // Always Commands are basically helpful for statistics.
+        if (v.always == true) {
+            let res = exec();
+            if(res) return await res;
         }
         
-        if (v.triggerwords != undefined && v.triggerwords.length >= 1) {
-            if (CheckForManyWordsCI(msg.content, v.triggerwords)) {
-                v.cmd(msg, (user));
-                reports.addExecuted(v.isHalting);
-                if (v.isHalting)
-                    return reports;
-            }
+        // If a message contains the words in the triggerwords array, execute it.
+        if (v.triggerwords != undefined && v.triggerwords.length >= 1 && CheckForManyWordsCI(msg.content, v.triggerwords)) {
+            let res = exec();
+            if(res) return await res;
         }
     }
 

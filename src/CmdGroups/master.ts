@@ -8,7 +8,7 @@ import { Logging } from "supernode/Base/Logging";
 import _ from "lodash";
 import { Userdata } from '../Helper/user';
 import { RPG } from '../RPG/rpg';
-import { getGuildById, setGuildByID } from "../Helper/guild";
+import { GuildData } from "../Helper/guild";
 
 export let MasterCommands : ICommand[] = [
     {
@@ -288,12 +288,12 @@ export let MasterCommands : ICommand[] = [
         ownerlimited:true,
         triggerwords:["bee","set","welcome","message"],
         async cmd(msg:Discord.Message){
-            let guild = await getGuildById(msg.guild.id);
+            let guild = await GuildData.getGuildById(msg.guild.id);
             if(guild) {
                 guild.welcomeMessage = msg.content.replace("bee set welcome message ","");
                 guild.welcomeMessageChannel = msg.channel.id;
                 guild.welcomeMessageEnabled = true;
-                setGuildByID(msg.guild.id,guild);
+                GuildData.setGuildByID(msg.guild.id,guild);
                 msg.reply("done");
             }
         }

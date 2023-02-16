@@ -14,7 +14,7 @@ import { EveryoneCommands, TrustedCommands, RandomEvents, RPGCommands,  BobComma
 import { TypeOfApplication, SafetyMode, Application } from 'supernode/Base/Application';
 import { ApplicationCollection } from 'supernode/Base/mod';
 
-import { getGuildById } from './Helper/guild';
+import { GuildData } from './Helper/guild';
 
 export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
@@ -73,7 +73,7 @@ export class BeeApplication implements Application {
 			} catch(e) {
 				Logging.log("Error in guildMemberAdd",LogLevel.Report)
 			}
-			let guild = await getGuildById(member.guild.id);
+			let guild = await GuildData.getGuildById(member.guild.id);
 
 			if(guild.welcomeMessageEnabled) {
 				let welcChannel	= await clientBee.channels.fetch(guild.welcomeMessageChannel)
