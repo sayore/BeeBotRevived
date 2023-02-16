@@ -52,6 +52,7 @@ export let EveryoneCommands : ICommand[] = [
                 if(redirectChannel && redirectChannel.isText()) {
                     msg.channel.send("Deine Nachricht wurde an die aktiven mods weitergeleitet kleinen moment bitte :3")
                     var embed = new Discord.MessageEmbed();
+                    embed.setAuthor({name:user.tag, iconURL: msg.member.avatarURL({dynamic: true, size: 512})});
                     embed.setDescription(msg.content);
                     embed.setColor("RANDOM");
                     embed.setTimestamp(msg.createdTimestamp);
