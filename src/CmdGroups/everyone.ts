@@ -46,7 +46,7 @@ export let EveryoneCommands : ICommand[] = [
             if(msg.author.bot) return false;
 
             console.log("A message was sent")
-            if(guild?.extra?.messageRedirects[msg.channelId]) {
+            if(guild.extra.messageRedirects[msg.channelId]) {
                 console.log("A message was sent in a redirect channel")
                 var redirectChannel = clientBee.channels.cache.get(guild.extra.messageRedirects[msg.channelId].to);
                 if(redirectChannel && redirectChannel.isText()) {

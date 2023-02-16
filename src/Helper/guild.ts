@@ -13,7 +13,7 @@ export class GuildData {
     this.welcomeMessageChannel = "";
     this.welcomeMessage = "";
     this.welcomeMessageEnabled = false;
-    this.extra = {};
+    this.extra = {messageRedirects:[]};
   }
 
   setWelcomeMessageChannel(channel: string) {
