@@ -7,7 +7,7 @@ import * as Discord from 'discord.js';
 import level from 'level-ts';
 import { MasterCommands } from './CmdGroups/master';
 import { ResultReport, SimplePerRules } from './CmdGroups/command.helper';
-import { SimpleReactionsPerRules, TestReactions, MarriageReactions } from './InteractionReactions/mod';
+import { SimpleReactionsPerRules, MarriageReactions } from './InteractionReactions/mod';
 import { DBHelper } from './db.helper';
 
 import { EveryoneCommands, TrustedCommands, RandomEvents, RPGCommands,  BobCommands } from './CmdGroups/mod';
@@ -19,8 +19,6 @@ import { GuildData } from './Helper/guild';
 export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 export let db = new level('./database');
-import "./DBUpdates/user-to-jsonuser";
-import { ChannelTypes } from 'discord.js/typings/enums';
 import { Userdata } from './Helper/user';
 
 export let randomEvents = new RandomEvents();
@@ -34,13 +32,16 @@ async function GenerealReadyAsync(e: Discord.Client) {
 	let logins = await DBHelper.getCheckd(db, "logins", 1);
 	await db.put('logins', ++logins);
 	randomEvents.start();
-
 }
 
 //Main Application
 export class BeeApplication implements Application {
 	beeToken: string;
 	bobToken: string;
+	typeOfApplication?: TypeOfApplication;
+	needsSafeMode?: SafetyMode;
+	meta?: object;
+
 	constructor(beeToken: string, bobToken: string) {
 		this.beeToken = beeToken;
 		this.bobToken = bobToken;
@@ -54,10 +55,7 @@ export class BeeApplication implements Application {
 	exit?(eventdata?: any): void {
 		Logging.log(eventdata)
 	}
-	typeOfApplication?: TypeOfApplication;
-	needsSafeMode?: SafetyMode;
-	meta?: object;
-
+	
 	static hasStarted = false;
 	db() { return db; }
 	init() {
@@ -84,22 +82,13 @@ export class BeeApplication implements Application {
 		})
 
 		clientBee.on('messageCreate', async message => {
-			//Logging.log("message..." + (await message.content))
-			// Check if message starts with the Bot's Prefix AND that the user has the group to be allowed to use these Commands (Cool Kids)
 			var user = await Userdata.getUser(message.member.id,message);
 			var guild = await GuildData.getGuildById(message.guildId);
 
 			var resFullreport = new ResultReport(false,false,0,0)
-			//console.log(resFullreport)
 			resFullreport=await SimplePerRules(EveryoneCommands, message,user,guild, resFullreport);
-			//console.log(resFullreport)
-			//resFullreport.report()
 			resFullreport=await SimplePerRules(MasterCommands, message,user,guild, resFullreport);
-			//console.log(resFullreport)
-			//resFullreport.report()
 			resFullreport=await SimplePerRules(TrustedCommands, message,user,guild, resFullreport);
-			//console.log(resFullreport)
-			//resFullreport.report()
 			resFullreport=await SimplePerRules(RPGCommands, message,user,guild, resFullreport);
 			resFullreport.report()
 
@@ -107,21 +96,13 @@ export class BeeApplication implements Application {
 		});
 
 		clientBee.on('interactionCreate', async interaction => {
-			// Expected:
-			// 'accept-divorce'
-			// 'reject-divorce'
-			let simpreacts = SimpleReactionsPerRules(TestReactions,interaction,new ResultReport(false,false,0,0));
-			if(simpreacts.executed) return;
-			simpreacts.add(SimpleReactionsPerRules(MarriageReactions,interaction,new ResultReport(false,false,0,0)))
-			simpreacts.report();
+			SimpleReactionsPerRules(MarriageReactions,interaction,new ResultReport(false,false,0,0)).report();
 		});
 
 		clientBob.on('messageCreate', async message => {
 			var user = await Userdata.getUser(message.member.id,message);
 			var guild = await GuildData.getGuildById(message.guildId);
 			SimplePerRules(BobCommands, message, user, guild);
-
-			//setUser(message.member, user);
 		});
 
 	}

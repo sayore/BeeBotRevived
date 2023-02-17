@@ -123,14 +123,14 @@ export let TrustedCommands: ICommand[] = [
                 ctx.fillStyle="black"
                 while(ctx.measureText(user.tag).width>=710){
                     mult-=5
-                    ctx.font = mult+'px Impact'
+                    ctx.font = mult+'px gg-sans'
                 }
                 ctx.fillText(user.tag, 10, 85)
 
-                ctx.font = '34px Mono'
+                ctx.font = '24px Mono'
                 ctx.fillStyle="black"
                 function writeStat(pos:number,text:string,val:number) {
-                    ctx.fillText(text+" "+val.toString(), 20, 150+pos*40);
+                    ctx.fillText(text+" "+val.toString(), 20, 180+pos*27);
                 }
                 writeStat(0,"STR",user.rpg.str)
                 writeStat(1,"AGI",user.rpg.agi)
@@ -139,16 +139,24 @@ export let TrustedCommands: ICommand[] = [
                 writeStat(4,"DEX",user.rpg.dex)
                 writeStat(5,"LUK",user.rpg.luk)
 
-                ctx.font = '34px Mono'
-                ctx.fillStyle="black"
+                ctx.font = '24px gg-sans bold'
+                ctx.fillText("("+Math.floor(RPG.expToNextLevel(user.rpg)/RPG.nextLevelExpRequired(user.rpg)*100)+"% until lvlup)", 460, 133);
+                ctx.font = '44px gg-sans bold'
+                ctx.fillText("Lvl "+user.rpg.level, 280, 133);
+                ctx.font = '16px gg-sans bold'
+                ctx.fillText("SKILLPOINTS "+user.rpg.skillpoints, 280, 157);
+
+                ctx.font = '28px gg-sans bold'
+                ctx.fillStyle="black bold"
                 ctx.textAlign="left";
-                ctx.fillText("Actions", 280, 150);
-                ctx.fillText("Sent", 500, 150);
-                ctx.fillText("Got", 620, 150);
+                ctx.fillText("Actions", 280, 200);
+                ctx.fillText("Sent", 480, 200);
+                ctx.fillText("Got", 620, 200);
+                ctx.strokeText("Actions", 280, 200);
                 async function writeAction(pos:number,action:Actions,text:string) {
-                    ctx.fillText(text, 280, 150+(pos+1)*36);
-                    ctx.fillText((await user.getSent(action)).toString(), 500, 150+(pos+1)*36);
-                    ctx.fillText((await user.getReceived(action)).toString(), 620, 150+(pos+1)*36);
+                    ctx.fillText(text, 280, 200+(pos+1)*30);
+                    ctx.fillText((await user.getSent(action)).toString(), 480, 200+(pos+1)*30);
+                    ctx.fillText((await user.getReceived(action)).toString(), 620, 200+(pos+1)*30);
                 }
 
                 await writeAction(0,"hug","Hugs")
@@ -159,7 +167,7 @@ export let TrustedCommands: ICommand[] = [
 
                 ctx.resetTransform()
 
-                ctx.font = '30px Impact'
+                ctx.font = '30px gg-sans'
                 ctx.rotate(0.1)
                 ctx.fillStyle="yellow"
                 ctx.fillText('Awesome!', 50, 100)
