@@ -1,4 +1,4 @@
-import { RPG,RPGData } from "../RPG/RPG";
+import { RPG,RPGData } from "../RPG/BaseRPG";
 import { clientBee, db } from '../app';
 import _ from "lodash";
 import * as Discord from 'discord.js';

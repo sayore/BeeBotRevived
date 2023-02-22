@@ -10,7 +10,7 @@ import { MasterCommands } from "./MasterCommands";
 import _ from "lodash";
 import { Actions, Userdata } from "../Helper/Userdata";
 import { LogLevel, Logging } from 'supernode/Base/Logging';
-import { RPG } from "../RPG/RPG";
+import { RPG } from "../RPG/BaseRPG";
 import { CanvasGradient, CanvasPattern, createCanvas } from "canvas";
 import Color from "color";
 import {DivorceRequest} from "../Data/DivorceRequest";

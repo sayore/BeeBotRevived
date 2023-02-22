@@ -26,6 +26,7 @@ export class RPGData {
 }
 
 export class RPG {
+    //TODO: Add a way to get the exp needed for the next level.
     static getPosition(rpg: RPGData) : Vector2 {
         if(rpg.position)
         return new Vector2(rpg.position.x?rpg.position.x:0,rpg.position.y?rpg.position.y:0);

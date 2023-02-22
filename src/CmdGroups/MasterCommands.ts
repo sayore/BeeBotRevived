@@ -7,7 +7,7 @@ import { Environment } from "supernode/Base/Environment";
 import { Logging } from "supernode/Base/Logging";
 import _ from "lodash";
 import { Userdata } from '../Helper/Userdata';
-import { RPG } from '../RPG/RPG';
+import { RPG } from '../RPG/BaseRPG';
 import { GuildData } from "../Helper/GuildData";
 import { MessageData } from "../Helper/MessageData";
 import { StringExt } from "supernode/String/StringExt";

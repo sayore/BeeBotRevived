@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { Userdata } from '../Helper/Userdata';
 import { Logging, LogLevel, LogTarget } from 'supernode/Base/Logging';
 import { clientBee, db } from '../app';
-import { RPG } from '../RPG/RPG';
+import { RPG } from '../RPG/BaseRPG';
 import { Vector2 } from 'supernode/Math/Vector2';
 import { getRandom } from './command.helper';
 import * as Discord from 'discord.js';
