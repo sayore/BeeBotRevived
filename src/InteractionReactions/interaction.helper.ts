@@ -5,7 +5,7 @@ import { clientBee, clientBob, db } from "../app";
 import { CheckForManyWordsCI, ResultReport } from "../CmdGroups/command.helper";
 import { DBHelper } from "../db.helper";
 import { IReaction } from "./ireaction";
-import { Userdata } from "../Helper/user";
+import { Userdata } from "../Helper/Userdata";
 
 /**
  * 

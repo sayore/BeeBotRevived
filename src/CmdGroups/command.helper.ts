@@ -4,12 +4,12 @@ import { Item } from 'supernode/Game/Item';
 import { ItemStack } from 'supernode/Game/ItemStack';
 import { db } from '../app';
 import { DBHelper } from '../db.helper';
-import { ICommand } from "./icommands";
+import { ICommand } from "./ICommand";
 import { clientBee, clientBob } from "../app";
 import _, { startsWith } from "lodash";
-import { Userdata } from '../Helper/user';
+import { Userdata } from '../Helper/Userdata';
 import { report } from 'process';
-import { GuildData } from '../Helper/guild';
+import { GuildData } from '../Helper/GuildData';
 
 export class ResultReport {
 

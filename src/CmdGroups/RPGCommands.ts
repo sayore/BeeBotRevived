@@ -1,11 +1,11 @@
-import { ICommand } from '../CmdGroups/icommands';
-import { Places } from '../RPG/monster';
+import { ICommand } from './ICommand';
+import { Places } from '../RPG/BaseMonster';
 import { ItemStack } from 'supernode/Game/ItemStack';
 import _ from 'lodash';
-import { Userdata } from '../Helper/user';
+import { Userdata } from '../Helper/Userdata';
 import { Logging, LogLevel, LogTarget } from 'supernode/Base/Logging';
 import { clientBee, db } from '../app';
-import { RPG } from '../RPG/rpg';
+import { RPG } from '../RPG/RPG';
 import { Vector2 } from 'supernode/Math/Vector2';
 import { getRandom } from './command.helper';
 import * as Discord from 'discord.js';

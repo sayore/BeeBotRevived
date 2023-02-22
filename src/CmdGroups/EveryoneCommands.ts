@@ -1,13 +1,13 @@
-import { ICommand, TypeOfCmd } from "./icommands";
+import { ICommand, TypeOfCmd } from "./ICommand";
 import * as Discord from 'discord.js';
 import { clientBee, db } from "../app";
 import { MessageHelper } from "supernode/Discord/mod";
 import { DBHelper } from "../db.helper";
 import { Logging } from "supernode/Base/Logging";
-import { RPG, RPGData } from "../RPG/rpg";
+import { RPG, RPGData } from "../RPG/RPG";
 import _ from "lodash";
-import { Userdata } from "../Helper/user";
-import { GuildData } from "../Helper/guild";
+import { Userdata } from "../Helper/Userdata";
+import { GuildData } from "../Helper/GuildData";
 //import { getUser, setUser } from "./command.helper";
 
 var randomUserIdCache:{time:number,id:string}[] = []
@@ -16,8 +16,7 @@ export let EveryoneCommands : ICommand[] = [
     {
         typeofcmd:TypeOfCmd.Information,
         always:true,
-        async cmd(msg,userdata) {
-            console.log("Eh2")
+        async cmd(msg,userdata,guilddata) {
             if(msg.author.bot) return;
 
             //Get user data

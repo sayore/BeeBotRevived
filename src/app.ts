@@ -5,7 +5,7 @@ export var Env = envLoader(EnvFile);
 
 import * as Discord from 'discord.js';
 import level from 'level-ts';
-import { MasterCommands } from './CmdGroups/master';
+import { MasterCommands } from './CmdGroups/MasterCommands';
 import { ResultReport, SimplePerRules } from './CmdGroups/command.helper';
 import { SimpleReactionsPerRules, MarriageReactions } from './InteractionReactions/mod';
 import { DBHelper } from './db.helper';
@@ -14,12 +14,14 @@ import { EveryoneCommands, TrustedCommands, RandomEvents, RPGCommands,  BobComma
 import { TypeOfApplication, SafetyMode, Application } from 'supernode/Base/Application';
 import { ApplicationCollection } from 'supernode/Base/mod';
 
-import { GuildData } from './Helper/guild';
+import { GuildData } from './Helper/GuildData';
 
-export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
+export let clientBee = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES", "DIRECT_MESSAGE_REACTIONS", "GUILD_EMOJIS_AND_STICKERS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS"], partials: ["MESSAGE", "CHANNEL", "REACTION"] });
 export let clientBob = new Discord.Client({ intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MEMBERS", "DIRECT_MESSAGES"] });
 export let db = new level('./database');
-import { Userdata } from './Helper/user';
+import { Userdata } from './Helper/Userdata';
+import { MessageData } from './Helper/MessageData';
+import _ from 'lodash';
 
 export let randomEvents = new RandomEvents();
 Logging.setLogTarget(LogLevel.Unknown , LogTarget.All);
@@ -96,7 +98,82 @@ export class BeeApplication implements Application {
 		});
 
 		clientBee.on('interactionCreate', async interaction => {
+			Logging.log("interaction",LogLevel.Report) 
 			SimpleReactionsPerRules(MarriageReactions,interaction,new ResultReport(false,false,0,0)).report();
+		});
+
+		clientBee.on('messageReactionAdd', async (reaction, discorduser) => {
+			if(discorduser.bot) return;
+			if(reaction.partial) {
+				try {
+					await reaction.fetch();
+				} catch (error) {
+					Logging.log('Something went wrong when fetching the message: ', error);
+					return;
+				}
+			}
+			if(reaction.message.partial) {
+				try {
+					await reaction.message.fetch();
+				} catch (error) {
+					Logging.log('Something went wrong when fetching the message: ', error);
+					return;
+				}
+			}
+			Logging.log("Trying to add role",LogLevel.Report)
+			var user = await Userdata.getUser(discorduser.id);
+			var guild = await GuildData.getGuildById(reaction.message.guildId);
+			var message = await MessageData.getMessageById(reaction.message.id);
+
+			var reactObj:{emojis:string[],names:string[],message} = _.get(message,"extra.reactRoles");
+			if(reactObj == undefined) {
+				Logging.log("No reactObj",LogLevel.Report)
+				return;
+			}
+			// Give discorduser the role
+			var role = reaction.message.guild.roles.cache.find(role => role.name === reactObj.names[reactObj.emojis.indexOf(reactObj.emojis.find(v=>v.startsWith("<:"+reaction.emoji.name)))]);
+			if(role == undefined) { Logging.log("No role found ("+JSON.stringify(reactObj.emojis)+")\n"+reactObj.emojis.find(v=>v.startsWith("<:"+reaction.emoji.name)),LogLevel.Report); return; }
+			var member = reaction.message.guild.members.cache.find(member => member.id === discorduser.id);
+			if(member == undefined) { Logging.log("No member found",LogLevel.Report); return;}
+			member.roles.add(role);
+			Logging.log("Added role "+role.name+" to "+member.displayName,LogLevel.Report)
+		});
+
+		clientBee.on('messageReactionRemove', async (reaction, discorduser) => {
+			if(discorduser.bot) return;
+			if(reaction.partial) {
+				try {
+					await reaction.fetch();
+				} catch (error) {
+					Logging.log('Something went wrong when fetching the message: ', error);
+					return;
+				}
+			}
+			if(reaction.message.partial) {
+				try {
+					await reaction.message.fetch();
+				} catch (error) {
+					Logging.log('Something went wrong when fetching the message: ', error);
+					return;
+				}
+			}
+			Logging.log("Trying to remove role",LogLevel.Report)
+			var user = await Userdata.getUser(discorduser.id);
+			var guild = await GuildData.getGuildById(reaction.message.guildId);
+			var message = await MessageData.getMessageById(reaction.message.id);
+
+			var reactObj:{emojis:string[],names:string[],message} = _.get(message,"extra.reactRoles");
+			if(reactObj == undefined) {
+				Logging.log("No reactObj",LogLevel.Report)
+				return;
+			}
+			// Give discorduser the role
+			var role = reaction.message.guild.roles.cache.find(role => role.name === reactObj.names[reactObj.emojis.indexOf(reactObj.emojis.find(v=>v.startsWith("<:"+reaction.emoji.name)))]);
+			if(role == undefined) { Logging.log("No role found ("+JSON.stringify(reactObj.emojis)+")\n"+reactObj.emojis.find(v=>v.startsWith("<:"+reaction.emoji.name)),LogLevel.Report); return; }
+			var member = reaction.message.guild.members.cache.find(member => member.id === discorduser.id);
+			if(member == undefined) { Logging.log("No member found",LogLevel.Report); return;}
+			member.roles.remove(role);
+			Logging.log("Removed role "+role.name+" to "+member.displayName,LogLevel.Report)
 		});
 
 		clientBob.on('messageCreate', async message => {
@@ -104,6 +181,8 @@ export class BeeApplication implements Application {
 			var guild = await GuildData.getGuildById(message.guildId);
 			SimplePerRules(BobCommands, message, user, guild);
 		});
+
+
 
 	}
 	async run(eventdata: any) {

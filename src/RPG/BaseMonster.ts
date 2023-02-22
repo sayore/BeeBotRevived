@@ -4,7 +4,7 @@ import { Chance } from 'supernode/Math/mod';
 import { ItemStack } from 'supernode/Game/ItemStack';
 import _ from 'lodash';
 import { ItemDB } from "supernode/Game/ItemDB";
-import { BeeItemDB } from "./itemdb";
+import { BeeItemDB } from "./ItemDB";
 
 class BaseMonster {
     type:"normal"

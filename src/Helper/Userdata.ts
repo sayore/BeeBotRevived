@@ -1,4 +1,4 @@
-import { RPG,RPGData } from "../RPG/rpg";
+import { RPG,RPGData } from "../RPG/RPG";
 import { clientBee, db } from '../app';
 import _ from "lodash";
 import * as Discord from 'discord.js';
@@ -36,15 +36,48 @@ export class Userdata {
         this.marriedTo.push(userid);
     }
 
-    async getSent(type:Actions) : Promise<number>{
+
+    // Get the amount of sent reactions of a type
+    async getSent(type:Actions|string) : Promise<number>{
         return this.extra?.reactionsStats?.send[type] ?? 0;
     }
-    async getReceived(type:Actions) : Promise<number> {
-        return this.extra?.reactionsStats?.received[type] ?? 0;
+    // Get the amount of received reactions of a type
+    async getReceived(type:Actions|string) : Promise<number> {
+        return _.get(this,"extra.reactionsStats.received",0)
     }
+    // Set the amount of sent reactions of a type
+    async setSent(type:Actions|string,amount:number) {
+        _.set(this,"extra.reactionsStats.send",amount)
+
+        return this;
+    }
+    // Set the amount of received reactions of a type
+    async setReceived(type:Actions|string,amount:number) {
+        _.set(this,"extra.reactionsStats.received",amount)
+
+        return this;
+    }
+
+    // Add a sent reaction of a type
+    async addSent(type:Actions|string,amount:number) {
+        _.set(this,"extra.reactionsStats.send",_.get(this,"extra.reactionsStats.send",0)+amount)
+        
+        return this;
+    }
+    // Add a received reaction of a type
+    async addReceived(type:Actions|string,amount:number) {
+        _.set(this,"extra.reactionsStats.received",_.get(this,"extra.reactionsStats.received",0)+amount)
+
+        return this;
+    }
+
     async save() {
         await Userdata.setUserByID(this.id,this);
         //console.log(this);
+    }
+
+    async getDiscordUser() {
+        return await clientBee.users.fetch(this.id);
     }
 
     static async getUser(userid: string, msg?:Discord.Message): Promise<Userdata> {

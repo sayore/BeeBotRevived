@@ -1,7 +1,7 @@
 import { DiscordAPIError } from "discord.js";
 import * as Discord from 'discord.js';
-import { Userdata } from "../Helper/user";
-import { GuildData } from "../Helper/guild";
+import { Userdata } from "../Helper/Userdata";
+import { GuildData } from "../Helper/GuildData";
 
 export class CommandCollection {
 

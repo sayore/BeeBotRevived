@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { MessageHelper } from 'supernode/Discord/MessageHelper';
 import { db } from '../app';
 import { DivorceRequest } from '../Data/DivorceRequest';
-import { Userdata, userkey } from '../Helper/user';
+import { Userdata, userkey } from '../Helper/Userdata';
 import { IReaction } from "./ireaction";
 
 export let MarriageReactions: IReaction[] = [

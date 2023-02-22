@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import { ItemStack } from 'supernode/Game/ItemStack';
 import { Vector2 } from 'supernode/Math/Vector2';
-import { IPlace, Places } from './monster';
+import { IPlace, Places } from './BaseMonster';
 
 export class RPGData {
     money: number = 50;

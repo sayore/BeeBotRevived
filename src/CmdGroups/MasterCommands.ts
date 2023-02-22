@@ -1,4 +1,4 @@
-import { ICommand } from "./icommands";
+import { ICommand } from "./ICommand";
 import * as Discord from 'discord.js';
 import { CheckForManyWords, getMentions, getAllUsers } from "./command.helper";
 import { clientBee, db, EnvFile, randomEvents } from "../app";
@@ -6,9 +6,11 @@ import { MessageHelper } from "supernode/Discord/MessageHelper";
 import { Environment } from "supernode/Base/Environment";
 import { Logging } from "supernode/Base/Logging";
 import _ from "lodash";
-import { Userdata } from '../Helper/user';
-import { RPG } from '../RPG/rpg';
-import { GuildData } from "../Helper/guild";
+import { Userdata } from '../Helper/Userdata';
+import { RPG } from '../RPG/RPG';
+import { GuildData } from "../Helper/GuildData";
+import { MessageData } from "../Helper/MessageData";
+import { StringExt } from "supernode/String/StringExt";
 
 export let MasterCommands : ICommand[] = [
     {
@@ -275,6 +277,39 @@ export let MasterCommands : ICommand[] = [
         triggerwords:["stfu","bee"],
         async cmd(msg:Discord.Message){
             msg.reply("ok ʕノ)ᴥ(ヾʔ");
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["bee","react", "with"],
+        async cmd(msg:Discord.Message){
+            var split = msg.content.split(" ");
+            split.shift()
+            split.shift()
+            split.shift() 
+            msg.reply(split.join(' '))
+            var reactRolesObj:{emojis:string[],names:string[],message} = JSON.parse(split.join(' '));
+
+            msg.channel.send(reactRolesObj.message+"\n\n"+reactRolesObj.names.map((v,i)=>{ return reactRolesObj.emojis[i] + " " + v }).join("\n")).then(async (msg:Discord.Message)=>{
+                MessageData.getMessageById(msg.id).then((msgData:MessageData)=>{
+                    msgData.extra.reactRoles = reactRolesObj;
+                    msgData.save();
+                })
+
+                for (let i = 0; i < reactRolesObj.emojis.length; i++) {
+                    await msg.react(reactRolesObj.emojis[i]);
+                }
+            })
+
+            reactRolesObj.names.forEach((v:string,i)=>{
+                //If role doesnt exist, create it
+                var finding = msg.guild.roles.cache.find((role:Discord.Role)=>{return role.name == v});
+                
+                if(finding) return;
+                msg.guild.roles.create({name:v,mentionable:false,hoist:false,position:0,reason:"react role",color:0x000000})
+            })
+
+
         }
     },
     {

@@ -1,6 +1,6 @@
 import * as Discord from 'discord.js';
 import { clientBee, clientBob } from '../app';
-import { ICommand } from "./icommands";
+import { ICommand } from "./ICommand";
 
 let jokes = [
     `What do you call a flying turtle?\n||A shellicopter.||`,

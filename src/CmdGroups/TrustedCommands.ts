@@ -1,20 +1,20 @@
-import { ICommand, TypeOfCmd } from "./icommands";
+import { ICommand, TypeOfCmd } from "./ICommand";
 import * as Discord from 'discord.js';
 import { clientBee, db } from "../app";
 import { MessageHelper } from "supernode/Discord/mod";
 import { getRandom, getMentions } from './command.helper';
 import { DBHelper } from "../db.helper";
 import { MessageActionRow, MessageButton } from "discord.js";
-import { EveryoneCommands } from "./everyone";
-import { MasterCommands } from "./master";
+import { EveryoneCommands } from "./EveryoneCommands";
+import { MasterCommands } from "./MasterCommands";
 import _ from "lodash";
-import { Actions, Userdata } from "../Helper/user";
+import { Actions, Userdata } from "../Helper/Userdata";
 import { LogLevel, Logging } from 'supernode/Base/Logging';
-import { RPG } from "../RPG/rpg";
+import { RPG } from "../RPG/RPG";
 import { CanvasGradient, CanvasPattern, createCanvas } from "canvas";
 import Color from "color";
 import {DivorceRequest} from "../Data/DivorceRequest";
-import { GuildData } from "../Helper/guild";
+import { GuildData } from "../Helper/GuildData";
 
 
 export let TrustedCommands: ICommand[] = [
@@ -548,21 +548,15 @@ export let TrustedCommands: ICommand[] = [
 ]
 
 async function addActionToStatistic(action: ActionInfo, msg: Discord.Message) {
+    // Add the action to the statistics of the user
     var user = await Userdata.getUser(msg.member.id);
-    user.extra.reactionsStats ??= {}
-    user.extra.reactionsStats.send ??= {}
-    user.extra.reactionsStats.send[action.key] ??= 0;
-    user.extra.reactionsStats.send[action.key]++;
-    user.save();
+    (await user.addSent(action.key,1)).save();
 
+    // Add the action to the statistics of the target
     if (!!msg.mentions && !!msg.mentions.repliedUser) {
         try {
             var receiver = await Userdata.getUser(msg.mentions.repliedUser.id);
-            receiver.extra.reactionsStats ??= {}
-            receiver.extra.reactionsStats.received ??= {}
-            receiver.extra.reactionsStats.received[action.key] ??= 0;
-            receiver.extra.reactionsStats.received[action.key]++;
-            receiver.save();
+            (await receiver.addReceived(action.key,1)).save();
         } catch(e) {
             Logging.log(action.target+ "is not a valid user id");
         }
@@ -570,11 +564,7 @@ async function addActionToStatistic(action: ActionInfo, msg: Discord.Message) {
     if(!!action.target) {
         try {
             var receiver = await Userdata.getUser(action.target);
-            receiver.extra.reactionsStats ??= {}
-            receiver.extra.reactionsStats.received ??= {}
-            receiver.extra.reactionsStats.received[action.key] ??= 0;
-            receiver.extra.reactionsStats.received[action.key]++;
-            receiver.save();
+            (await receiver.addReceived(action.key,1)).save();
         } catch(e) {
             Logging.log(action.target+ "is not a valid user id");
         }
