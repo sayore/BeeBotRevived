@@ -131,7 +131,7 @@ export class BeeApplication implements Application {
 				return;
 			}
 			// Give discorduser the role
-			var role = reaction.message.guild.roles.cache.find(role => role.name === reactObj.names[reactObj.emojis.indexOf(reactObj.emojis.find(v=>v.startsWith("<:"+reaction.emoji.name)))]);
+			var role = reaction.message.guild.roles.cache.find(role => role.name === reactObj.names[reactObj.emojis.indexOf(reactObj.emojis.find(v=>v.startsWith("<:"+reaction.emoji.name)||v.startsWith(reaction.emoji.name)))]);
 			if(role == undefined) { Logging.log("No role found ("+JSON.stringify(reactObj.emojis)+")\n"+reactObj.emojis.find(v=>v.startsWith("<:"+reaction.emoji.name)),LogLevel.Report); return; }
 			var member = reaction.message.guild.members.cache.find(member => member.id === discorduser.id);
 			if(member == undefined) { Logging.log("No member found",LogLevel.Report); return;}
@@ -168,7 +168,7 @@ export class BeeApplication implements Application {
 				return;
 			}
 			// Give discorduser the role
-			var role = reaction.message.guild.roles.cache.find(role => role.name === reactObj.names[reactObj.emojis.indexOf(reactObj.emojis.find(v=>v.startsWith("<:"+reaction.emoji.name)))]);
+			var role = reaction.message.guild.roles.cache.find(role => role.name === reactObj.names[reactObj.emojis.indexOf(reactObj.emojis.find(v=>v.startsWith("<:"+reaction.emoji.name)||v.startsWith(reaction.emoji.name)))]]);
 			if(role == undefined) { Logging.log("No role found ("+JSON.stringify(reactObj.emojis)+")\n"+reactObj.emojis.find(v=>v.startsWith("<:"+reaction.emoji.name)),LogLevel.Report); return; }
 			var member = reaction.message.guild.members.cache.find(member => member.id === discorduser.id);
 			if(member == undefined) { Logging.log("No member found",LogLevel.Report); return;}
