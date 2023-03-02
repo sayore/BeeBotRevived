@@ -122,11 +122,11 @@ export let TrustedCommands: ICommand[] = [
                 let mult=80;
                 ctx.font = mult+'px Impact'
                 ctx.fillStyle="black"
-                while(ctx.measureText(user.tag).width>=710){
+                while(ctx.measureText(DiscordStringExt.unstyle(user.tag)).width>=710){
                     mult-=5
                     ctx.font = mult+'px gg-sans'
                 }
-                ctx.fillText(DiscordStringExt.unStyleAll(user.tag), 10, 85)
+                ctx.fillText(DiscordStringExt.unstyle(user.tag), 10, 85)
 
                 ctx.font = '24px Mono'
                 ctx.fillStyle="black"
