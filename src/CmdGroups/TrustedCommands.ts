@@ -15,6 +15,7 @@ import { CanvasGradient, CanvasPattern, createCanvas } from "canvas";
 import Color from "color";
 import {DivorceRequest} from "../Data/DivorceRequest";
 import { GuildData } from "../Helper/GuildData";
+import { DiscordStringExt } from "../Helper/StringExt";
 
 
 export let TrustedCommands: ICommand[] = [
@@ -125,7 +126,7 @@ export let TrustedCommands: ICommand[] = [
                     mult-=5
                     ctx.font = mult+'px gg-sans'
                 }
-                ctx.fillText(user.tag, 10, 85)
+                ctx.fillText(DiscordStringExt.unStyleAll(user.tag), 10, 85)
 
                 ctx.font = '24px Mono'
                 ctx.fillStyle="black"
@@ -371,6 +372,24 @@ export let TrustedCommands: ICommand[] = [
             var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, {
                 target: mention, key: "nom", singular: "nom", plural: "noms",
+                defaultTemplate: "<%= sender %> <%= action.plural %> noms <%= repliant %>!"
+            }, [
+                { link: "https://c.tenor.com/9dOzFGFZxnoAAAAM/bite-anime.gif" },
+                { link: "https://c.tenor.com/djDaxKCZXpwAAAAM/chomp-cute.gif" },
+                { link: "https://c.tenor.com/SXuvQ7XzeD0AAAAM/cake-birthday.gif" },
+                { link: "https://c.tenor.com/NUvfL_4DmHoAAAAM/yum-cute.gif" },
+                { link: "https://c.tenor.com/i9UwyNJiHCQAAAAM/nom-anime.gif" },
+                { link: "https://c.tenor.com/HO71nB7fQdkAAAAM/anime-zombielandsaga.gif" }
+            ])
+        }
+    },
+    {
+        prefix: true, typeofcmd: TypeOfCmd.Action, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "slap"),
+        async cmd(msg: Discord.Message) {
+            var mentions = getMentions(msg.content)[0];
+            var mention = (mentions ? mentions : undefined)
+            defaultReactionHandler(msg, {
+                target: mention, key: "slap", singular: "slap", plural: "slaps",
                 defaultTemplate: "<%= sender %> <%= action.plural %> because of <%= repliant %>!"
             }, [
                 { link: "https://c.tenor.com/9dOzFGFZxnoAAAAM/bite-anime.gif" },
@@ -388,10 +407,7 @@ export let TrustedCommands: ICommand[] = [
             msg.reply("yay \(◦'⌣'◦)/.");
 
             var user = await Userdata.getUser(msg.member.id);
-            user.extra.reactionsStats ??= {}
-            user.extra.reactionsStats.send ??= {}
-            user.extra.reactionsStats.send["goodbee"] ??= 0;
-            user.extra.reactionsStats.send["goodbee"]++;
+            user.addSent("goodbee", 1);
         }
     },
     {

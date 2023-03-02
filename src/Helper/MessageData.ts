@@ -1,7 +1,7 @@
 import _ from "lodash";
 import { clientBee, db } from '../app';
 
-export const guildkey = "guild_";
+export const msgkey = "msg_";
 
 export class MessageData {
   id: string;
@@ -30,7 +30,7 @@ export class MessageData {
     
 
   static async getMessageById(messageId: string): Promise<MessageData> {
-    var key = guildkey + messageId;
+    var key = msgkey + messageId;
     if (await db.exists(key)) {
         let messagedata =new MessageData()
         _.assignIn(messagedata,await (JSON.parse(await db.get(key))));
@@ -45,8 +45,8 @@ export class MessageData {
     }
   }
   static async setMessageById(messageId: string, guilddata: MessageData) {
-    console.log("saved" + guildkey + messageId+ JSON.stringify(guilddata)); 
-    return await db.put(guildkey + messageId, JSON.stringify(guilddata));
+    console.log("saved" + msgkey + messageId+ JSON.stringify(guilddata)); 
+    return await db.put(msgkey + messageId, JSON.stringify(guilddata));
   }
 
   // Save the data to the database

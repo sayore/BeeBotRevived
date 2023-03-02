@@ -11,6 +11,7 @@ import { RPG } from '../RPG/BaseRPG';
 import { GuildData } from "../Helper/GuildData";
 import { MessageData } from "../Helper/MessageData";
 import { StringExt } from "supernode/String/StringExt";
+import { DiscordStringExt } from "../Helper/StringExt";
 
 export let MasterCommands : ICommand[] = [
     {
@@ -51,6 +52,14 @@ export let MasterCommands : ICommand[] = [
             else {
                 msg.channel.send(JSON.stringify(user));
             }
+            
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["unstyle"],
+        async cmd(msg:Discord.Message,user){
+            msg.reply(DiscordStringExt.unStyleAll(msg.content))
             
         }
     },

@@ -39,11 +39,11 @@ export class Userdata {
 
     // Get the amount of sent reactions of a type
     async getSent(type:Actions|string) : Promise<number>{
-        return this.extra?.reactionsStats?.send[type] ?? 0;
+        return Number(_.get(this,"extra.reactionsStats.send."+type,0));
     }
     // Get the amount of received reactions of a type
     async getReceived(type:Actions|string) : Promise<number> {
-        return _.get(this,"extra.reactionsStats.received",0)
+        return Number(_.get(this,"extra.reactionsStats.received."+type,0))
     }
     // Set the amount of sent reactions of a type
     async setSent(type:Actions|string,amount:number) {
@@ -60,13 +60,13 @@ export class Userdata {
 
     // Add a sent reaction of a type
     async addSent(type:Actions|string,amount:number) {
-        _.set(this,"extra.reactionsStats.send",_.get(this,"extra.reactionsStats.send",0)+amount)
+        _.set(this,"extra.reactionsStats.send."+type,Number(_.get(this,"extra.reactionsStats.send."+type,0))+amount)
         
         return this;
     }
     // Add a received reaction of a type
     async addReceived(type:Actions|string,amount:number) {
-        _.set(this,"extra.reactionsStats.received",_.get(this,"extra.reactionsStats.received",0)+amount)
+        _.set(this,"extra.reactionsStats.received."+type,Number(_.get(this,"extra.reactionsStats.received."+type,0))+amount)
 
         return this;
     }

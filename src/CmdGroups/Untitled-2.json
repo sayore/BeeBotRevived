@@ -1,0 +1,123 @@
+
+bee react with 
+ {
+  "emojis": [
+    ":one:",
+    ":two:",
+    ":three:",
+    ":four:",
+    ":five:",
+    ":six:",
+    ":seven:",
+    ":eight:"
+  ],
+  "names":[
+    "14-15",
+    "16-17",
+    "18-21",
+    "22-25",
+    "26-28",
+    "29-33",
+    "34-45",
+    "46+"
+  ],
+  "message":"Alter?"
+}
+
+bee react with 
+ {
+  "emojis": [
+    ":one:",
+    ":two:",
+    ":three:",
+    ":four:",
+    ":five:",
+    ":six:",
+    ":seven:",
+    ":eight:",
+    ":nine:"
+  ],
+  "names":[
+    "Single",
+    "In einer Beziehung",
+    "Offene Beziehung",
+    "Auf der Suche",
+    "auf der Suche nach Abenteuern",
+    "Forever Alone",
+    "Verheiratet",
+    "Poly Beziehung",
+    "Poly und auf der Suche"
+  ],
+  "message":"Beziehung?"
+}
+
+bee react with 
+ {
+  "emojis": [
+    ":flag_at:",
+    ":flag_ch:",
+    ":flag_nl:"
+  ],
+  "names":[
+    "Österreich",
+    "Schweiz",
+    "Niederlande"
+  ],
+  "message":"Land?"
+}
+
+bee react with 
+ {
+  "emojis": [
+    ":skateboard:",
+    ":loud_sound:",
+    ":bell:"
+  ],
+  "names":[
+    "Event Ping",
+    "Announcement Ping",
+    "Random Ping"
+  ],
+  "message":"Möchtest du von uns gepingt werden? (Random Ping könnte Dead Chat sein, oder wenn es etwas unterhaltsames gibt :3)"
+}
+
+
+bee react with
+ {
+  "emojis": [
+    ":90pxFlag_of_Brandenburg:",
+    ":90pxFlag_of_Hamburg:",
+    ":90pxFlag_of_Hesse:",
+    ":90pxFlag_of_MecklenburgWestern_P:",
+    ":90pxFlag_of_North_RhineWestphali:",
+    ":90pxFlag_of_SchleswigHolstein:",
+    ":Flag_of_BadenWrttemberg:",
+    ":Flag_of_Bavaria_lozengy:",
+    ":Flag_of_Berlin:",
+    ":Flag_of_Bremen:",
+    ":Flag_of_Lower_Saxony:",
+    ":Flag_of_RhinelandPalatinate:",
+    ":Flag_of_Saarland:",
+    ":Flag_of_Saxony:",
+    ":Flag_of_SaxonyAnhalt_state:",
+    ":Flag_of_Thuringia:"],
+    "names":[
+    "Brandenburg",
+    "Hamburg",
+    "Hessen",
+    "Mecklenburg-Vorpommern",
+    "Nordrhein-Westfalen",
+    "Schleswig Holstein",
+    "Baden Würtemberg",
+    "Bayern",
+    "Berlin",
+    "Bremen",
+    "Niedersachsen",
+    "Rheinland-Pfalz",
+    "Saarland",
+    "Sachsen",
+    "Sachsen-Anhalt",
+    "Thüringen"
+  ],
+  "message":"Bundesland?"
+}

@@ -34,6 +34,9 @@ async function GenerealReadyAsync(e: Discord.Client) {
 	let logins = await DBHelper.getCheckd(db, "logins", 1);
 	await db.put('logins', ++logins);
 	randomEvents.start();
+
+	let guild = await GuildData.getGuildById("900320264129241119");
+	console.log(guild)
 }
 
 //Main Application
@@ -62,6 +65,7 @@ export class BeeApplication implements Application {
 	db() { return db; }
 	init() {
 		BeeApplication.hasStarted = true;
+		
 		clientBee.on('ready', GenerealReadyAsync);
 		clientBob.on('ready', GenerealReadyAsync);
 
