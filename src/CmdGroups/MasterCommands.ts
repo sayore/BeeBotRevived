@@ -59,7 +59,7 @@ export let MasterCommands : ICommand[] = [
         ownerlimited:true,
         triggerwords:["unstyle"],
         async cmd(msg:Discord.Message,user){
-            msg.reply(DiscordStringExt.unStyleAll(msg.content))
+            msg.reply(DiscordStringExt.unstyle(msg.content))
             
         }
     },
