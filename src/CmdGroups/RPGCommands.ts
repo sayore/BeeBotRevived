@@ -40,7 +40,7 @@ export var RPGCommands: ICommand[] = [
             if (!!user.extra && !!user.extra.noForageUntil)
                 if (Date.now() < user.extra.noForageUntil) {
                     var canForageAgain = new Date(user.extra.noForageUntil - Date.now());
-                    msg.channel.send("You already foraged! (You can forage at <t:"+Math.floor( user.extra.noForageUntil / 1000 )+":T>)")
+                    msg.channel.send("You already foraged! (You can forage <t:"+Math.floor( user.extra.noForageUntil / 1000 )+":R>)")
                     return;
                 }
 
@@ -70,8 +70,8 @@ export var RPGCommands: ICommand[] = [
                 //execs+="amt"+fa.val.Amount+"\n";
             })
             //console.log(execs)
-            msg.channel.send((found.length == 0 ? "Nothing found!\n\nYou can forage again at <t:"+Math.floor( user.extra.noForageUntil / 1000 )+":T>!" :
-                "Found:\n" + tempInv.map(v => v.Amount + "x " + v.Item.Name).join('\n')) + "\n\nYou can forage again at <t:"+Math.floor( user.extra.noForageUntil / 1000 )+":T>!"
+            msg.channel.send((found.length == 0 ? "Nothing found!\n\nYou can forage again <t:"+Math.floor( user.extra.noForageUntil / 1000 )+":R>!" :
+                "Found:\n" + tempInv.map(v => v.Amount + "x " + v.Item.Name).join('\n')) + "\n\nYou can forage again <t:"+Math.floor( user.extra.noForageUntil / 1000 )+":R>!"
             );
             if (user.extra == undefined) user.extra = {}
             //! NEEDS TO BE CHANGED BACK TO 5s FOR LIVE
