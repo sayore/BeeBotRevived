@@ -41,12 +41,10 @@ export let EveryoneCommands : ICommand[] = [
         always:true,
         canHalt:true,
         async cmd(msg,user,guild) {
-            console.log("Eh?")
             if(msg.author.bot) return false;
 
-            console.log("A message was sent")
             if(guild.extra.messageRedirects[msg.channelId]) {
-                console.log("A message was sent in a redirect channel")
+                //console.log("A message was sent in a redirect channel")
                 var redirectChannel = clientBee.channels.cache.get(guild.extra.messageRedirects[msg.channelId].to);
                 if(redirectChannel && redirectChannel.isText()) {
                     msg.channel.send("Deine Nachricht wurde an die aktiven mods weitergeleitet kleinen moment bitte :3")

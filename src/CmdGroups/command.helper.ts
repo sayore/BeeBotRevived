@@ -73,7 +73,6 @@ export async function SimplePerRules(cmds: ICommand[], msg: Discord.Message, use
         else { v.cmd(msg, (user), (guild)); }
 
         halt = v.isHalting || halt;
-        console.log(halt)
 
         reports.addExecuted(halt);
         if (halt)
@@ -109,7 +108,7 @@ export async function SimplePerRules(cmds: ICommand[], msg: Discord.Message, use
         // Always Commands are helpful for statistics.
         if (v.always == true) {
             let res = await exec(v);
-            if(res!=undefined) {console.log(res); return await res;}
+            if(res!=undefined) {return await res;}
         }
         
         // If a message contains the words in the triggerwords array, execute it.

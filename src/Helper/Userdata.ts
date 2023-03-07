@@ -136,7 +136,7 @@ export class Userdata {
             console.log("User ID not declared while saving user data. Aborting save. (setUserByID)")
             return;
         }
-        Logging.log("saved" + " user" + (!!userid ? userid : userdata.id), LogLevel.Report); 
+        //Logging.log("saved" + " user" + (!!userid ? userid : userdata.id), LogLevel.Report); 
         return await db.put(userkey + (!!userid ? userid : userdata.id), JSON.stringify(userdata));
     }
     static async setUser(user: Discord.GuildMember, userdata: Userdata) {
@@ -144,7 +144,7 @@ export class Userdata {
             return await db.del(userkey + (!!user?.id ? user.id : userdata.id));
         }
     
-        Logging.log("Saved: "+ (!!user?.id ? user.id : userdata.id), "User");
+        //Logging.log("Saved: "+ (!!user?.id ? user.id : userdata.id), "User");
         if(!(!!user?.id ? user.id : userdata.id)) { // Wenn beides nicht gesetzt ist SOFORT returnen, wir wollen keine null id's
             console.log("User ID not declared while saving user data. Aborting save. (setUser "+user.id+" | "+userdata.id+")")
             return;

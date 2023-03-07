@@ -36,7 +36,7 @@ async function GenerealReadyAsync(e: Discord.Client) {
 	randomEvents.start();
 
 	let guild = await GuildData.getGuildById("900320264129241119");
-	console.log(guild)
+	//console.log(guild)
 }
 
 //Main Application

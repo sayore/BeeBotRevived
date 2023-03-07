@@ -714,20 +714,20 @@ async function simpleReactEmbed(
     links: { link: string, template?: string[], header?: string[], special?: any }[],
     msg: Discord.Message,
     action: ActionInfo) {
-        console.log(action)
+        //console.log(action)
         
         var target = await msg.guild.members.fetch(action.target);
         let targetVisName = target?.user?.username ?? target?.user?.tag ?? MessageHelper.getRepliantsVisibleName(msg);
 
-        console.log(msg.guild.name)
-        console.log(targetVisName)
+        //console.log(msg.guild.name)
+        //console.log(targetVisName)
 
         var fields = {
             sender: "<@!"+msg.member.id+">",
             repliant: targetVisName,
             action
         }
-
+        //console.log(fields.repliant)
         
         var header = "<%= _.upperFirst(action.singular) %>!"
         var template = "<%= sender %> <%= action.plural %> <%= repliant %>!" 
@@ -738,7 +738,7 @@ async function simpleReactEmbed(
         if (action.defaultTemplate)
             template = action.defaultTemplate
             if(!!action.noTargetTemplate)
-            if(action.target==msg.member.id || !action.target) {
+            if(targetVisName=="noone?") {
                 template = action.noTargetTemplate    
             }
 

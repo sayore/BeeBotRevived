@@ -45,7 +45,7 @@ export class MessageData {
     }
   }
   static async setMessageById(messageId: string, guilddata: MessageData) {
-    console.log("saved" + msgkey + messageId+ JSON.stringify(guilddata)); 
+    //console.log("saved" + msgkey + messageId+ JSON.stringify(guilddata)); 
     return await db.put(msgkey + messageId, JSON.stringify(guilddata));
   }
 

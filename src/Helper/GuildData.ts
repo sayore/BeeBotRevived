@@ -39,7 +39,7 @@ export class GuildData {
     }
   }
   static async setGuildById(guildid: string, guilddata: GuildData) {
-    console.log("saved" + guildkey + guildid+ JSON.stringify(guilddata)); 
+    //console.log("saved" + guildkey + guildid+ JSON.stringify(guilddata)); 
     return await db.put(guildkey + guildid, JSON.stringify(guilddata));
   }
 
