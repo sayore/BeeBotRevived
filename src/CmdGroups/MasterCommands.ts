@@ -95,7 +95,7 @@ export let MasterCommands : ICommand[] = [
             //msg.channel.send(JSON.stringify(toplist)); 
             let sToplist = "";
             
-            for (let i = 0; i < toplist.length; i++) {
+            for (let i = 0; i < 10; i++) {
                 const v = toplist[i];
                 var membername:string;
                 if(toplist[i].tag)
@@ -140,7 +140,7 @@ export let MasterCommands : ICommand[] = [
             //msg.channel.send(JSON.stringify(toplist)); 
             let sToplist = "";
             
-            for (let i = 0; i < toplist.length; i++) {
+            for (let i = 0; i < 10; i++) {
                 const v = toplist[i];
                 var membername: string;
                 if(toplist[i].tag)
