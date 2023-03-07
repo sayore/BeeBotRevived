@@ -204,6 +204,7 @@ export let TrustedCommands: ICommand[] = [
                 { link: "https://c.tenor.com/2lr9uM5JmPQAAAAC/hug-anime-hug.gif" },
                 { link: "https://c.tenor.com/z2QaiBZCLCQAAAAC/hug-anime.gif" },
                 { link: "https://c.tenor.com/IwRSZxi6vzkAAAAC/hug-hugs.gif" },
+                { link: "https://c.tenor.com/fklZNDaU9NMAAAAC/hideri-hideri-kanzaki.gif" },
             ])
         }
     },
@@ -252,6 +253,10 @@ export let TrustedCommands: ICommand[] = [
             defaultReactionHandler(msg, { target: mention, key: "kiss", singular: "kiss", plural: "kisses" }, [
                 { link: "https://c.tenor.com/_ttVgUDKJL0AAAAC/anime-couple.gif" },
                 { link: "https://c.tenor.com/v4Ur0OCvaXcAAAAd/koi-to-uso-kiss.gif" },
+                { link: "https://c.tenor.com/F02Ep3b2jJgAAAAC/cute-kawai.gif" },
+                { link: "https://c.tenor.com/woA_lrIFFAIAAAAC/girl-anime.gif" },
+                { link: "https://c.tenor.com/fVMPQro2eZAAAAAC/anime-kiss.gif" },
+                { link: "https://c.tenor.com/nRdyrvS3qa4AAAAC/anime-kiss.gif" },
                 { link: "https://c.tenor.com/WxITy4XYFVUAAAAC/kiss-yuri.gif" },
                 { link: "https://c.tenor.com/sihR3Fv5t8AAAAAd/bloom-into-you-yagate-kimi-ni-naru.gif" },
             ])
@@ -278,6 +283,12 @@ export let TrustedCommands: ICommand[] = [
             var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, { target: mention, key: "cuddle", singular: "cuddle", plural: "cuddles" }, [
                 { link: "https://c.tenor.com/Cy8RWMcVDj0AAAAd/anime-hug.gif" },
+                { link: "https://c.tenor.com/H7i6GIP-YBwAAAAd/a-whisker-away-hug.gif" },
+                { link: "https://c.tenor.com/MnFw3d0TjK4AAAAC/anime-hug.gif" },
+                { link: "https://c.tenor.com/okeP090NK1cAAAAC/anime-couples.gif" },
+                { link: "https://c.tenor.com/Dc5yd05wu_cAAAAC/couple-hug.gif" },
+                { link: "https://c.tenor.com/GuHHnDT6quYAAAAd/anime-couples.gif" },
+                { link: "https://c.tenor.com/0oha-un3OZIAAAAd/amor.gif" },
                 { link: "https://c.tenor.com/DlW1R4d1NQAAAAAC/anime-cuddle.gif" },
                 { link: "https://c.tenor.com/ch1kq7TOxlkAAAAC/anime-cuddle.gif" },
                 { link: "https://c.tenor.com/GJ6oX6r0mZsAAAAC/chuunibyou-anime.gif" }
@@ -305,7 +316,7 @@ export let TrustedCommands: ICommand[] = [
             defaultReactionHandler(msg, { target: mention, key: "pats", singular: "Pats", plural: "pats" }, [
                 { template: ["PATPATPATPATPAT"], special: {}, link: "https://c.tenor.com/tYS5DBIos-UAAAAS/kyo-ani-musaigen.gif" },
                 { template: ["PATPATPATPATPAT?"], special: {}, link: "https://c.tenor.com/EtvotzSToyMAAAAd/petra-rezero.gif" },
-                { template: ["GET SHARK PATS!"], special: {}, link: "https://media.tenor.com/JpairZOomiEAAAAd/bl%C3%A5haj-ikea-shark.gif" },
+                { template: ["GET SHARK PATS!"], special: {}, link: "https://c.tenor.com/JpairZOomiEAAAAd/bl%C3%A5haj-ikea-shark.gif" },
                 { template: ["PATPATPATPATPAT!"], special: {}, link: "https://c.tenor.com/rc8PwWHaV9gAAAAC/headpat-patpat.gif" },
                 { template: ["PATPATPATPATPAT MAAAI"], special: {}, link: "https://c.tenor.com/wLqFGYigJuIAAAAC/mai-sakurajima.gif" },
                 { template: ["PATPATPATPATPAT"], special: {}, link: "https://c.tenor.com/0XzZ4R16RaQAAAAC/anime-smile.gif" },
@@ -355,13 +366,84 @@ export let TrustedCommands: ICommand[] = [
             var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, {
                 target: mention, key: "love", singular: "love", plural: "loves",
-                defaultTemplate: "<%= sender %> <%= action.plural %> because of <%= repliant %>!"
+                defaultTemplate: "<%= sender %> <%= action.plural %> <%= repliant %>!"
             }, [
                 { link: "https://c.tenor.com/1rEO6m7rWWQAAAAC/i-love-you-love.gif" },
                 { link: "https://c.tenor.com/_2KihRhrHD8AAAAC/girls-heart.gif" },
                 { link: "https://c.tenor.com/B-QkRiYZPZUAAAAC/cinderella-girls-anime.gif" },
                 { link: "https://c.tenor.com/YYHukkdJkasAAAAC/anime-heart.gif" },
                 { link: "https://c.tenor.com/hT2lCppV4tIAAAAC/anime-i-love-you.gif" },
+            ])
+        }
+    },
+    {
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "kill"),
+        async cmd(msg: Discord.Message) {
+            var mentions = getMentions(msg.content)[0];
+            var mention = (mentions ? mentions : undefined)
+            defaultReactionHandler(msg, {
+                target: mention, key: "kill", singular: "kill", plural: "kills",
+                defaultTemplate: "<%= sender %> <%= action.plural %> <%= repliant %>!"
+            }, [
+                { link: "https://c.tenor.com/1dtHuFICZF4AAAAC/kill-smack.gif" },
+                { link: "https://c.tenor.com/G4SGjQE8wCEAAAAC/mikey-tokyo.gif" },
+                { link: "https://c.tenor.com/NbBCakbfZnkAAAAC/die-kill.gif" },
+                { link: "https://c.tenor.com/Mn4W4D899WEAAAAC/ira-gamagoori-attack.gif" },
+                { link: "https://c.tenor.com/36JvGViI95QAAAAC/tatsumi-akame-ga-kill.gif" },
+            ])
+        }
+    },
+    {
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "slay"),
+        async cmd(msg: Discord.Message) {
+            var mentions = getMentions(msg.content)[0];
+            var mention = (mentions ? mentions : undefined)
+            defaultReactionHandler(msg, {
+                target: mention, key: "slay", singular: "slay", plural: "slays",
+                defaultTemplate: "<%= sender %> <%= action.plural %> <%= repliant %>!"
+            }, [
+                { link: "https://c.tenor.com/1dtHuFICZF4AAAAC/kill-smack.gif" },
+                { link: "https://c.tenor.com/G4SGjQE8wCEAAAAC/mikey-tokyo.gif" },
+                { link: "https://c.tenor.com/NbBCakbfZnkAAAAC/die-kill.gif" },
+                { link: "https://c.tenor.com/Mn4W4D899WEAAAAC/ira-gamagoori-attack.gif" },
+                { link: "https://c.tenor.com/36JvGViI95QAAAAC/tatsumi-akame-ga-kill.gif" },
+            ])
+        }
+    },
+    {
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "tickle"),
+        async cmd(msg: Discord.Message) {
+            var mentions = getMentions(msg.content)[0];
+            var mention = (mentions ? mentions : undefined)
+            defaultReactionHandler(msg, {
+                target: mention, key: "tickle", singular: "tickle", plural: "tickles",
+                defaultTemplate: "<%= sender %> <%= action.plural %> <%= repliant %>!"
+            }, [
+                { link: "https://c.tenor.com/sa1QuA9GFaoAAAAC/anime-tickle.gif" },
+                { link: "https://c.tenor.com/DHDRTfdbAbIAAAAd/tickle-yuya-sakaki.gif" },
+                { link: "https://c.tenor.com/l3c7tV1zYD4AAAAC/date-a-live-date-a-live-iv.gif" },
+                { link: "https://c.tenor.com/PXL1ONAO9CEAAAAC/tickle-laugh.gif" },
+                { link: "https://c.tenor.com/L5-ABrIwrksAAAAC/tickle-anime.gif" },
+            ])
+        }
+    },
+    {
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "flex"),
+        async cmd(msg: Discord.Message) {
+            var mentions = getMentions(msg.content)[0];
+            var mention = (mentions ? mentions : undefined)
+            defaultReactionHandler(msg, {
+                target: mention, key: "flex", singular: "flex", plural: "flexes",
+                defaultTemplate: "<%= sender %> <%= action.plural %>!"
+            }, [
+                { link: "https://c.tenor.com/4PTfc3ym8m0AAAAC/anime-flex.gif" },
+                { link: "https://c.tenor.com/IFZMiZKlWa0AAAAC/flexing-anime.gif" },
+                { link: "https://c.tenor.com/v3KxhM48PpIAAAAC/anime-mha.gif" },
+                { link: "https://c.tenor.com/nU3LQQY-1RYAAAAd/clothes-ripping-flexing.gif" },
+                { link: "https://c.tenor.com/xH-VXjIUuXIAAAAC/djd4-anime.gif" },
+                { link: "https://c.tenor.com/ymiqCoMt7mQAAAAd/strong-strong-man.gif" },
+                { link: "https://c.tenor.com/avStzr1TzaIAAAAC/flex-dance.gif" },
+                { link: "https://c.tenor.com/D1L843Lja3EAAAAi/anime-flex.gif" },
             ])
         }
     },
@@ -380,6 +462,43 @@ export let TrustedCommands: ICommand[] = [
                 { link: "https://c.tenor.com/NUvfL_4DmHoAAAAM/yum-cute.gif" },
                 { link: "https://c.tenor.com/i9UwyNJiHCQAAAAM/nom-anime.gif" },
                 { link: "https://c.tenor.com/HO71nB7fQdkAAAAM/anime-zombielandsaga.gif" }
+            ])
+        }
+    },
+    {
+        prefix: true, typeofcmd: TypeOfCmd.Action, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "dance"),
+        async cmd(msg: Discord.Message) {
+            var mentions = getMentions(msg.content)[0];
+            var mention = (mentions ? mentions : undefined)
+            defaultReactionHandler(msg, {
+                target: mention, key: "dance", singular: "dance", plural: "dances",
+                defaultTemplate: "<%= sender %> <%= action.plural %> with <%= repliant %>!",
+                noTargetTemplate: "<%= sender %> <%= action.plural %>!"
+            }, [
+                { link: "https://media.tenor.com/GOYRQva4UeoAAAAd/anime-dance.gif" },
+                { link: "https://media.tenor.com/LNVNahJyrI0AAAAC/aharen-dance.gif" },
+                { link: "https://media.tenor.com/9eu9F42NQuYAAAAd/dance-anime-cool.gif" },
+                { link: "https://media.tenor.com/5swdaNmQ8csAAAAd/anime-dance.gif" },
+                { link: "https://media.tenor.com/13M7DM7nbGQAAAAd/anime-dance.gif" },
+                { link: "https://media.tenor.com/NULSPE1mw2IAAAAd/dance-anime.gif" }
+            ])
+        }
+    },
+    {
+        prefix: true, typeofcmd: TypeOfCmd.Action, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "depressed"),
+        async cmd(msg: Discord.Message) {
+            var mentions = getMentions(msg.content)[0];
+            var mention = (mentions ? mentions : undefined)
+            defaultReactionHandler(msg, {
+                target: mention, key: "depressed", singular: "depressed", plural: "depressed",
+                defaultTemplate: "<%= sender %> is <%= action.plural %>.."
+            }, [
+                { link: "https://c.tenor.com/aF6zw9GgJlYAAAAd/waiting-cold.gif" },
+                { link: "https://c.tenor.com/nwnRgU6R6OMAAAAd/anime-sword-art-online.gif" },
+                { link: "https://c.tenor.com/17IgpB1KexsAAAAC/trash-disappointed.gif" },
+                { link: "https://c.tenor.com/MP92ECwrHi8AAAAd/anime-down.gif" },
+                { link: "https://c.tenor.com/pHusOu1IPqcAAAAC/depression-alone-sad-kiriyama-anime-windy.gif" },
+                { link: "https://c.tenor.com/FUqg_JWXGCAAAAAC/sad-anime.gif" }
             ])
         }
     },
