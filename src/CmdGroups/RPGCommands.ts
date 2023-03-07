@@ -70,13 +70,14 @@ export var RPGCommands: ICommand[] = [
                 //execs+="amt"+fa.val.Amount+"\n";
             })
             //console.log(execs)
+            if (msg.member.id != "562640877705756690")
+                user.extra['noForageUntil'] = Date.now() + 60 * 1000 * 5 - (user.rpg.agi / 1000 * 60 * 1000 * 5);
+                
             msg.channel.send((found.length == 0 ? "Nothing found!\n\nYou can forage again <t:"+Math.floor( user.extra.noForageUntil / 1000 )+":R>!" :
                 "Found:\n" + tempInv.map(v => v.Amount + "x " + v.Item.Name).join('\n')) + "\n\nYou can forage again <t:"+Math.floor( user.extra.noForageUntil / 1000 )+":R>!"
             );
             if (user.extra == undefined) user.extra = {}
             //! NEEDS TO BE CHANGED BACK TO 5s FOR LIVE
-            if (msg.member.id != "562640877705756690")
-                user.extra['noForageUntil'] = Date.now() + 60 * 1000 * 5 - (user.rpg.agi / 1000 * 60 * 1000 * 5);
 
             user.rpg.money++;
             //await setUser(msg.member,user); 
