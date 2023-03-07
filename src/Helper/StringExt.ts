@@ -1,5 +1,4 @@
 export class DiscordStringExt {
-
   static unstyle(str: string) {
     let reference = [... "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"];
     let styles =
@@ -30,3 +29,4 @@ export class DiscordStringExt {
     return str;
   }
 }
+
