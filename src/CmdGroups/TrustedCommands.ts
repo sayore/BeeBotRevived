@@ -475,12 +475,12 @@ export let TrustedCommands: ICommand[] = [
                 defaultTemplate: "<%= sender %> <%= action.plural %> with <%= repliant %>!",
                 noTargetTemplate: "<%= sender %> <%= action.plural %>!"
             }, [
-                { link: "https://media.tenor.com/GOYRQva4UeoAAAAd/anime-dance.gif" },
-                { link: "https://media.tenor.com/LNVNahJyrI0AAAAC/aharen-dance.gif" },
-                { link: "https://media.tenor.com/9eu9F42NQuYAAAAd/dance-anime-cool.gif" },
-                { link: "https://media.tenor.com/5swdaNmQ8csAAAAd/anime-dance.gif" },
-                { link: "https://media.tenor.com/13M7DM7nbGQAAAAd/anime-dance.gif" },
-                { link: "https://media.tenor.com/NULSPE1mw2IAAAAd/dance-anime.gif" }
+                { link: "https://c.tenor.com/GOYRQva4UeoAAAAd/anime-dance.gif" },
+                { link: "https://c.tenor.com/LNVNahJyrI0AAAAC/aharen-dance.gif" },
+                { link: "https://c.tenor.com/9eu9F42NQuYAAAAd/dance-anime-cool.gif" },
+                { link: "https://c.tenor.com/5swdaNmQ8csAAAAd/anime-dance.gif" },
+                { link: "https://c.tenor.com/13M7DM7nbGQAAAAd/anime-dance.gif" },
+                { link: "https://c.tenor.com/NULSPE1mw2IAAAAd/dance-anime.gif" }
             ])
         }
     },
@@ -509,14 +509,14 @@ export let TrustedCommands: ICommand[] = [
             var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, {
                 target: mention, key: "slap", singular: "slap", plural: "slaps",
-                defaultTemplate: "<%= sender %> <%= action.plural %> because of <%= repliant %>!"
+                defaultTemplate: "<%= sender %> <%= action.plural %> <%= repliant %>!"
             }, [
-                { link: "https://c.tenor.com/9dOzFGFZxnoAAAAM/bite-anime.gif" },
-                { link: "https://c.tenor.com/djDaxKCZXpwAAAAM/chomp-cute.gif" },
-                { link: "https://c.tenor.com/SXuvQ7XzeD0AAAAM/cake-birthday.gif" },
-                { link: "https://c.tenor.com/NUvfL_4DmHoAAAAM/yum-cute.gif" },
-                { link: "https://c.tenor.com/i9UwyNJiHCQAAAAM/nom-anime.gif" },
-                { link: "https://c.tenor.com/HO71nB7fQdkAAAAM/anime-zombielandsaga.gif" }
+                { link: "https://c.tenor.com/ra17G61QRQQAAAAC/tapa-slap.gif" },
+                { link: "https://c.tenor.com/Ws6Dm1ZW_vMAAAAC/girl-slap.gif" },
+                { link: "https://c.tenor.com/XiYuU9h44-AAAAAC/anime-slap-mad.gif" },
+                { link: "https://c.tenor.com/5jBuDXkDsjYAAAAC/slap.gif" },
+                { link: "https://c.tenor.com/E3OW-MYYum0AAAAC/no-angry.gif" },
+                { link: "https://c.tenor.com/PeJyQRCSHHkAAAAC/saki-saki-mukai-naoya.gif" }
             ])
         }
     },
