@@ -313,16 +313,16 @@ export let TrustedCommands: ICommand[] = [
             //***happynoises are filling the room***
             var mentions = getMentions(msg.content)[0];
             var mention = (mentions ? mentions : undefined)
-            defaultReactionHandler(msg, { target: mention, key: "pats", singular: "Pats", plural: "pats" }, [
-                { template: ["PATPATPATPATPAT"], special: {}, link: "https://c.tenor.com/tYS5DBIos-UAAAAS/kyo-ani-musaigen.gif" },
-                { template: ["PATPATPATPATPAT?"], special: {}, link: "https://c.tenor.com/EtvotzSToyMAAAAd/petra-rezero.gif" },
-                { template: ["GET SHARK PATS!"], special: {}, link: "https://c.tenor.com/JpairZOomiEAAAAd/bl%C3%A5haj-ikea-shark.gif" },
-                { template: ["PATPATPATPATPAT!"], special: {}, link: "https://c.tenor.com/rc8PwWHaV9gAAAAC/headpat-patpat.gif" },
-                { template: ["PATPATPATPATPAT MAAAI"], special: {}, link: "https://c.tenor.com/wLqFGYigJuIAAAAC/mai-sakurajima.gif" },
-                { template: ["PATPATPATPATPAT"], special: {}, link: "https://c.tenor.com/0XzZ4R16RaQAAAAC/anime-smile.gif" },
-                { template: ["PATPATPATPATPAT *headrub*"], special: {}, link: "https://c.tenor.com/QAIyvivjoB4AAAAC/anime-anime-head-rub.gif" },
-                { template: ["PATPATPATPATPAT CUTE"], special: {}, link: "https://c.tenor.com/2oOTpioZ_j4AAAAC/pet-cute.gif" },
-                { template: ["PATPATPATPATPAT ANIME"], special: {}, link: "https://c.tenor.com/Vz5yn1fwv-gAAAAd/pat-anime.gif" }
+            defaultReactionHandler(msg, { target: mention, key: "pats", singular: "pats", plural: "pats" }, [
+                { template: ["PATPATPATPATPATs <%= repliant %>!"], special: {}, link: "https://c.tenor.com/tYS5DBIos-UAAAAS/kyo-ani-musaigen.gif" },
+                { template: ["PATPATPATPATPAT <%= repliant %>!"], special: {}, link: "https://c.tenor.com/EtvotzSToyMAAAAd/petra-rezero.gif" },
+                { template: ["GET SHARK PATS <%= repliant %>!!"], special: {}, link: "https://c.tenor.com/JpairZOomiEAAAAd/bl%C3%A5haj-ikea-shark.gif" },
+                { template: ["PATPATPATPATPAT! <%= repliant %> gets overly loved!"], special: {}, link: "https://c.tenor.com/rc8PwWHaV9gAAAAC/headpat-patpat.gif" },
+                { template: ["PATPATPATPATPAT <%= repliant %>!"], special: {}, link: "https://c.tenor.com/wLqFGYigJuIAAAAC/mai-sakurajima.gif" },
+                { template: ["PATPATPATPATPAT <%= repliant %>!"], special: {}, link: "https://c.tenor.com/0XzZ4R16RaQAAAAC/anime-smile.gif" },
+                { template: ["PATPATPATPATPAT *headrub* <%= repliant %>!"], special: {}, link: "https://c.tenor.com/QAIyvivjoB4AAAAC/anime-anime-head-rub.gif" },
+                { template: ["PATPATPATPATPAT CUTIE <%= repliant %>!"], special: {}, link: "https://c.tenor.com/2oOTpioZ_j4AAAAC/pet-cute.gif" },
+                { template: ["PATPATPATPATPAT <%= repliant %>!"], special: {}, link: "https://c.tenor.com/Vz5yn1fwv-gAAAAd/pat-anime.gif" }
             ])
         }
     },
@@ -349,7 +349,8 @@ export let TrustedCommands: ICommand[] = [
             var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, {
                 target: mention, key: "blush", singular: "blush", plural: "blushes",
-                defaultTemplate: "<%= sender %> <%= action.plural %> because of <%= repliant %>!"
+                defaultTemplate: "<%= sender %> <%= action.plural %> because of <%= repliant %>!",
+                noTargetTemplate: "<%= sender %> <%= action.plural %>!"
             }, [
                 { link: "https://c.tenor.com/wwxHnJqUNEMAAAAC/anime-blush.gif" },
                 { link: "https://c.tenor.com/M7wcdD0eujYAAAAd/anime-looking.gif" },
@@ -366,7 +367,8 @@ export let TrustedCommands: ICommand[] = [
             var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, {
                 target: mention, key: "love", singular: "love", plural: "loves",
-                defaultTemplate: "<%= sender %> <%= action.plural %> <%= repliant %>!"
+                defaultTemplate: "<%= sender %> <%= action.plural %> <%= repliant %>!",
+                noTargetTemplate: "<%= sender %> <%= action.plural %> themselves!"
             }, [
                 { link: "https://c.tenor.com/1rEO6m7rWWQAAAAC/i-love-you-love.gif" },
                 { link: "https://c.tenor.com/_2KihRhrHD8AAAAC/girls-heart.gif" },
@@ -434,7 +436,8 @@ export let TrustedCommands: ICommand[] = [
             var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, {
                 target: mention, key: "flex", singular: "flex", plural: "flexes",
-                defaultTemplate: "<%= sender %> <%= action.plural %>!"
+                defaultTemplate: "<%= sender %> <%= action.plural %> in front of <%= repliant %>!",
+                noTargetTemplate: "<%= sender %> <%= action.plural %>!"
             }, [
                 { link: "https://c.tenor.com/4PTfc3ym8m0AAAAC/anime-flex.gif" },
                 { link: "https://c.tenor.com/IFZMiZKlWa0AAAAC/flexing-anime.gif" },
@@ -491,7 +494,8 @@ export let TrustedCommands: ICommand[] = [
             var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, {
                 target: mention, key: "depressed", singular: "depressed", plural: "depressed",
-                defaultTemplate: "<%= sender %> is <%= action.plural %>.."
+                defaultTemplate: "<%= sender %> is <%= action.plural %> because of <%= repliant %>!",
+                noTargetTemplate: "<%= sender %> is <%= action.plural %>.."
             }, [
                 { link: "https://c.tenor.com/aF6zw9GgJlYAAAAd/waiting-cold.gif" },
                 { link: "https://c.tenor.com/nwnRgU6R6OMAAAAd/anime-sword-art-online.gif" },
