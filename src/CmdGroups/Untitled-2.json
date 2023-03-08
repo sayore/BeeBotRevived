@@ -65,6 +65,20 @@ bee react with
   ],
   "message":"Land?"
 }
+bee react with 
+ {
+  "emojis": [
+    ":arrow_up:",
+    ":repeat:",
+    ":arrow_down:"
+  ],
+  "names":[
+    "Top",
+    "Switch",
+    "Bottom"
+  ],
+  "message":"Meow meow :smug:?"
+}
 
 bee react with 
  {

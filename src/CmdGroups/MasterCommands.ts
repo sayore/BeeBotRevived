@@ -16,7 +16,7 @@ import { DiscordStringExt } from "../Helper/StringExt";
 export let MasterCommands : ICommand[] = [
     {
         ownerlimited:true,
-        triggerwords:["bee","access","can","database","?"],
+        triggerwords:["!katze","access","can","database","?"],
         async cmd(msg:Discord.Message){
             
             msg.reply(`${await db?"yes":"no"} uwu`);
@@ -24,7 +24,7 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
-        triggerwords:["bee","event","now"],
+        triggerwords:["!katze","event","now"],
         async cmd(msg:Discord.Message){
             msg.delete();
             randomEvents.randomAction();
@@ -39,7 +39,7 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
-        triggerwords:["bee","stats"],
+        triggerwords:["!katze","stats"],
         async cmd(msg:Discord.Message,user){
             console.log(msg.content)
             msg.delete();
@@ -65,7 +65,7 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
-        triggerwords:["bee","logthis"],
+        triggerwords:["!katze","logthis"],
         async cmd(msg:Discord.Message){
             Logging.log(msg.content,"LogThis")
             msg.delete();
@@ -73,16 +73,16 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
-        triggerwords:["beesaythis"],
+        triggerwords:["!katzesaythis"],
         async cmd(msg:Discord.Message){
             Logging.log(msg.content,"SayThis")
-            msg.channel.send(msg.content.replace("beesaythis ",""));
+            msg.channel.send(msg.content.replace("!katzesaythis ",""));
             msg.delete();
         }
     },
     {
         ownerlimited:true,
-        triggerwords:["bee","most","money"],
+        triggerwords:["!katze","most","money"],
         async cmd(msg:Discord.Message){
             console.log(msg.content)
             msg.delete();
@@ -123,7 +123,7 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
-        triggerwords:["bee","most","exp"],
+        triggerwords:["!katze","most","exp"],
         async cmd(msg:Discord.Message){
             console.log(msg.content)
             msg.delete();
@@ -169,7 +169,7 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
-        triggerwords:["bee","db"],
+        triggerwords:["!katze","db"],
         async cmd(msg:Discord.Message){
             console.log(msg.content)
             msg.delete();
@@ -249,7 +249,7 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
-        triggerwords:["bee","kick","pleb"],
+        triggerwords:["!katze","kick","pleb"],
         async cmd(msg:Discord.Message){
             setTimeout(async()=>{
                 await msg.reply("oki master ***blushes*** owo");
@@ -269,7 +269,7 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
-        messagecontent:"bee only listens to me",
+        messagecontent:"!katze only listens to me",
         async cmd(msg:Discord.Message){
             msg.reply("thats right, i only listen to my master uwu (except for normal commands)");
         }
@@ -283,14 +283,14 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
-        triggerwords:["stfu","bee"],
+        triggerwords:["stfu","!katze"],
         async cmd(msg:Discord.Message){
             msg.reply("ok ʕノ)ᴥ(ヾʔ");
         }
     },
     {
         ownerlimited:true,
-        triggerwords:["bee","react", "with"],
+        triggerwords:["!katze","react", "with"],
         async cmd(msg:Discord.Message){
             var split = msg.content.split(" ");
             split.shift()
@@ -349,17 +349,17 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
-        triggerwords:["bee","understood","me"],
+        triggerwords:["!katze","understood","me"],
         async cmd(msg:Discord.Message){
             msg.reply("yea i think so (⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄");
         }
     },
     {
         ownerlimited:true,
-        triggerwords:["bee","set","welcome","message"],
+        triggerwords:["!katze","set","welcome","message"],
         async cmd(msg:Discord.Message,user,guild){
             if(guild) {
-                guild.welcomeMessage = msg.content.replace("bee set welcome message ","");
+                guild.welcomeMessage = msg.content.replace("!katze set welcome message ","");
                 guild.welcomeMessageEnabled = true;
                 GuildData.setGuildById(msg.guild.id,guild);
                 msg.reply("done");
@@ -368,7 +368,7 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
-        triggerwords:["bee","set","welcome","channel"],
+        triggerwords:["!katze","set","welcome","channel"],
         async cmd(msg:Discord.Message,user,guild){
             let msgsplit = msg.content.split(" ");
             if(guild) {
@@ -380,7 +380,7 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
-        triggerwords:["bee","set","welcome","enable"],
+        triggerwords:["!katze","set","welcome","enable"],
         async cmd(msg:Discord.Message,user,guild){
             let msgsplit = msg.content.split(" ");
             if(guild) {
@@ -392,7 +392,7 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
-        triggerwords:["bee","set","welcome","disable"],
+        triggerwords:["!katze","set","welcome","disable"],
         async cmd(msg:Discord.Message,user,guild){
             let msgsplit = msg.content.split(" ");
             if(guild) {

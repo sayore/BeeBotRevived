@@ -23,7 +23,7 @@ export let TrustedCommands: ICommand[] = [
         prefix: true,
         typeofcmd: TypeOfCmd.Information,
         isHalting: true,
-        triggerwords: ["bee", "how", "many", "actions"],
+        triggerwords: ["!katze", "how", "many", "actions"],
 
         async cmd(msg: Discord.Message) {
             msg.reply("There are " +
@@ -62,7 +62,7 @@ export let TrustedCommands: ICommand[] = [
     {
         prefix: true,
         typeofcmd: TypeOfCmd.Information,
-        triggerwords: ["bee", "what", "are", "actions", "there"],
+        triggerwords: ["!katze", "what", "are", "actions", "there"],
         async cmd(msg: Discord.Message) {
             msg.reply("There are '" +
                 TrustedCommands.filter(v => { return v.typeofcmd == TypeOfCmd.Action }).map(v => { return v.messagecontent }).join("','") + "'.");
@@ -72,7 +72,7 @@ export let TrustedCommands: ICommand[] = [
         prefix: true,
         typeofcmd: TypeOfCmd.Information,
         isHalting: true,
-        triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "bee help"),
+        triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "!katze help"),
         async cmd(msg: Discord.Message) {
             msg.reply("MasterCmds: '" +
                 MasterCommands.filter(v => { return v.messagecontent != undefined })?.map(v => { return "**" + v.messagecontent + "**" }).join("','") + "'.\n" +
