@@ -260,7 +260,7 @@ export let TrustedCommands: ICommand[] = [
     {
         prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "leavetimeout"),
         async cmd(msg: Discord.Message, user) {
-
+        }
     },
     {
         prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "boop"),
