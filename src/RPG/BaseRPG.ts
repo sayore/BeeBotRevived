@@ -101,7 +101,7 @@ export class RPG {
         
         let finalDamage = Math.floor(attack * ((0.3 + Math.random()*0.2) + 0.5*(Math.random()*(attacker.dex / 1000) - (attacker.dex / 3000))));
         //Check if damage leads to negative health, if so set it to 0, if not set it to the damage maximally possible
-        if (target.damage + finalDamage > RPG.getMaxHealth(target)) {
+        if (target.damage + finalDamage > RPG.getMaxHealth(target) - target.damage) {
             finalDamage = RPG.getMaxHealth(target);
         } 
         
