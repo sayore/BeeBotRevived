@@ -92,6 +92,12 @@ export var RPGCommands: ICommand[] = [
         }
     },
     {
+        triggerfunc: (msg) => _.toLower(msg.content) == "lvup",
+        cmd: async (msg, user) => {
+            let msgsplit = _.words(msg.content);
+        }
+    },
+    {
         triggerfunc: (msg) => _.startsWith(msg.content, "walk"),
         cmd: async (msg, user) => {
             if (!!user.extra && user.extra.walkingUntil)
@@ -145,6 +151,7 @@ export var RPGCommands: ICommand[] = [
     {
         triggerfunc: (msg) => _.startsWith(msg.content, "look"),
         cmd: async (msg, user) => {
+            
             if (!!user.extra && user.extra.walkingUntil)
                 if (Date.now() < user.extra.walkingUntil) {
                     msg.channel.send("You are currently walking!")

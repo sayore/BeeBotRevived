@@ -29,11 +29,26 @@ export class Userdata {
         return clientBee.users.cache.get(this.id)?.username;
     }
 
-    // Force marry to user, one sided
-    marry(userid:string){
+    // Force marry to user, two sided
+    async marry(targetid:string){
+        // Get the user
+        var target = await Userdata.getUserById(targetid);
+        //check if already married
+        if(!target.marriedTo.includes(targetid))
+        target.marriedTo.push(this.id);
+        target.save();
+
         if(!this.marriedTo)
         {this.marriedTo=[];}
-        this.marriedTo.push(userid);
+
+        if(!this.marriedTo.includes(targetid))
+        this.marriedTo.push(targetid);
+
+        return this;
+    }
+
+    adopt(userid:string){
+        
     }
 
 
@@ -80,7 +95,12 @@ export class Userdata {
         return await clientBee.users.fetch(this.id);
     }
 
-    static async getUser(userid: string, msg?:Discord.Message): Promise<Userdata> {
+    static async getUser(user: string|Discord.User, msg?:Discord.Message): Promise<Userdata> {
+        if(!user) return undefined;
+        var userid:string;
+        if(typeof(user)=="string") userid = user;
+        if(typeof(user)!="string") userid = user.id;
+
         var key = userkey + userid;
         if (await db.exists(key)) {
             let userdata =new Userdata()
@@ -94,7 +114,7 @@ export class Userdata {
             
             if(!!msg) {
                 try {
-                    var user = msg.member;
+                    let user = msg.member;
                     userdata.fetchCounter++;
                     userdata.tag = user.displayName;
                     userdata.color = user.displayColor;

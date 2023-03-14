@@ -30,9 +30,6 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
-        prefix:true,
-    },
-    {
         messagecontent: "hi katze",
         async cmd(msg: Discord.Message) {
             switch (msg.member.id) {

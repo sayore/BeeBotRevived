@@ -39,7 +39,7 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
-        triggerwords:["!katze","stats"],
+        triggerwords:["!katze-stats"],
         async cmd(msg:Discord.Message,user){
             console.log(msg.content)
             msg.delete();
@@ -48,9 +48,20 @@ export let MasterCommands : ICommand[] = [
             if(mentioned.length==1)
             {let askedFor=await Userdata.getUser(mentioned[0]);
             msg.channel.send(mentioned[0]);
-            msg.channel.send(JSON.stringify(askedFor));}
-            else {
-                msg.channel.send(JSON.stringify(user));
+            msg.channel.send("```json\n Name: "+askedFor.name+"("+(askedFor.rpg.alive?"Alive":"Dead")+") Farbe: "+askedFor.color
+            +" Msgs: "+askedFor.msgs
+            +" Level: "+askedFor.rpg.level
+            +" Stats: "+askedFor.rpg.str+"/"+askedFor.rpg.dex+"/"+askedFor.rpg.int+"/"+askedFor.rpg.luk+"/"+askedFor.rpg.vit+"/"+askedFor.rpg.agi
+            +"\n```");
+
+            } else {
+                msg.channel.send("```json\n Name: "+user.name+"("+(user.rpg.alive?"Alive":"Dead")+")"
+                    +" Level: "+user.rpg.level
+                    +" Stats: "+user.rpg.str+"/"+user.rpg.agi+"/"+user.rpg.vit+"/"+user.rpg.int+"/"+user.rpg.dex+"/"+user.rpg.luk
+                    +"\n HP: "+ (RPG.getMaxHealth(user.rpg)-user.rpg.damage) + "/" + RPG.getMaxHealth(user.rpg)
+                    +" Attack: "+ RPG.getAttack(user.rpg)
+                    +" Defense: "+ RPG.getDefense(user.rpg)
+                    +"\n```");
             }
             
         }
@@ -68,6 +79,44 @@ export let MasterCommands : ICommand[] = [
         triggerwords:["!katze","logthis"],
         async cmd(msg:Discord.Message){
             Logging.log(msg.content,"LogThis")
+            msg.delete();
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["!katze mute"],
+        async cmd(msg:Discord.Message){
+            var mentions = getMentions(msg.content)[0];
+            var mention = (mentions ? mentions : undefined)
+
+            if(mention)
+            {
+                var member = await msg.guild.members.fetch({user:mention});
+                if(member)
+                {
+                    member.timeout(60*1000)
+                }
+            }
+
+            msg.delete();
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["!katze unmute"],
+        async cmd(msg:Discord.Message){
+            var mentions = getMentions(msg.content)[0];
+            var mention = (mentions ? mentions : undefined)
+
+            if(mention)
+            {
+                var member = await msg.guild.members.fetch({user:mention});
+                if(member)
+                {
+                    member.timeout(0)
+                }
+            }
+
             msg.delete();
         }
     },
@@ -356,7 +405,7 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
-        triggerwords:["!katze","set","welcome","message"],
+        triggerwords:["!katze set welcome message"],
         async cmd(msg:Discord.Message,user,guild){
             if(guild) {
                 guild.welcomeMessage = msg.content.replace("!katze set welcome message ","");

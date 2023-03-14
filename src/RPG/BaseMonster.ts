@@ -83,7 +83,12 @@ export let Monster = {
     moth_base: new BaseMonster()
                 .setName("Moth")
                 .setStr(4)
-                .setInt(9)
+                .setInt(9),
+    vanilla_base: new BaseMonster()
+                .setName("Vanilla")
+                .setStr(19)
+                .setInt(85)
+                .setAgi(35)
 }
 
 export const Places:IPlace[] = [

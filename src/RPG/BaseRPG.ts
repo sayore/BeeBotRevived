@@ -12,6 +12,7 @@ export class RPGData {
     int: number = 5;
     dex: number = 5;
     luk: number = 5;
+    damage: number = 0;
     extra:any; 
     inventory: ItemStack[] = [];
     skillpoints: number = 0;
@@ -23,6 +24,7 @@ export class RPGData {
      * Access with expToNextLevel()
      */
     currentexp: number = 0;
+    alive: boolean = true;
 }
 
 export class RPG {
@@ -38,6 +40,7 @@ export class RPG {
      * @returns 
      */
     static expToNextLevel(rpg:RPGData) : number {return rpg.currentexp;}
+    
     /**
      * All Exp ever received.
      */
@@ -45,6 +48,72 @@ export class RPG {
         return (rpg.level != 1 ? RPG._getExpNeeded(rpg, rpg.level - 1) : 0) + rpg.currentexp;
     };
     
+    static getMaxHealth(rpg:RPGData) {
+        return Math.floor(100 + (rpg.vit * 4 * (rpg.level*0.133)) + rpg.level * 2 + rpg.dex * 0.66);
+    }
+
+    static getMaxMana(rpg:RPGData) {
+        return Math.floor(100 + (rpg.int * 2 * (rpg.level*0.133)) + rpg.level * 3 + rpg.dex * 0.66);
+    }
+
+    static getAttack(rpg:RPGData) {
+        return Math.floor(2 + (rpg.str * 3 * (rpg.level*0.133)) + rpg.level * 0.33 + rpg.dex * 0.1);
+    }
+
+    static getDefense(rpg:RPGData) {
+        return Math.floor(2 + (rpg.vit * 3 * (rpg.level*0.133)) + rpg.level * 0.33 + rpg.dex * 0.1);
+    }
+
+    static getIsAlive(rpg:RPGData) {
+        return (rpg.damage - RPG.getMaxHealth(rpg)) < 0;
+    }
+
+    static getMagicAttack(rpg:RPGData) {
+        return Math.floor(2 + (rpg.int * 1.5 * (rpg.level*0.133)) + rpg.level * 2 + rpg.dex * 2);
+    }
+
+    static getMagicDefense(rpg:RPGData) {
+        return Math.floor(2 + (rpg.int * 1.5 * (rpg.level*0.133)) + rpg.level * 2 + rpg.dex * 2);
+    }
+
+    static getSpeed(rpg:RPGData) {
+        return Math.floor(2 + (rpg.agi * 1.5 * (rpg.level*0.133)) + rpg.level * 2 + rpg.dex * 2);
+    }
+
+    static getLuck(rpg:RPGData) {
+        return 2 + (rpg.luk * 1.2 * (rpg.level*0.133)) + rpg.level * 2 + rpg.dex * 2;
+    }
+
+    static attack(attacker:RPGData, target: RPGData) {
+        if(attacker.alive == false || target.alive == false) return 0;
+        let attack = (RPG.getAttack(attacker) * 1.33 - RPG.getDefense(target) / 1.5) ;
+        
+        //Calculate if critical hit
+        let critChance = 0.05 + (RPG.getLuck(attacker) / 1000) - (RPG.getLuck(target) / 2000);
+        let isCrit = Math.random() < critChance;
+
+        if (isCrit) {
+            console.log("CRITICAL HIT")
+            attack *= 2 + 0.5 * (RPG.getLuck(attacker) / 1000) - (RPG.getLuck(target) / 2000);
+        }
+
+        //Calculate if miss
+        
+        let finalDamage = Math.floor(attack * ((0.3 + Math.random()*0.2) + 0.5*(Math.random()*(attacker.dex / 1000) - (attacker.dex / 3000))));
+        //Check if damage leads to negative health, if so set it to 0, if not set it to the damage maximally possible
+        if (target.damage + finalDamage > RPG.getMaxHealth(target)) {
+            finalDamage = RPG.getMaxHealth(target);
+        } 
+        
+        let missChance = 0.02 + (RPG.getSpeed(target) / 1000) - (RPG.getSpeed(attacker) / 2000);
+        //if miss, set damage to 0
+        if (Math.random() < missChance) {
+            finalDamage = 0;
+        }
+
+        return finalDamage;
+    }
+
     /**
      * 
      * @param level Levelupcosts that are to be calculated
