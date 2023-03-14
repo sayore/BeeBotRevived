@@ -17,7 +17,6 @@ import {DivorceRequest} from "../Data/DivorceRequest";
 import { GuildData } from "../Helper/GuildData";
 import { DiscordStringExt } from "../Helper/StringExt";
 
-
 export let TrustedCommands: ICommand[] = [
     {
         prefix: true,
@@ -29,6 +28,9 @@ export let TrustedCommands: ICommand[] = [
             msg.reply("There are " +
                 TrustedCommands.filter(v => { return v.typeofcmd == TypeOfCmd.Action }).length + " commands.");
         }
+    },
+    {
+        prefix:true,
     },
     {
         messagecontent: "hi katze",
@@ -209,6 +211,58 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "attack"),
+        async cmd(msg: Discord.Message, user) {
+            var mentions = getMentions(msg.content)[0];
+            var mention = (mentions ? mentions : undefined)
+            var target:Userdata|undefined = undefined;
+            target ??= await Userdata.getUser(msg.mentions.repliedUser!=null?msg.mentions.repliedUser:undefined);
+            target ??= await Userdata.getUser(mention);
+            
+            if (!!target) {                
+                if(!target.rpg.damage) target.rpg.damage = 0;
+                var dmg = RPG.attack(user.rpg, target.rpg);
+                var reply = user.name + " attacks " + target.name + " for " + dmg + " damage! (" + (RPG.getMaxHealth(target.rpg) - dmg - target.rpg.damage)+" HP Left)";
+                
+                if (target.rpg.damage > RPG.getMaxHealth(target.rpg)) {
+                    
+                }
+                if (target.rpg.damage > RPG.getMaxHealth(target.rpg)) {
+                    reply += " " + target.name + " died! "+"\n ";
+                    target.rpg.alive = false;
+                    var targetUser = await msg.guild.members.fetch(target.id);
+                    targetUser.timeout(1000 * 2, "You were attacked by " + user.name + " and are now in timeout for 2 minutes. /nYou can leave timeout by typing !leaveTimeout in the chat if you don't like rp or so idk man.");
+                    target.extra.rpgDead = true;
+
+                    setTimeout(async () => {
+                        target.extra.rpgDead = false;
+                        target.rpg.damage = 0;
+                        target.rpg.alive = true;
+                        msg.channel.send(target.name + " is back from timeout!");
+                        target.save();
+                    }, 1000 * 60 * 2);
+                }
+
+                target.rpg.damage += dmg;
+
+                target.save();
+                //user.save();
+                
+                //Fetch target user
+
+                msg.reply(reply);
+            } else {
+                msg.reply("No target. You need to mention someone or reply to someone.");
+            }
+        }
+    },
+    // Command to leave timeout
+    {
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "leavetimeout"),
+        async cmd(msg: Discord.Message, user) {
+
+    },
+    {
         prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "boop"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
@@ -322,7 +376,10 @@ export let TrustedCommands: ICommand[] = [
                 { template: ["PATPATPATPATPAT <%= repliant %>!"], special: {}, link: "https://c.tenor.com/0XzZ4R16RaQAAAAC/anime-smile.gif" },
                 { template: ["PATPATPATPATPAT *headrub* <%= repliant %>!"], special: {}, link: "https://c.tenor.com/QAIyvivjoB4AAAAC/anime-anime-head-rub.gif" },
                 { template: ["PATPATPATPATPAT CUTIE <%= repliant %>!"], special: {}, link: "https://c.tenor.com/2oOTpioZ_j4AAAAC/pet-cute.gif" },
-                { template: ["PATPATPATPATPAT <%= repliant %>!"], special: {}, link: "https://c.tenor.com/Vz5yn1fwv-gAAAAd/pat-anime.gif" }
+                { template: ["PATPATPATPATPAT <%= repliant %>!"], special: {}, link: "https://c.tenor.com/Vz5yn1fwv-gAAAAd/pat-anime.gif" },
+
+
+                { template: ["<%= sender %> ist gestolpert beim versuch <%= repliant %> zu patten!"], special: {}, link: "https://c.tenor.com/Vz5yn1fwv-gAAAAd/pat-anime.gif" }
             ])
         }
     },
@@ -370,7 +427,7 @@ export let TrustedCommands: ICommand[] = [
                 defaultTemplate: "<%= sender %> <%= action.plural %> <%= repliant %>!",
                 noTargetTemplate: "<%= sender %> <%= action.plural %> themselves!"
             }, [
-                { link: "https://c.tenor.com/1rEO6m7rWWQAAAAC/i-love-you-love.gif" },
+                { link: "https://cdn.discordapp.com/attachments/1056399315280597074/1084971616510943282/love-anime-gif-1.gif" },
                 { link: "https://c.tenor.com/_2KihRhrHD8AAAAC/girls-heart.gif" },
                 { link: "https://c.tenor.com/B-QkRiYZPZUAAAAC/cinderella-girls-anime.gif" },
                 { link: "https://c.tenor.com/YYHukkdJkasAAAAC/anime-heart.gif" },
