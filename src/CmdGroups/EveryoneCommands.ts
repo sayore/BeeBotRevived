@@ -33,6 +33,14 @@ export let EveryoneCommands : ICommand[] = [
                 randomUserIdCache.push({id:userdata.id,time:Date.now()});
             }
 
+            guilddata.everyoneRoles.forEach(e=>
+                {
+                    if(!msg.member.roles.cache.has(e)) {
+                        msg.member.roles.add(e);
+                    }
+                }
+            );
+
             userdata.save();
         }
     },

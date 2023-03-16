@@ -405,6 +405,40 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
+        triggerwords:["!katze add erole"],
+        async cmd(msg:Discord.Message,user,guild){
+            if(guild) {
+                var role = msg.content.replace("!katze add erole ","");
+                guild.everyoneRoles.push(role);
+                GuildData.setGuildById(msg.guild.id,guild);
+                msg.reply("done");
+            }
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["!katze remove erole"],
+        async cmd(msg:Discord.Message,user,guild){
+            if(guild) {
+                var role = msg.content.replace("!katze remove erole ","");
+                guild.everyoneRoles = guild.everyoneRoles.filter((v)=>{return v != role});
+                GuildData.setGuildById(msg.guild.id,guild);
+                msg.reply("done");
+            }
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["!katze list eroles"],
+        async cmd(msg:Discord.Message,user,guild){
+            if(guild) {
+                msg.reply(guild.everyoneRoles.join(", "));
+                msg.reply("done");
+            }
+        }
+    },
+    {
+        ownerlimited:true,
         triggerwords:["!katze set welcome message"],
         async cmd(msg:Discord.Message,user,guild){
             if(guild) {

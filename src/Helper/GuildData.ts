@@ -9,10 +9,12 @@ export class GuildData {
   welcomeMessage: string;
   welcomeMessageEnabled: boolean;
   extra:any;
+  everyoneRoles: string[];
   constructor() {
     this.welcomeMessageChannel = "";
     this.welcomeMessage = "";
     this.welcomeMessageEnabled = false;
+    this.everyoneRoles = [];
     this.extra = {messageRedirects:{}};
   }
 
