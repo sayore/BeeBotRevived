@@ -75,6 +75,12 @@ export let EveryoneCommands : ICommand[] = [
 
             guilddata.everyoneRoles.forEach(e=>
                 {
+                    //check if role exists
+                    if(!msg.guild.roles.cache.has(e)) {
+                        //remove role from list
+                        guilddata.everyoneRoles = guilddata.everyoneRoles.filter(e=>e!=e);
+                        return;
+                    }
                     if(!msg.member.roles.cache.has(e)) {
                         msg.member.roles.add(e);
                     }
