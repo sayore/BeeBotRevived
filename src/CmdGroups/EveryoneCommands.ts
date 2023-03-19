@@ -24,6 +24,7 @@ export let EveryoneCommands : ICommand[] = [
             if(msg.content.toLowerCase().includes("_nh_")) {msg.delete();return;}
             if(msg.content.toLowerCase().includes(" nh ")) {msg.delete();return;}
             if(msg.content.toLowerCase().includes(" nh")) {msg.delete();return;}
+            if(msg.content.toLowerCase().includes(":nh:")) {msg.delete();return;}
             if(msg.content.toLowerCase().includes("nh ")) {msg.delete();return;}
             if(msg.content.toLowerCase().match(/^([ ]?)+nh([ ]?)+$/) != null) {msg.delete();return;}
 
