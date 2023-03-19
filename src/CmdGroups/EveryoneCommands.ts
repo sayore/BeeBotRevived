@@ -39,8 +39,9 @@ export let EveryoneCommands : ICommand[] = [
             if(msg.content.toLowerCase().includes("nh ")) {sendNhMsg();msg.delete();return;}
             function ContainsNH(str)
             {
+                if(str === "nh") return true;
                 let edge_characters = [" ", ".", ",", ":"];
-                let edge_characters_piece = `((?<=[${edge_characters.join("|\\")}])`;
+                let edge_characters_piece = `(?<=[${edge_characters.join("|\\")}])`;
                 return str.match(new RegExp(`${edge_characters_piece}nh|nh${edge_characters_piece}`)) != null;
             }
             if(ContainsNH(msg.content.toLowerCase())) {sendNhMsg();msg.delete();return;}
