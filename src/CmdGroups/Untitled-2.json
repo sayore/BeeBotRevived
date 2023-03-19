@@ -1,5 +1,5 @@
 
-bee react with 
+!katze react with 
  {
   "emojis": [
     ":one:",
@@ -24,7 +24,7 @@ bee react with
   "message":"Alter?"
 }
 
-bee react with 
+!katze react with 
  {
   "emojis": [
     ":one:",
@@ -51,7 +51,7 @@ bee react with
   "message":"Beziehung?"
 }
 
-bee react with 
+!katze react with 
  {
   "emojis": [
     ":flag_at:",
@@ -65,7 +65,7 @@ bee react with
   ],
   "message":"Land?"
 }
-bee react with 
+!katze react with 
  {
   "emojis": [
     ":arrow_up:",
@@ -80,7 +80,7 @@ bee react with
   "message":"Meow meow :smug:?"
 }
 
-bee react with 
+!katze react with 
  {
   "emojis": [
     ":skateboard:",
@@ -96,7 +96,7 @@ bee react with
 }
 
 
-bee react with
+!katze react with
  {
   "emojis": [
     ":90pxFlag_of_Brandenburg:",
@@ -142,4 +142,64 @@ bee react with
     "Thüringen"
   ],
   "message":"Bundesland?"
+}
+
+
+  !katze react with 
+  {
+    "emojis": [
+      ":one:",
+      ":two:",
+      ":three:",
+      ":four:",
+      ":five:",
+      ":six:",
+      ":seven:",
+      ":eight:"
+    ],
+    "names":[
+  "INTJ",
+  "INTP",
+  "ENTJ",
+  "ENTP",
+  "INFJ",
+  "INFP",
+  "ENFJ",
+  "ENFP"],
+    "message":"Persönlichkeitstyp? (N Gruppe)"
+  }
+!katze react with 
+ {
+  "emojis": [
+    ":one:",
+    ":two:",
+    ":three:",
+    ":four:",
+    ":five:",
+    ":six:",
+    ":seven:",
+    ":eight:"
+  ],
+  "names":[
+
+"ISTJ",
+"ISFJ",
+"ESTJ",
+"ESFJ",
+"ISTP",
+"ISFP",
+"ESTP",
+"ESFP"],
+  "message":"Persönlichkeitstyp? (S Gruppe)"
+}
+!katze react with 
+ {
+  "emojis": [
+    ":one:",
+    ":two:"
+  ],
+  "names":[
+"Assertive",
+"Turbulent"],
+  "message":"Persönlichkeitstyp? (A or T)"
 }
