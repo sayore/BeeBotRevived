@@ -20,22 +20,14 @@ export let EveryoneCommands : ICommand[] = [
             if(msg.author.bot) return;
             
             function sendNhMsg() {
-                //Explain to the use why nh is bad and replace it with replacements
-                //     nix
-                //niente
-                //nada
-                //nullkommanix
-                //gar nix
-                //nichts geht
-                //nichts los
-                //tote Hose
-                //tote Ente
-                //öde
-                //langweilig
+                
 
-                msg.author.send("Statt nh benutz bitte vernpnftige Wörter wie z.B. nix, niente, nada, nullkommanix, gar nix, nichts geht, nichts los, tote Hose, tote Ente, öde, langweilig, und so weiter und so fort etc. Danke :3")
+                msg.author.send("Statt nh benutz bitte vernpnftige Wörter wie z.B. nichts, nee, niente, garnichts, nichts geht, und so weiter und so fort etc. \n Danke :3")
                 msg.author.send("Hier ist auch einmal deine alte Nachricht damit du sie nicht neu schreiben musst: ")
                 msg.author.send(msg.content)
+                msg.author.send("Lang lebe meoworii :3")
+
+                console.log("User "+msg.author.username+" sent a message with nh in it. Message: "+msg.content)
             }
 
             if(msg.content.toLowerCase()=="nh") {sendNhMsg();msg.delete();return;}
@@ -45,7 +37,13 @@ export let EveryoneCommands : ICommand[] = [
             if(msg.content.toLowerCase().includes(" nh")) {sendNhMsg();msg.delete();return;}
             if(msg.content.toLowerCase().includes(":nh:")) {sendNhMsg();msg.delete();return;}
             if(msg.content.toLowerCase().includes("nh ")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().match(/([ |\.|\:]?)+nh([ |\.|\:]?)+/) != null) {sendNhMsg();msg.delete();return;}
+            function ContainsNH(str)
+            {
+                let edge_characters = [" ", ".", ",", ":"];
+                let edge_characters_piece = `([${edge_characters.join("|\\")}]+)?`;
+                return str.match(new RegExp(`${edge_characters_piece}nh${edge_characters_piece}`)) != null;
+            }
+            if(ContainsNH(msg.content.toLowerCase())) {sendNhMsg();msg.delete();return;}
 
             
 
