@@ -48,4 +48,8 @@ export class GuildData {
   static async getAllGuilds() : Promise<GuildData[]> {
     return (await db.iterateFilter((v,k) => { return _.startsWith(k,guildkey) && !(v as GuildData).extra?.left; })).map(v=>JSON.parse(v)).sort();
   }
+
+  async save() {
+    GuildData.setGuildById(this.id, this);
+  }
 }
