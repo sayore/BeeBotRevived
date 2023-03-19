@@ -88,6 +88,8 @@ export class BeeApplication implements Application {
 		})
 
 		clientBee.on('messageCreate', async message => {
+			// Check if member and id is set
+			if(message.member == undefined || message.member.id == undefined) return;
 			var user = await Userdata.getUser(message.member.id,message);
 			var guild = await GuildData.getGuildById(message.guildId);
 
