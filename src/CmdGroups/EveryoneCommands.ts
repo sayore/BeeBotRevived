@@ -18,10 +18,30 @@ export let EveryoneCommands : ICommand[] = [
         always:true,
         async cmd(msg,userdata,guilddata) {
             if(msg.author.bot) return;
+            
+            function replaceNonCommonLetter()
+            {
+                // Replace all occurences of letters like * & % $ § with nothing
+                // Replace all occurences of letters like ä ö ü with a o u
+                // Replace all occurences of letters like ß with ss
+                // Replace all occurences of letters like 1 2 3 4 5 6 7 8 9 0 with nothing
+
+                // Create Hash of special signs and their replacements
+                
+
+            
+                
+                
+            }
+            
             if(msg.content.toLowerCase()=="nh") {msg.delete();return;}
+            if(msg.content.toLowerCase().includes("*nh*")) {msg.delete();return;}
+            if(msg.content.toLowerCase().includes("_nh_")) {msg.delete();return;}
             if(msg.content.toLowerCase().includes(" nh ")) {msg.delete();return;}
             if(msg.content.toLowerCase().includes(" nh")) {msg.delete();return;}
             if(msg.content.toLowerCase().includes("nh ")) {msg.delete();return;}
+
+
 
             //Get user data
             var userdata = await Userdata.getUser(msg.member.id);
