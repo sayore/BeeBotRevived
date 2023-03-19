@@ -18,9 +18,9 @@ export let EveryoneCommands : ICommand[] = [
         always:true,
         async cmd(msg,userdata,guilddata) {
             if(msg.author.bot) return;
-            if(msg.content.includes(" nh ")) {msg.delete();return;}
-            if(msg.content.includes(" nh")) {msg.delete();return;}
-            if(msg.content.includes("nh ")) {msg.delete();return;}
+            if(msg.content.toLowerCase().includes(" nh ")) {msg.delete();return;}
+            if(msg.content.toLowerCase().includes(" nh")) {msg.delete();return;}
+            if(msg.content.toLowerCase().includes("nh ")) {msg.delete();return;}
 
             //Get user data
             var userdata = await Userdata.getUser(msg.member.id);
