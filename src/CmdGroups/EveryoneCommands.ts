@@ -40,8 +40,8 @@ export let EveryoneCommands : ICommand[] = [
             function ContainsNH(str)
             {
                 let edge_characters = [" ", ".", ",", ":"];
-                let edge_characters_piece = `([${edge_characters.join("|\\")}]+)?`;
-                return str.match(new RegExp(`${edge_characters_piece}nh${edge_characters_piece}`)) != null;
+                let edge_characters_piece = `((?<=[${edge_characters.join("|\\")}])`;
+                return str.match(new RegExp(`${edge_characters_piece}nh|nh${edge_characters_piece}`)) != null;
             }
             if(ContainsNH(msg.content.toLowerCase())) {sendNhMsg();msg.delete();return;}
 
