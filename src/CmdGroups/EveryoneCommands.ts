@@ -19,16 +19,35 @@ export let EveryoneCommands : ICommand[] = [
         async cmd(msg,userdata,guilddata) {
             if(msg.author.bot) return;
             
-            if(msg.content.toLowerCase()=="nh") {msg.delete();return;}
-            if(msg.content.toLowerCase().includes("*nh*")) {msg.delete();return;}
-            if(msg.content.toLowerCase().includes("_nh_")) {msg.delete();return;}
-            if(msg.content.toLowerCase().includes(" nh ")) {msg.delete();return;}
-            if(msg.content.toLowerCase().includes(" nh")) {msg.delete();return;}
-            if(msg.content.toLowerCase().includes(":nh:")) {msg.delete();return;}
-            if(msg.content.toLowerCase().includes("nh ")) {msg.delete();return;}
-            if(msg.content.toLowerCase().match(/^([ ]?)+nh([ ]?)+$/) != null) {msg.delete();return;}
+            function sendNhMsg() {
+                //Explain to the use why nh is bad and replace it with replacements
+                //     nix
+                //niente
+                //nada
+                //nullkommanix
+                //gar nix
+                //nichts geht
+                //nichts los
+                //tote Hose
+                //tote Ente
+                //öde
+                //langweilig
 
+                msg.author.send("Statt nh benutz bitte vernpnftige Wörter wie z.B. nix, niente, nada, nullkommanix, gar nix, nichts geht, nichts los, tote Hose, tote Ente, öde, langweilig, und so weiter und so fort etc. Danke :3")
+                msg.author.send("Hier ist auch einmal deine alte Nachricht damit du sie nicht neu schreiben musst: ")
+                msg.author.send(msg.content)
+            }
 
+            if(msg.content.toLowerCase()=="nh") {sendNhMsg();msg.delete();return;}
+            if(msg.content.toLowerCase().includes("*nh*")) {sendNhMsg();msg.delete();return;}
+            if(msg.content.toLowerCase().includes("_nh_")) {sendNhMsg();msg.delete();return;}
+            if(msg.content.toLowerCase().includes(" nh ")) {sendNhMsg();msg.delete();return;}
+            if(msg.content.toLowerCase().includes(" nh")) {sendNhMsg();msg.delete();return;}
+            if(msg.content.toLowerCase().includes(":nh:")) {sendNhMsg();msg.delete();return;}
+            if(msg.content.toLowerCase().includes("nh ")) {sendNhMsg();msg.delete();return;}
+            if(msg.content.toLowerCase().match(/([ |\.|\:]?)+nh([ |\.|\:]?)+/) != null) {sendNhMsg();msg.delete();return;}
+
+            
 
             //Get user data
             var userdata = await Userdata.getUser(msg.member.id);
