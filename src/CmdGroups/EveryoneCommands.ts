@@ -21,11 +21,12 @@ export let EveryoneCommands : ICommand[] = [
             
             function sendNhMsg() {
                 
-
-                msg.author.send("Statt nh benutz bitte vernpnftige Wörter wie z.B. nichts, nee, niente, garnichts, nichts geht, und so weiter und so fort etc. \n Danke :3")
+                
+                msg.author.send("**______________________________________________________________________**")
+                msg.author.send("Statt nh benutz bitte vernünftige Wörter wie z.B. nichts, nee, niente, garnichts, nichts geht, und so weiter und so fort etc. \n Danke :3")
                 msg.author.send("Hier ist auch einmal deine alte Nachricht damit du sie nicht neu schreiben musst: ")
                 msg.author.send(msg.content)
-                msg.author.send("Lang lebe meoworii :3")
+                msg.author.send("**Lang lebe meoworii :3**")
 
                 console.log("User "+msg.author.username+" sent a message with nh in it. Message: "+msg.content)
             }
