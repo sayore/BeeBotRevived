@@ -8,6 +8,7 @@ import { RPG, RPGData } from "../RPG/BaseRPG";
 import _ from "lodash";
 import { Userdata } from "../Helper/Userdata";
 import { GuildData } from "../Helper/GuildData";
+import { MessageData } from "../Helper/MessageData";
 //import { getUser, setUser } from "./command.helper";
 
 var randomUserIdCache:{time:number,id:string}[] = []
@@ -49,14 +50,16 @@ export let EveryoneCommands : ICommand[] = [
             if(msg.content.toLowerCase().includes(" nh")) {sendNhMsg();msg.delete();return;}
             if(msg.content.toLowerCase().includes(":nh:")) {sendNhMsg();msg.delete();return;}
             if(msg.content.toLowerCase().includes("nh ")) {sendNhMsg();msg.delete();return;}
-            function ContainsNH(str)
+            function ContainsNH(lookfor,str)
             {
-                if(str === "nh") return true;
+                if(str === lookfor) return true;
                 let edge_characters = [" ", ".", ",", ":"];
                 let edge_characters_piece = `(?<=[${edge_characters.join("|\\")}])`;
-                return str.match(new RegExp(`${edge_characters_piece}nh|nh${edge_characters_piece}`)) != null;
+                return str.match(new RegExp(`${edge_characters_piece}${lookfor}|${lookfor}${edge_characters_piece}`)) != null;
             }
-            if(ContainsNH(msg.content.toLowerCase())) {sendNhMsg();msg.delete();return;}
+            if(ContainsNH("nh",msg.content.toLowerCase())) {sendNhMsg();msg.delete();return;}
+            if(ContainsNH("nd",msg.content.toLowerCase())) {sendNhMsg();msg.delete();return;}
+            if(ContainsNH("nt",msg.content.toLowerCase())) {sendNhMsg();msg.delete();return;}
 
             
 
@@ -109,6 +112,20 @@ export let EveryoneCommands : ICommand[] = [
                     embed.setColor("RANDOM");
                     embed.setTimestamp(msg.createdTimestamp);
                     redirectChannel.send({embeds:[embed]});
+
+                    var acceptmsg = await redirectChannel.send("Reagiere mit ✅ um den User zu akzeptieren, 🟡 um den User zu trialn(benötigt 2 Upvotes), und 🚫 um die Bewerbung abzulehnen.")
+                    acceptmsg.react("✅");
+                    acceptmsg.react("🟡");
+                    acceptmsg.react("🚫");
+
+                    var msgData = await MessageData.getMessageById(acceptmsg.id);
+                    console.log(acceptmsg.id)
+                    _.set(msgData,"extra",{user:msg.author.id,state:"pending"});
+                    _.set(msgData,"extra.messageType","application");
+                    _.set(msgData,"extra.trialVotes",0);
+                    _.set(msgData,"extra.applyingMember",msg.member.id);
+                    msgData.save();
+
                     msg.delete();
                     return true;
                 }
