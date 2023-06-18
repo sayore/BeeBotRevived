@@ -372,6 +372,53 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
+        triggerwords:["force-divorce"],
+        async cmd(msg:Discord.Message){
+            var split = msg.content.split(" ");
+
+            if(split.length != 3) {
+                msg.reply("Needs 2 Users as arguments");
+                
+                return;
+            }
+            
+            const a = await Userdata.getUser(split[1])
+            const b = await Userdata.getUser(split[2])
+
+            a.marriedTo.filter((v)=>{return v != b.id})
+            b.marriedTo.filter((v)=>{return v != a.id})
+
+            a.save();
+            b.save();
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["force-marriage"],
+        async cmd(msg:Discord.Message){
+            var split = msg.content.split(" ");
+
+            if(split.length != 3) {
+                msg.reply("Needs 2 Users as arguments");
+                
+                return;
+            }
+            
+            const a = await Userdata.getUser(split[1])
+            const b = await Userdata.getUser(split[2])
+
+            if(a.marriedTo.includes(b.id)) {
+                a.marriedTo.push(b.id)
+            if(b.marriedTo.includes(a.id)) {
+                b.marriedTo.push(a.id)
+            }
+
+            a.save();
+            b.save();
+        }
+    },
+    {
+        ownerlimited:true,
         triggerfunc(msg) {
             return msg.content.toLowerCase().startsWith("katze redirect")
         },
