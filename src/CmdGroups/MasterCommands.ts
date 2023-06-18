@@ -372,6 +372,7 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["force-divorce"],
         async cmd(msg:Discord.Message){
             var split = msg.content.split(" ");
@@ -399,6 +400,7 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["list-married"],
         async cmd(msg:Discord.Message){
             var split = msg.content.split(" ");
@@ -421,6 +423,7 @@ export let MasterCommands : ICommand[] = [
     },
     {
         ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["force-marriage"],
         async cmd(msg:Discord.Message){
             var split = msg.content.split(" ");
