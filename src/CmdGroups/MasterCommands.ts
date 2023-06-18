@@ -5,7 +5,7 @@ import { clientBee, db, EnvFile, randomEvents } from "../app";
 import { MessageHelper } from "supernode/Discord/MessageHelper";
 import { Environment } from "supernode/Base/Environment";
 import { Logging } from "supernode/Base/Logging";
-import _ from "lodash";
+import _, { set } from "lodash";
 import { Userdata } from '../Helper/Userdata';
 import { RPG } from '../RPG/BaseRPG';
 import { GuildData } from "../Helper/GuildData";
@@ -385,11 +385,38 @@ export let MasterCommands : ICommand[] = [
             const a = await Userdata.getUser(split[1])
             const b = await Userdata.getUser(split[2])
 
-            a.marriedTo.filter((v)=>{return v != b.id})
-            b.marriedTo.filter((v)=>{return v != a.id})
+            a.marriedTo=a.marriedTo.filter((v)=>{return v !== b.id})
+            b.marriedTo=b.marriedTo.filter((v)=>{return v !== a.id})
 
-            a.save();
-            b.save();
+            setTimeout(async ()=>{
+                await a.save();
+                await b.save();
+            },100)
+
+            msg.channel.send("Users <@"+a.id+"> and <@"+b.id+"> have been forced to divorce");
+            msg.deletable && msg.delete();
+        }
+    },
+    {
+        ownerlimited:true,
+        triggerwords:["list-married"],
+        async cmd(msg:Discord.Message){
+            var split = msg.content.split(" ");
+
+            if(split.length != 2) {
+                msg.reply("Needs 1 Users as arguments");
+                
+                return;
+            }
+            
+            const a = await Userdata.getUser(split[1])
+
+            var list = await Promise.all(a.marriedTo.map(async(v)=>{
+                var user = await Userdata.getUser(v);
+                return user.id + " -> " +(user.name?user.name:"<@"+user.id+">");
+            }))
+
+            msg.channel.send("Users <@"+a.id+"> is married to \n"+list.join(", \n"));
         }
     },
     {
@@ -407,14 +434,21 @@ export let MasterCommands : ICommand[] = [
             const a = await Userdata.getUser(split[1])
             const b = await Userdata.getUser(split[2])
 
-            if(a.marriedTo.includes(b.id)) {
+            if(!a.marriedTo.includes(b.id)) {
                 a.marriedTo.push(b.id)
-            if(b.marriedTo.includes(a.id)) {
+            }
+            if(!b.marriedTo.includes(a.id)) {
                 b.marriedTo.push(a.id)
             }
 
-            a.save();
-            b.save();
+            setTimeout(async ()=>{
+                await a.save();
+                await b.save();
+            },100)
+             
+
+            msg.channel.send("Users <@"+a.id+"> and <@"+b.id+"> have been forced to marry");
+            msg.deletable && msg.delete();
         }
     },
     {
