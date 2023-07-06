@@ -42,7 +42,7 @@ async function GenerealReadyAsync(e: Discord.Client) {
 	await db.put('logins', ++logins);
 	randomEvents.start();
 
-	let guild = await GuildData.getGuildById("900320264129241119");
+	//let guild = await GuildData.getGuildById("900320264129241119");
 	//console.log(guild)
 }
 
@@ -74,7 +74,7 @@ export class BeeApplication implements Application {
 		BeeApplication.hasStarted = true;
 
 		clientBee.on('ready', GenerealReadyAsync);
-		clientBob.on('ready', GenerealReadyAsync);
+		//clientBob.on('ready', GenerealReadyAsync);
 
 		clientBee.on('guildMemberAdd', async member => {
 			try {
@@ -241,11 +241,11 @@ export class BeeApplication implements Application {
 			Logging.log("Removed role " + role.name + " to " + member.displayName, LogLevel.Report)
 		});
 
-		clientBob.on('messageCreate', async message => {
-			var user = await Userdata.getUser(message.member.id, message);
-			var guild = await GuildData.getGuildById(message.guildId);
-			SimplePerRules(BobCommands, message, user, guild);
-		});
+		//clientBob.on('messageCreate', async message => {
+		//	var user = await Userdata.getUser(message.member.id, message);
+		//	var guild = await GuildData.getGuildById(message.guildId);
+		//	SimplePerRules(BobCommands, message, user, guild);
+		//});
 
 
 
