@@ -105,7 +105,7 @@ export let EveryoneCommands : ICommand[] = [
                 //console.log("A message was sent in a redirect channel")
                 var redirectChannel = clientBee.channels.cache.get(guild.extra.messageRedirects[msg.channelId].to);
                 if(redirectChannel && redirectChannel.isText()) {
-                    msg.channel.send("Deine Nachricht wurde an die aktiven mods weitergeleitet kleinen moment bitte :3")
+                    msg.channel.send("Deine Nachricht wurde an die aktiven mods weitergeleitet kleinen moment bitte!")
                     var embed = new Discord.MessageEmbed();
                     embed.setAuthor({name:user.tag, iconURL: msg.member.avatarURL({dynamic: true, size: 512})});
                     embed.setDescription(msg.content);
