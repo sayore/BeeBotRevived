@@ -452,7 +452,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        grouplimitedids:["1125850331000086589"],
+        userlimitedids:["100656035718516736"],
         triggerfunc(msg) {
             return msg.content.toLowerCase().startsWith("katze redirect")
         },
