@@ -1,4 +1,4 @@
-﻿export let EnvFile = "BeeToken.json";
+﻿export let EnvFile = "DDNToken.json";
 import { Logging, LogLevel, LogTarget } from 'supernode/Base/Logging';
 import envLoader from "./Helper/config"
 import * as fs from "fs-extra"
