@@ -21,10 +21,14 @@
     "color": "^4.1.0",
     "discord.js": "^13.16.0",
     "express": "^4.17.1",
+    "fs-extra": "^11.1.1",
     "level": "^7.0.1",
     "level-ts": "^2.1.0",
     "lodash": "^4.17.21",
     "supernode": "github:sayore/supernode",
     "typescript": "^4.9.5"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.1"
   }
 }

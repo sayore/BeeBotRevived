@@ -1,7 +1,14 @@
 ﻿export let EnvFile = "BeeToken.json";
 import { Logging, LogLevel, LogTarget } from 'supernode/Base/Logging';
 import envLoader from "./Helper/config"
-export var Env = envLoader(EnvFile);
+import * as fs from "fs-extra"
+var Enviro;
+if(fs.existsSync(EnvFile)) {
+	Logging.log("Loading Environment from " + EnvFile);
+	var defaultEnv = { envV: 0, beeToken: "NoTokenYet", bobToken: "NoTokenYet", domain:"sayore.de", subdomain:"bee" }
+	Enviro = Object.assign(defaultEnv, fs.readJSONSync(EnvFile, { throws: false, encoding: "utf-8" }));
+}
+export const Env = Enviro || envLoader(EnvFile); //Loads config alternatively from file or from envLoader
 
 import * as Discord from 'discord.js';
 import level from 'level-ts';
