@@ -452,7 +452,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        grouplimitedids:["1125850331000086589"],
         triggerfunc(msg) {
             return msg.content.toLowerCase().startsWith("katze redirect")
         },
@@ -475,13 +475,6 @@ export let MasterCommands : ICommand[] = [
                     }
                 }
             }
-        }
-    },
-    {
-        ownerlimited:true,
-        triggerwords:["!katze","understood","me"],
-        async cmd(msg:Discord.Message){
-            msg.reply("yea i think so (⁄ ⁄•⁄ω⁄•⁄ ⁄)⁄");
         }
     },
     {
