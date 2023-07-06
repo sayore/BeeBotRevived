@@ -29,7 +29,7 @@ function arrive(channel: string, user: Userdata) {
 
 export var RPGCommands: ICommand[] = [
     {
-        messagecontent: "forage",
+        messagecontent: "!!forage",
         async cmd(msg, user) {
             if (!!user.extra && user.extra.walkingUntil)
                 if (Date.now() < user.extra.walkingUntil) {
@@ -86,19 +86,19 @@ export var RPGCommands: ICommand[] = [
         }
     },
     {
-        triggerfunc: (msg) => _.toLower(msg.content) == "inv",
+        triggerfunc: (msg) => _.toLower(msg.content) == "!!inv",
         cmd: async (msg, user) => {
             msg.reply(user.rpg.inventory.map(v => v.Amount + "x " + v.Item.Name).join('\n'))
         }
     },
     {
-        triggerfunc: (msg) => _.toLower(msg.content) == "lvup",
+        triggerfunc: (msg) => _.toLower(msg.content) == "!!lvup",
         cmd: async (msg, user) => {
             let msgsplit = _.words(msg.content);
         }
     },
     {
-        triggerfunc: (msg) => _.startsWith(msg.content, "walk"),
+        triggerfunc: (msg) => _.startsWith(msg.content, "!!walk"),
         cmd: async (msg, user) => {
             if (!!user.extra && user.extra.walkingUntil)
                 if (Date.now() < user.extra.walkingUntil) {

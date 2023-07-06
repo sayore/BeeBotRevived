@@ -19,49 +19,6 @@ export let EveryoneCommands : ICommand[] = [
         always:true,
         async cmd(msg,userdata,guilddata) {
             if(msg.author.bot) return;
-            
-            function sendNhMsg() {
-                
-                
-                msg.author.send("**______________________________________________________________________**")
-                msg.author.send("Statt nh benutz bitte vernünftige Wörter wie z.B. nichts, nee, niente, garnichts, nichts geht, und so weiter und so fort etc. \n Danke :3")
-                msg.author.send("Hier ist auch einmal deine alte Nachricht damit du sie nicht neu schreiben musst: ")
-                msg.author.send(msg.content)
-                msg.author.send("**Lang lebe meoworii :3**")
-
-                console.log("User "+msg.author.username+" sent a message with nh in it. Message: "+msg.content)
-            }
-
-            if(msg.content.toLowerCase()=="nh") {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes("*nh*")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes("_nh_")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes(" n....h")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes(" n...h")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes(" n..h")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes("n....h ")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes("n...h ")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes("n..h ")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes("n.h ")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes(" n.h")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes(" n.h ")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes(" n..h ")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes(" n...h ")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes(" nh ")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes(" nh")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes(":nh:")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes("nh ")) {sendNhMsg();msg.delete();return;}
-            function ContainsNH(lookfor,str)
-            {
-                if(str === lookfor) return true;
-                let edge_characters = [" ", ".", ",", ":"];
-                let edge_characters_piece = `(?<=[${edge_characters.join("|\\")}])`;
-                return str.match(new RegExp(`${edge_characters_piece}${lookfor}|${lookfor}${edge_characters_piece}`)) != null;
-            }
-            if(ContainsNH("nh",msg.content.toLowerCase())) {sendNhMsg();msg.delete();return;}
-            if(ContainsNH("nd",msg.content.toLowerCase())) {sendNhMsg();msg.delete();return;}
-            if(ContainsNH("nt",msg.content.toLowerCase())) {sendNhMsg();msg.delete();return;}
-
-            
 
             //Get user data
             var userdata = await Userdata.getUser(msg.member.id);
