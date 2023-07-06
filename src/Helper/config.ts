@@ -9,7 +9,7 @@ export default function(envFile) : { envV : number , beeToken: string, bobToken:
     Logging.log("There was no config File yet, it has been written to: " + Environment.getEnvFilePath(envFile + "\nBe sure to add the Tokens there."));
     process.exit(-1);
   }
-  let Env = <{ envV: number, beeToken: string, bobToken: string,domain:string,subdomain:string }>Environment.load("BeeToken.json");
+  let Env = <{ envV: number, beeToken: string, bobToken: string,domain:string,subdomain:string }>Environment.load("DDNToken.json");
   if (Env.beeToken == "NoTokenYet") {
     Logging.log("There was a config File yet, but it's missing the Tokens, find it here: " + Environment.getEnvFilePath(envFile + "\nBe sure to add the Tokens there."));
     process.exit(-1);
