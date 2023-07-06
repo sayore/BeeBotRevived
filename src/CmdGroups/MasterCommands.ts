@@ -15,7 +15,7 @@ import { DiscordStringExt } from "../Helper/StringExt";
 
 export let MasterCommands : ICommand[] = [
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze","access","can","database","?"],
         async cmd(msg:Discord.Message){
             
@@ -23,7 +23,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze","event","now"],
         async cmd(msg:Discord.Message){
             msg.delete();
@@ -31,14 +31,14 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["katze update"],
         async cmd(msg:Discord.Message){
             process.exit(-1);
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze-stats"],
         async cmd(msg:Discord.Message,user){
             console.log(msg.content)
@@ -67,7 +67,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["unstyle"],
         async cmd(msg:Discord.Message,user){
             msg.reply(DiscordStringExt.unstyle(msg.content))
@@ -75,7 +75,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze","logthis"],
         async cmd(msg:Discord.Message){
             Logging.log(msg.content,"LogThis")
@@ -83,7 +83,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze mute"],
         async cmd(msg:Discord.Message){
             var mentions = getMentions(msg.content)[0];
@@ -102,7 +102,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze unmute"],
         async cmd(msg:Discord.Message){
             var mentions = getMentions(msg.content)[0];
@@ -121,7 +121,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katzesaythis"],
         async cmd(msg:Discord.Message){
             Logging.log(msg.content,"SayThis")
@@ -130,7 +130,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze","most","money"],
         async cmd(msg:Discord.Message){
             console.log(msg.content)
@@ -171,7 +171,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze","most","exp"],
         async cmd(msg:Discord.Message){
             console.log(msg.content)
@@ -217,7 +217,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze","db"],
         async cmd(msg:Discord.Message){
             console.log(msg.content)
@@ -231,7 +231,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["add","channel","to","random"],
         async cmd(msg:Discord.Message){
             var env : any = Environment.load(EnvFile);
@@ -269,14 +269,14 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         messagecontent:"good morning bee",
         async cmd(msg:Discord.Message){
             msg.reply("good morning master ʕ ᵔ//ᴥ/ᵔʔ");
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["how","many","last","message"],
         async cmd(msg:Discord.Message){
             setTimeout(async()=>{
@@ -288,7 +288,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["wer","dein meister","ist","katze"],
         async cmd(msg:Discord.Message){
             setTimeout(async()=>{
@@ -297,7 +297,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze","kick","pleb"],
         async cmd(msg:Discord.Message){
             setTimeout(async()=>{
@@ -317,28 +317,28 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         messagecontent:"!katze only listens to me",
         async cmd(msg:Discord.Message){
             msg.reply("thats right, i only listen to my master uwu (except for normal commands)");
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         messagecontent:"good bee",
         async cmd(msg:Discord.Message){
             msg.reply("yay \(◦'⌣'◦)/.");
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["stfu","!katze"],
         async cmd(msg:Discord.Message){
             msg.reply("ok ʕノ)ᴥ(ヾʔ");
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze","react", "with"],
         async cmd(msg:Discord.Message){
             var split = msg.content.split(" ");
@@ -371,7 +371,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["force-divorce"],
         async cmd(msg:Discord.Message){
             var split = msg.content.split(" ");
@@ -398,7 +398,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["list-married"],
         async cmd(msg:Discord.Message){
             var split = msg.content.split(" ");
@@ -420,7 +420,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["force-marriage"],
         async cmd(msg:Discord.Message){
             var split = msg.content.split(" ");
@@ -478,7 +478,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze add erole"],
         async cmd(msg:Discord.Message,user,guild){
             if(guild) {
@@ -490,7 +490,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze remove erole"],
         async cmd(msg:Discord.Message,user,guild){
             if(guild) {
@@ -502,7 +502,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze list eroles"],
         async cmd(msg:Discord.Message,user,guild){
             if(guild) {
@@ -512,7 +512,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze set welcome message"],
         async cmd(msg:Discord.Message,user,guild){
             if(guild) {
@@ -524,7 +524,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze","set","welcome","channel"],
         async cmd(msg:Discord.Message,user,guild){
             let msgsplit = msg.content.split(" ");
@@ -536,7 +536,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze","set","welcome","enable"],
         async cmd(msg:Discord.Message,user,guild){
             let msgsplit = msg.content.split(" ");
@@ -548,7 +548,7 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
-        ownerlimited:true,
+        userlimitedids:["100656035718516736"],
         triggerwords:["!katze","set","welcome","disable"],
         async cmd(msg:Discord.Message,user,guild){
             let msgsplit = msg.content.split(" ");
