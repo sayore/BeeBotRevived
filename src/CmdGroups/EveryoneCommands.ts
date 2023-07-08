@@ -48,14 +48,17 @@ export let EveryoneCommands : ICommand[] = [
             Logging.log(msg.type,"DISBOARD");
             //Get reply message
             
-                Logging.log(msg.attachments,"DISBOARD");
-                Logging.log(msg.embeds,"DISBOARD");
-                Logging.log(msg.nonce,"DISBOARD");
-                Logging.log(msg.fetchReference(),"DISBOARD");
+            
+            Logging.log(msg.embeds,"DISBOARD1");
+            Logging.log(msg.nonce,"DISBOARD2");
+            Logging.log(msg,"DISBOARD3");
+            Logging.log(msg.author,"DISBOARD4");
+            Logging.log(msg.components,"DISBOARD5");
+            Logging.log(msg.flags,"DISBOARD6");
+            Logging.log(msg.toJSON(),"DISBOARD6");
                 
         
-            
-            Logging.log(msg.content,"DISBOARD");
+        
 
             return false;
         }
