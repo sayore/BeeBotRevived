@@ -49,7 +49,7 @@ export let EveryoneCommands : ICommand[] = [
             //Get reply message
             
             
-            //Logging.log(msg.embeds,"DISBOARD1");
+            
             //Logging.log(msg.nonce,"DISBOARD2");
             //Logging.log(msg.channel.messages.cache.get(msg.nonce.toString()),"DISBOARD2");
             //Logging.log(msg,"DISBOARD3");
@@ -65,6 +65,9 @@ export let EveryoneCommands : ICommand[] = [
         
             // if so then you can access the user who triggered the command with
             Logging.log(msg.interaction.user);
+
+
+            Logging.log(msg.embeds,"DISBOARD1");
 
             return false;
         }
