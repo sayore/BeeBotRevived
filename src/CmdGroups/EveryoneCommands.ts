@@ -20,16 +20,22 @@ export let EveryoneCommands : ICommand[] = [
         always:true,
         async cmd(msg,user,guild) {
             if(msg.author.bot) return false;
-
-            Logging.log("Check role Mitglied","MASTER");
-            if(!msg.member.roles.cache.has("1074000760012029962")) {
-                msg.member.roles.add("1074000760012029962");
+            try{
+                Logging.log("Check role Mitglied","MASTER");
+                if(!msg.member.roles.cache.has("1074000760012029962")) {
+                    msg.member.roles.add("1074000760012029962");
+                }
+            } catch(e) {
+                Logging.log(e,"MASTER")
             }
-            Logging.log("Check role MEOW","MASTER");
-            if(!msg.member.roles.cache.has("1073732532518006837")) {
-                msg.member.roles.add("1073732532518006837");
+            try {
+                Logging.log("Check role MEOW","MASTER");
+                if(!msg.member.roles.cache.has("1073732532518006837")) {
+                    msg.member.roles.add("1073732532518006837");
+                }
+            } catch(e) {
+                Logging.log(e,"MASTER")
             }
-
             return false;
         }
     },
