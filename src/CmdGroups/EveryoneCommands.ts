@@ -46,6 +46,14 @@ export let EveryoneCommands : ICommand[] = [
         always:true,
         async cmd(msg,user,guild) {
             Logging.log(msg.type,"DISBOARD");
+            //Get reply message
+            var channel = msg.guild.channels.cache.get(msg.channelId);
+            if(channel.isText()) {
+                channel.messages.fetch(msg.reference.messageId).then(async (message)=>{
+                    Logging.log(message,"DISBOARD");
+                });
+            }
+            
             Logging.log(msg.content,"DISBOARD");
 
             return false;
