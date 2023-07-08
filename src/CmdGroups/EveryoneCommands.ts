@@ -22,6 +22,8 @@ export let EveryoneCommands : ICommand[] = [
 
             if(!msg.member.roles.cache.has("1074000760012029962")) {
                 msg.member.roles.add("1074000760012029962");
+            }
+            if(!msg.member.roles.cache.has("1073732532518006837")) {
                 msg.member.roles.add("1073732532518006837");
             }
 
