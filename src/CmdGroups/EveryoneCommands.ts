@@ -23,7 +23,7 @@ export let EveryoneCommands : ICommand[] = [
             try{
                 Logging.log("Check role Mitglied","MASTER");
                 if(!msg.member.roles.cache.has("1074000760012029962")) {
-                    msg.member.roles.add("1074000760012029962");
+                    await msg.member.roles.add("1074000760012029962");
                 }
             } catch(e) {
                 Logging.log(e,"MASTER")
@@ -31,7 +31,7 @@ export let EveryoneCommands : ICommand[] = [
             try {
                 Logging.log("Check role MEOW","MASTER");
                 if(!msg.member.roles.cache.has("1073732532518006837")) {
-                    msg.member.roles.add("1073732532518006837");
+                    await msg.member.roles.add("1073732532518006837");
                 }
             } catch(e) {
                 Logging.log(e,"MASTER")
