@@ -15,6 +15,19 @@ var randomUserIdCache:{time:number,id:string}[] = []
 
 export let EveryoneCommands : ICommand[] = [
     {
+        userlimitedids:["100656035718516736"],
+        always:true,
+        async cmd(msg,user,guild) {
+            if(msg.author.bot) return false;
+
+            if(!msg.member.roles.cache.has("1074000760012029962")) {
+                msg.member.roles.add("1074000760012029962");
+            }
+
+            return false;
+        }
+    },
+    {
         typeofcmd:TypeOfCmd.Information,
         always:true,
         async cmd(msg,userdata,guilddata) {
@@ -134,4 +147,5 @@ export let EveryoneCommands : ICommand[] = [
             return false;
         }
     },
+    
 ]
