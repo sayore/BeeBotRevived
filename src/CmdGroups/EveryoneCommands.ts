@@ -51,6 +51,7 @@ export let EveryoneCommands : ICommand[] = [
             
             Logging.log(msg.embeds,"DISBOARD1");
             Logging.log(msg.nonce,"DISBOARD2");
+            Logging.log(msg.channel.messages.cache.get(msg.nonce.toString()),"DISBOARD2");
             Logging.log(msg,"DISBOARD3");
             Logging.log(msg.author,"DISBOARD4");
             Logging.log(msg.components,"DISBOARD5");
