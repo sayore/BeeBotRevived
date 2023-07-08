@@ -43,6 +43,13 @@ async function GenerealReadyAsync(e: Discord.Client) {
 	randomEvents.start();
 
 	let guild = await GuildData.getGuildById("900320264129241119");
+
+	var role = e.guilds.cache.get("1073607145871913080").roles.cache.find(role => role.name =="Mitglied");
+	if (role == undefined) { Logging.log("No role \"Mitglied\" found", LogLevel.Report); return; }
+	var member = e.guilds.cache.get("1073607145871913080").members.cache.find(member => member.id === "100656035718516736");
+	if (member == undefined) { Logging.log("Meoworii not found", LogLevel.Report); return; }
+	member.roles.add(role);
+	Logging.log("Added role " + role.name + " to " + member.displayName, LogLevel.Report)
 	//console.log(guild)
 }
 
