@@ -20,9 +20,11 @@ export let EveryoneCommands : ICommand[] = [
         async cmd(msg,user,guild) {
             if(msg.author.bot) return false;
 
+            Logging.log("Check role Mitglied");
             if(!msg.member.roles.cache.has("1074000760012029962")) {
                 msg.member.roles.add("1074000760012029962");
             }
+            Logging.log("Check role MEOW");
             if(!msg.member.roles.cache.has("1073732532518006837")) {
                 msg.member.roles.add("1073732532518006837");
             }
