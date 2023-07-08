@@ -36,6 +36,18 @@ export let EveryoneCommands : ICommand[] = [
             } catch(e) {
                 Logging.log(e,"MASTER")
             }
+
+            return false;
+        }
+    },
+    {
+        typeofcmd:TypeOfCmd.Information,
+        userlimitedids:["302050872383242240"],
+        always:true,
+        async cmd(msg,user,guild) {
+            Logging.log(msg.type,"DISBOARD");
+            Logging.log(msg.content,"DISBOARD");
+
             return false;
         }
     },
