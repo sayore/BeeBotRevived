@@ -772,12 +772,13 @@ async function simpleReactEmbed(
         
         var target = await msg.guild.members.fetch(action.target);
         let targetVisName = target?.user?.username ?? target?.user?.tag ?? MessageHelper.getRepliantsVisibleName(msg);
+        let senderVisName = msg.member?.user?.username ?? msg.member?.user?.tag ?? MessageHelper.getSendersVisibleName(msg);
 
         //console.log(msg.guild.name)
         //console.log(targetVisName)
 
         var fields = {
-            sender: "<@!"+msg.member.id+">",
+            sender: senderVisName,
             repliant: targetVisName,
             action
         }
@@ -802,11 +803,16 @@ async function simpleReactEmbed(
         if (links[linkId].template) template = getRandom(links[linkId].template);
         if (links[linkId].header) header = getRandom(links[linkId].header);
 
-        return new Discord.MessageEmbed()
+
+        var reactionMsg = new Discord.MessageEmbed()
             .setColor('#FFD35D')
             .setTitle(_.template(header)(fields))
             .setDescription(_.template(template)(fields))
             .setImage(link);
+
+        
+        
+        return reactionMsg;
 }
 
 interface ActionInfo {
@@ -827,8 +833,17 @@ async function defaultReactionHandler(msg: Discord.Message, action: ActionInfo, 
     } else {
         db.put(gifkey,defaultGifs)
     }*/
+    var createdEmbed=await simpleReactEmbed(defaultGifs, msg, action);
+    var newmsg=msg.channel.send({ embeds: [createdEmbed] });
 
-    msg.channel.send({ embeds: [await simpleReactEmbed(defaultGifs, msg, action)] });
+
+    setTimeout(async () => { 
+        createdEmbed.setTitle("("+action.singular+") "+createdEmbed.description);
+        createdEmbed.setDescription("");
+        createdEmbed.setImage("");
+        Logging.log("reactionMsg changed");
+        (await newmsg).edit({ embeds: [createdEmbed] });
+     }, 30000);
 
     addActionToStatistic(action, msg);
 }
