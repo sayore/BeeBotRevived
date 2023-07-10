@@ -838,8 +838,8 @@ async function defaultReactionHandler(msg: Discord.Message, action: ActionInfo, 
 
 
     setTimeout(async () => { 
-        createdEmbed.setTitle("("+action.singular+") "+createdEmbed.description);
-        createdEmbed.setDescription("");
+        createdEmbed.setTitle("");
+        createdEmbed.setDescription("("+action.singular+") "+createdEmbed.description);
         createdEmbed.setImage("");
         Logging.log("reactionMsg changed");
         (await newmsg).edit({ embeds: [createdEmbed] });
