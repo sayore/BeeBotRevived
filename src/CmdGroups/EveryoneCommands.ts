@@ -96,6 +96,14 @@ export let EveryoneCommands : ICommand[] = [
 
             GuildData.setChannelData(guild.id, msg.channel.id, chData);
 
+            let replyMsg = await msg.channel.send("ImageVote aktiviert");
+            msg.delete();
+
+            //delete after 5 seconds
+            setTimeout(async () => {
+                await replyMsg.delete();
+            }, 5000);
+
             return false;
         }
     },
@@ -113,6 +121,14 @@ export let EveryoneCommands : ICommand[] = [
             chData.imageVote=false;
 
             GuildData.setChannelData(guild.id, msg.channel.id, chData);
+
+            let replyMsg = await msg.channel.send("ImageVote deaktiviert");
+            msg.delete();
+
+            //delete after 5 seconds
+            setTimeout(async () => {
+                await replyMsg.delete();
+            }, 5000);
 
             return false;
         }
