@@ -60,20 +60,29 @@ export let EveryoneCommands : ICommand[] = [
         typeofcmd:TypeOfCmd.Information,
         always:true,
         async cmd(msg,user,guild) {
-            
+            if(msg.author.bot) return false;
             let chData = await GuildData.getChannelData(guild.id, msg.channel.id);
-            
+
             Logging.log(chData.imageVote,"MASTER")
             if(chData.imageVote) {
                 //Add Emotes to message if image is present(check embeds)
                 Logging.log(msg.attachments,"MASTER")
                 Logging.log(msg.embeds,"MASTER")
+                //Repost message
+
+
                 if(msg.attachments.size>0) {
+                    var atta = msg.attachments.map((a)=>{return a.url});
+                    var votemsg = await msg.channel.send({ 
+                        content: "<@!" + msg.member.id + "> hat dieses Bild gepostet!", 
+                        files: atta
+                    })
+                    await msg.delete();
                     //Check if message is in a channel with imageVote enabled
                     if(chData.imageVote) {
                         //Add Emotes to message
-                        await msg.react("👍");
-                        await msg.react("👎");
+                        await votemsg.react("👍");
+                        await votemsg.react("👎");
                     }
                 }
             }
