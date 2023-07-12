@@ -161,21 +161,39 @@ export class BeeApplication implements Application {
 				let channelData = await GuildData.getChannelData(guild.id, reaction.message.channelId);
 				if (channelData["imageVote"]) {
 					// If more than 5 downvotes, delete message
+					var upvotes = _.get(message, "extra.upvotes");
+					var downvotes = _.get(message, "extra.downvotes");
+					downvotes ??= [];
+					upvotes ??= [];
+
 					if (reaction.emoji.name == "👎") {
-						if (reaction.count > 5) {
+						//Add only if not already in array
+						if (!downvotes.includes(discorduser.id))
+							downvotes.push(discorduser.id);
+						else // If already in array, remove from upvotes
+							downvotes = downvotes.filter(v => v != discorduser.id);
+
+
+						if (upvotes.length - downvotes.length < -5) {
 							reaction.message.delete();
 						}
 					}
 					// Save upvotes
 					if (reaction.emoji.name == "👍") {
-						var upvotes = _.get(message, "extra.upvotes");
-						if (upvotes == undefined) {
-							upvotes = [];
-						}
-						upvotes.push(discorduser.id);
-						
-						_.set(message, "extra.upvotes", upvotes);
+						//Add only if not already in array
+						if (!upvotes.includes(discorduser.id))
+							upvotes.push(discorduser.id);
+						else // If already in array, remove from upvotes
+							upvotes = upvotes.filter(v => v != discorduser.id);
 					}
+					reaction.users.remove(discorduser.id);
+					_.set(message, "extra.downvotes", downvotes);
+					_.set(message, "extra.upvotes", upvotes);
+
+					// Debug log
+					Logging.log("Upvotes: " + upvotes.length + " Downvotes: " + downvotes.length, LogLevel.Report);
+
+					message.save();
 				}
 			} else {
 				Logging.log("Message Type! [" + messageType + "]", LogLevel.Report);
@@ -250,17 +268,30 @@ export class BeeApplication implements Application {
 			var message = await MessageData.getMessageById(reaction.message.id);
 
 			let channelData = await GuildData.getChannelData(guild.id, reaction.message.channelId);
-			if (channelData["imageVote"]) {
-				// Remove upvotes
-				if (reaction.emoji.name == "👍") {
-					var upvotes = _.get(message, "extra.upvotes")
-					if (upvotes == 0 || upvotes == undefined) { _.set(message, "extra.upvotes", 0); }
-					if (upvotes == 1) {
-						_.set(message, "extra.upvotes", 0);
-					}
+			if (channelData["imageVote"] && false) {
+				// If more than 5 downvotes, delete message
+				var upvotes = _.get(message, "extra.upvotes");
+				var downvotes = _.get(message, "extra.downvotes");
+				downvotes ??= [];
+				upvotes ??= [];
 
-					message.save();
+
+				if (downvotes.includes(discorduser.id))
+					downvotes.splice(downvotes.indexOf(discorduser.id), 1);
+				if (upvotes.includes(discorduser.id))
+					upvotes.splice(downvotes.indexOf(discorduser.id), 1);
+
+
+
+				if (upvotes.length - downvotes.length < -5) {
+					reaction.message.delete();
 				}
+
+				reaction.users.remove(discorduser.id);
+				_.set(message, "extra.downvotes", downvotes);
+				_.set(message, "extra.upvotes", upvotes);
+
+				message.save();
 			}
 
 			var reactObj: { emojis: string[], names: string[], message } = _.get(message, "extra.reactRoles");
