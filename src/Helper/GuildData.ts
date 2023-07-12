@@ -45,6 +45,19 @@ export class GuildData {
     return await db.put(guildkey + guildid, JSON.stringify(guilddata));
   }
 
+  static async setChannelData(guildid: string, channelid:string, channeldata: any) {
+    //console.log("saved" + guildkey + guildid+ JSON.stringify(guilddata)); 
+    return await db.put(guildkey + guildid +"_"+ channelid, JSON.stringify(channeldata));
+  }
+
+  static async getChannelData(guildid: string, channelid:string) {
+    //console.log("saved" + guildkey + guildid+ JSON.stringify(guilddata)); 
+    let exists = await db.exists(guildkey + guildid +"_"+ channelid)
+    if(exists)
+    return JSON.parse(await db.get(guildkey + guildid + "_" + channelid));
+    else {return {}}
+  }
+
   static async getAllGuilds() : Promise<GuildData[]> {
     return (await db.iterateFilter((v,k) => { return _.startsWith(k,guildkey) && !(v as GuildData).extra?.left; })).map(v=>JSON.parse(v)).sort();
   }

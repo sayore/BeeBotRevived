@@ -3,9 +3,9 @@ import { Logging, LogLevel, LogTarget } from 'supernode/Base/Logging';
 import envLoader from "./Helper/config"
 import * as fs from "fs-extra"
 var Enviro;
-if(fs.existsSync(EnvFile)) {
+if (fs.existsSync(EnvFile)) {
 	Logging.log("Loading Environment from " + EnvFile);
-	var defaultEnv = { envV: 0, beeToken: "NoTokenYet", bobToken: "NoTokenYet", domain:"sayore.de", subdomain:"bee" }
+	var defaultEnv = { envV: 0, beeToken: "NoTokenYet", bobToken: "NoTokenYet", domain: "sayore.de", subdomain: "bee" }
 	Enviro = Object.assign(defaultEnv, fs.readJSONSync(EnvFile, { throws: false, encoding: "utf-8" }));
 }
 export const Env = Enviro || envLoader(EnvFile); //Loads config alternatively from file or from envLoader
@@ -44,7 +44,7 @@ async function GenerealReadyAsync(e: Discord.Client) {
 
 	let guild = await GuildData.getGuildById("900320264129241119");
 
-	
+
 	//console.log(guild)
 }
 
@@ -156,17 +156,37 @@ export class BeeApplication implements Application {
 			var extra: any = _.get(message, "extra");
 			var messageType: string = _.get(message, "extra.messageType");
 			if (messageType == undefined) {
-				Logging.log("No Message Type! ["+message.id+" "+JSON.stringify(extra)+"]", LogLevel.Report);
-			} else {
-				Logging.log("Message Type! ["+messageType+"]", LogLevel.Report);
+				Logging.log("No Message Type! [" + message.id + " " + JSON.stringify(extra) + "]", LogLevel.Report);
 
-				if(messageType=="application") {
-					if(reaction.emoji.name=="✅") {
-						// Check if role "Mitglied" exists
-						var finding = reaction.message.guild.roles.cache.find((role:Discord.Role)=>{return role.name == "Mitglied"});
+				let channelData = await GuildData.getChannelData(guild.id, reaction.message.channelId);
+				if (channelData["imageVote"]) {
+					// If more than 5 downvotes, delete message
+					if (reaction.emoji.name == "👎") {
+						if (reaction.count > 5) {
+							reaction.message.delete();
+						}
+					}
+					// Save upvotes
+					if (reaction.emoji.name == "👍") {
+						var upvotes = _.get(message, "extra.upvotes");
+						if (upvotes == undefined) {
+							upvotes = [];
+						}
+						upvotes.push(discorduser.id);
 						
-						if(!finding)
-						await reaction.message.guild.roles.create({name:"Mitglied",mentionable:false,hoist:false,position:0,reason:"react role",color:0x000000})
+						_.set(message, "extra.upvotes", upvotes);
+					}
+				}
+			} else {
+				Logging.log("Message Type! [" + messageType + "]", LogLevel.Report);
+
+				if (messageType == "application") {
+					if (reaction.emoji.name == "✅") {
+						// Check if role "Mitglied" exists
+						var finding = reaction.message.guild.roles.cache.find((role: Discord.Role) => { return role.name == "Mitglied" });
+
+						if (!finding)
+							await reaction.message.guild.roles.create({ name: "Mitglied", mentionable: false, hoist: false, position: 0, reason: "react role", color: 0x000000 })
 
 						// Add role "Mitglied" to user
 						var member = reaction.message.guild.members.cache.find(member => member.id === _.get(message, "extra.applyingMember"));
@@ -175,15 +195,15 @@ export class BeeApplication implements Application {
 						Logging.log("Added role Mitglied to " + member.displayName, LogLevel.Report)
 						member.send("Deine Vorstellung wurde angenommen. Du bist nun Mitglied der Community. \n\nDiese Nachricht wurde automatisch versendet.")
 					}
-					if(reaction.emoji.name=="🟡") {
+					if (reaction.emoji.name == "🟡") {
 						var trialVotes = _.get(message, "extra.trialVotes")
-						
-						if(trialVotes==1) {
+
+						if (trialVotes == 1) {
 							// Check if role "Mitglied" exists
-							var finding = reaction.message.guild.roles.cache.find((role:Discord.Role)=>{return role.name == "Mitglied"});
-							
-							if(!finding)
-							await reaction.message.guild.roles.create({name:"Mitglied",mentionable:false,hoist:false,position:0,reason:"react role",color:0x000000})
+							var finding = reaction.message.guild.roles.cache.find((role: Discord.Role) => { return role.name == "Mitglied" });
+
+							if (!finding)
+								await reaction.message.guild.roles.create({ name: "Mitglied", mentionable: false, hoist: false, position: 0, reason: "react role", color: 0x000000 })
 
 							// Add role "Mitglied" to user
 							var member = reaction.message.guild.members.cache.find(member => member.id === _.get(message, "extra.applyingMember"));
@@ -192,10 +212,10 @@ export class BeeApplication implements Application {
 							Logging.log("Added role Mitglied to " + member.displayName, LogLevel.Report)
 							member.send("Deine Vorstellung wurde angenommen. Du bist nun Mitglied der Community. \n\nDiese Nachricht wurde automatisch versendet.")
 						}
-						if(trialVotes==0 || trialVotes==undefined) { _.set(message, "extra.trialVotes",1); }
+						if (trialVotes == 0 || trialVotes == undefined) { _.set(message, "extra.trialVotes", 1); }
 						message.save();
 					}
-					if(reaction.emoji.name=="🚫") {
+					if (reaction.emoji.name == "🚫") {
 						// Remove role "Mitglied" from user
 						var member = reaction.message.guild.members.cache.find(member => member.id === _.get(message, "extra.applyingMember"));
 						// Direct Message user he has to apply again
@@ -229,11 +249,28 @@ export class BeeApplication implements Application {
 			var guild = await GuildData.getGuildById(reaction.message.guildId);
 			var message = await MessageData.getMessageById(reaction.message.id);
 
+			let channelData = await GuildData.getChannelData(guild.id, reaction.message.channelId);
+			if (channelData["imageVote"]) {
+				// Remove upvotes
+				if (reaction.emoji.name == "👍") {
+					var upvotes = _.get(message, "extra.upvotes")
+					if (upvotes == 0 || upvotes == undefined) { _.set(message, "extra.upvotes", 0); }
+					if (upvotes == 1) {
+						_.set(message, "extra.upvotes", 0);
+					}
+
+					message.save();
+				}
+			}
+
 			var reactObj: { emojis: string[], names: string[], message } = _.get(message, "extra.reactRoles");
 			if (reactObj == undefined) {
 				Logging.log("No reactObj", LogLevel.Report)
 				return;
 			}
+
+
+
 			// Give discorduser the role
 			var role = reaction.message.guild.roles.cache.find(role => role.name === reactObj.names[reactObj.emojis.indexOf(reactObj.emojis.find(v => v.startsWith("<:" + reaction.emoji.name) || v.startsWith(reaction.emoji.name)))]);
 			if (role == undefined) { Logging.log("No role found (" + JSON.stringify(reactObj.emojis) + ")\n" + reactObj.emojis.find(v => v.startsWith("<:" + reaction.emoji.name)), LogLevel.Report); return; }
@@ -241,6 +278,8 @@ export class BeeApplication implements Application {
 			if (member == undefined) { Logging.log("No member found", LogLevel.Report); return; }
 			member.roles.remove(role);
 			Logging.log("Removed role " + role.name + " to " + member.displayName, LogLevel.Report)
+
+
 		});
 
 		clientBob.on('messageCreate', async message => {

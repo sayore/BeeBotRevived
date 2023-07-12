@@ -42,6 +42,83 @@ export let EveryoneCommands : ICommand[] = [
     },
     {
         typeofcmd:TypeOfCmd.Information,
+        userlimitedids:["100656035718516736"],
+        always:true,
+        async cmd(msg,user,guild) {
+            
+            let chData = await GuildData.getChannelData(guild.id, msg.channel.id);
+            Logging.log(JSON.stringify(chData));
+            chData.msgCount??=0;
+            chData.msgCount+=1;
+
+            GuildData.setChannelData(guild.id, msg.channel.id, chData);
+
+            return false;
+        }
+    },
+    {
+        typeofcmd:TypeOfCmd.Information,
+        always:true,
+        async cmd(msg,user,guild) {
+            
+            let chData = await GuildData.getChannelData(guild.id, msg.channel.id);
+            
+            Logging.log(chData.imageVote,"MASTER")
+            if(chData.imageVote) {
+                //Add Emotes to message if image is present(check embeds)
+                Logging.log(msg.attachments,"MASTER")
+                Logging.log(msg.embeds,"MASTER")
+                if(msg.attachments.size>0) {
+                    //Check if message is in a channel with imageVote enabled
+                    if(chData.imageVote) {
+                        //Add Emotes to message
+                        await msg.react("👍");
+                        await msg.react("👎");
+                    }
+                }
+            }
+
+            return false;
+        }
+    },
+    {
+        typeofcmd:TypeOfCmd.Information,
+        userlimitedids:["100656035718516736"],
+        triggerfunc(msg) {
+            return msg.content.startsWith("!katze ImageVote true");
+        },
+        async cmd(msg,user,guild) {
+            
+            let chData = await GuildData.getChannelData(guild.id, msg.channel.id);
+            Logging.log(JSON.stringify(chData));
+            chData.imageVote??=true;
+            chData.imageVote=true;
+
+            GuildData.setChannelData(guild.id, msg.channel.id, chData);
+
+            return false;
+        }
+    },
+    {
+        typeofcmd:TypeOfCmd.Information,
+        userlimitedids:["100656035718516736"],
+        triggerfunc(msg) {
+            return msg.content.startsWith("!katze ImageVote false");
+        },
+        async cmd(msg,user,guild) {
+            
+            let chData = await GuildData.getChannelData(guild.id, msg.channel.id);
+            Logging.log(JSON.stringify(chData));
+            chData.imageVote??=false;
+            chData.imageVote=false;
+
+            GuildData.setChannelData(guild.id, msg.channel.id, chData);
+
+            return false;
+        }
+    },
+    {
+        typeofcmd:TypeOfCmd.Information,
         userlimitedids:["302050872383242240"],
         always:true,
         async cmd(msg,user,guild) {
