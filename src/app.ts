@@ -169,9 +169,19 @@ export class BeeApplication implements Application {
 					if (reaction.emoji.name == "👎") {
 						//Add only if not already in array
 						if (!downvotes.includes(discorduser.id))
-							downvotes.push(discorduser.id);
-						else // If already in array, remove from upvotes
-							downvotes = downvotes.filter(v => v != discorduser.id);
+							{
+								downvotes.push(discorduser.id);
+								upvotes = upvotes.filter(v => v != discorduser.id);
+							}
+						else // If already in array, remove from downvotes
+							{
+								downvotes = downvotes.filter(v => v != discorduser.id);
+								upvotes = upvotes.filter(v => v != discorduser.id);
+							}
+
+						// Remove from upvotes if already in
+						if (upvotes.includes(discorduser.id))
+							
 
 
 						if (upvotes.length - downvotes.length < -5) {
@@ -182,9 +192,15 @@ export class BeeApplication implements Application {
 					if (reaction.emoji.name == "👍") {
 						//Add only if not already in array
 						if (!upvotes.includes(discorduser.id))
-							upvotes.push(discorduser.id);
+							{
+								upvotes.push(discorduser.id);
+								downvotes = downvotes.filter(v => v != discorduser.id);
+							}
 						else // If already in array, remove from upvotes
-							upvotes = upvotes.filter(v => v != discorduser.id);
+							{
+								downvotes = downvotes.filter(v => v != discorduser.id);
+								upvotes = upvotes.filter(v => v != discorduser.id);
+							}
 					}
 					reaction.users.remove(discorduser.id);
 					_.set(message, "extra.downvotes", downvotes);
