@@ -281,7 +281,8 @@ export let TrustedCommands: ICommand[] = [
             var mention = (mentions ? mentions : undefined)
             defaultReactionHandler(msg, { target: mention, key: "sex", singular: "sex", plural: "sexes" }, [
                 { link: "https://c.tenor.com/-XrLQFqn8N0AAAAC/yuri-lewd.gif" },
-                { link: "https://c.tenor.com/XCLEsDZBeBQAAAAC/kissxsis-anime.gif" },
+                { link: "https://picsegg.com/pics/3071/anime-hentai-rape-animated-gif-sex.gif" },
+                { link: "https://cdn.discordapp.com/attachments/1018201604513607802/1128754719221874718/36705705fca471d1f972.gif" },
             ])
         }
     },
