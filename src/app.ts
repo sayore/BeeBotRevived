@@ -170,6 +170,7 @@ export class BeeApplication implements Application {
 						//Delete if reaction comes from author
 						if (discorduser.id == message.extra.imageVoteData.msgData.user) {
 							reaction.message.delete();
+							return;
 						}
 					}
 					if (reaction.emoji.name == "👎") {
