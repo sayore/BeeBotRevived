@@ -88,6 +88,11 @@ export class BeeApplication implements Application {
 			let guild = await GuildData.getGuildById(member.guild.id);
 
 			if (guild.welcomeMessageEnabled) {
+				if(guild.welcomeMessageChannel == undefined) {
+					Logging.log("Welcome Channel undefined - set with '!katze set welcome channel [channelId]'", LogLevel.Report)
+					return;
+				}
+				Logging.log("Welcome Channel: "+guild.welcomeMessageChannel, LogLevel.Report)
 				let welcChannel = await clientBee.channels.fetch(guild.welcomeMessageChannel)
 				if (welcChannel.isText()) {
 					welcChannel.send(guild.welcomeMessage + " <@!" + member.id + ">");
