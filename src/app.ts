@@ -193,6 +193,7 @@ export class BeeApplication implements Application {
 						Logging.log("Vote: " + (upvotes.length - downvotes.length), LogLevel.Report)
 						if (upvotes.length - downvotes.length <= -5) {
 							reaction.message.delete();
+							return;
 						}
 					}
 					// Save upvotes
