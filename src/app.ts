@@ -191,7 +191,7 @@ export class BeeApplication implements Application {
 							
 
 
-						if (upvotes.length - downvotes.length < -5) {
+						if (upvotes.length - downvotes.length <= -5) {
 							reaction.message.delete();
 						}
 					}
