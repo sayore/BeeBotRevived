@@ -166,6 +166,12 @@ export class BeeApplication implements Application {
 					downvotes ??= [];
 					upvotes ??= [];
 
+					if (reaction.emoji.name == "❌") {
+						//Delete if reaction comes from author
+						if (discorduser.id == message.extra.imageVoteData.msgData.user) {
+							reaction.message.delete();
+						}
+					}
 					if (reaction.emoji.name == "👎") {
 						//Add only if not already in array
 						if (!downvotes.includes(discorduser.id))
@@ -211,7 +217,7 @@ export class BeeApplication implements Application {
 						message.extra.imageVoteData.msgData.upvotes = upvotes.length;
 						message.extra.imageVoteData.msgData.downvotes = downvotes.length;
 
-						reaction.message.edit({content:_.template(message.extra.imageVoteData.template??"[ <%=upvotes%> 👍 : <%=downvotes%> 👎]\n<@!<%=user%>>: <%=content%>")(message.extra.imageVoteData.msgData)})
+						reaction.message.edit({content:_.template(message.extra.imageVoteData.template??"[ <%=upvotes%> 👍 : <%=downvotes%> 👎]")(message.extra.imageVoteData.msgData)})
 					}
 
 					// Debug log

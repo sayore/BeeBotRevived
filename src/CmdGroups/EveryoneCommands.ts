@@ -90,7 +90,7 @@ export let EveryoneCommands : ICommand[] = [
                     _.set(msgData, "extra.template", "[ <%=upvotes%> 👍 : <%=downvotes%> 👎]\n<@!<%=user%>>: <%=content%>");
                     _.set(msgData, "extra.imageVoteData", {
                         messageObj:recreatedMsg,
-                        template:"[ <%=upvotes%> 👍 : <%=downvotes%> 👎]\n<@!<%=user%>>: <%=content%>",
+                        template:((msg.content==undefined || msg.content=="")?"[ <%=upvotes%> 👍 : <%=downvotes%> 👎] (Gepostet von <@!<%=user%>>)":"[ <%=upvotes%> 👍 : <%=downvotes%> 👎]\n<@!<%=user%>>: <%=content%>"),
                         msgData:{user:msg.member.id,content:msg.content,upvotes:0,downvotes:0}
                     } as ImageVoteData);
                     
