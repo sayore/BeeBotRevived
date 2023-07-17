@@ -211,7 +211,7 @@ export class BeeApplication implements Application {
 						message.extra.imageVoteData.msgData.upvotes = upvotes.length;
 						message.extra.imageVoteData.msgData.downvotes = downvotes.length;
 
-						reaction.message.content = _.template(message.extra.imageVoteData.template)(message.extra.imageVoteData.msgData)
+						reaction.message.edit({content:_.template(message.extra.imageVoteData.template)(message.extra.imageVoteData.msgData)})
 					}
 
 					// Debug log

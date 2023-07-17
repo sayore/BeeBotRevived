@@ -75,7 +75,17 @@ export let EveryoneCommands : ICommand[] = [
                     var atta = msg.attachments.map((a)=>{return a.url});
                     
 
-                    var msgData = await MessageData.getMessageById(msg.id);
+                    
+
+                    
+
+                    //Get message data
+                    var votemsg = await msg.channel.send("Loading...");
+
+                    Logging.log(JSON.stringify(msgData),"MASTER")
+
+                    
+                    var msgData = await MessageData.getMessageById(votemsg.id);
                     // Save recreated message
                     _.set(msgData, "extra.template", "[ <%=upvotes%> 👍 : <%=downvotes%> 👎]\n<@!<%=user%>>: <%=content%>");
                     _.set(msgData, "extra.imageVoteData", {
@@ -83,19 +93,16 @@ export let EveryoneCommands : ICommand[] = [
                         template:"[ <%=upvotes%> 👍 : <%=downvotes%> 👎]\n<@!<%=user%>>: <%=content%>",
                         msgData:{user:msg.member.id,content:msg.content,upvotes:0,downvotes:0}
                     } as ImageVoteData);
-
-                    var recreatedMsg:Discord.MessageOptions={ 
+                    
+                    var recreatedMsg:Discord.MessageEditOptions={ 
                         content: _.template(msgData.extra.imageVoteData.template)(msgData.extra.imageVoteData.msgData), 
                         files: atta,
                         allowedMentions:{},
                         flags:"SUPPRESS_NOTIFICATIONS"
                     }
 
-                    //Get message data
-                    var votemsg = await msg.channel.send(recreatedMsg)
-
+                    votemsg.edit(recreatedMsg);
                     await msgData.save();
-
                     await msg.delete();
                     //Check if message is in a channel with imageVote enabled
                     if(chData.imageVote) {
