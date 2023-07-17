@@ -83,6 +83,7 @@ export class BeeApplication implements Application {
 				user.save();
 			} catch (e) {
 				Logging.log("Error in guildMemberAdd", LogLevel.Report)
+				Logging.log(e.toString(), LogLevel.Report)
 			}
 			let guild = await GuildData.getGuildById(member.guild.id);
 
