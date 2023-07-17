@@ -220,7 +220,7 @@ export class BeeApplication implements Application {
 
 						reaction.message.edit({content:_.template(message.extra.imageVoteData.template?message.extra.imageVoteData.template:"[ <%=upvotes%> 👍 : <%=downvotes%> 👎]")(message.extra.imageVoteData.msgData)})
 					} else {
-						reaction.message.edit({content:_.template("[ <%=upvotes%> 👍 : <%=downvotes%> 👎]")({upvotes,downvotes})})
+						reaction.message.edit({content:_.template("[ <%=upvotes%> 👍 : <%=downvotes%> 👎]")({upvotes:upvotes.length,downvotes:downvotes.length})})
 					}
 
 					// Debug log
