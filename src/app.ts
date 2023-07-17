@@ -88,7 +88,7 @@ export class BeeApplication implements Application {
 			let guild = await GuildData.getGuildById(member.guild.id);
 
 			if (guild.welcomeMessageEnabled) {
-				if(guild.welcomeMessageChannel == undefined) {
+				if(guild.welcomeMessageChannel == undefined || guild.welcomeMessageChannel == "") {
 					Logging.log("Welcome Channel undefined - set with '!katze set welcome channel [channelId]'", LogLevel.Report)
 					return;
 				}

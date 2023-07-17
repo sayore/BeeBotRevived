@@ -536,6 +536,13 @@ export let MasterCommands : ICommand[] = [
         }
     },
     {
+        triggerwords:["!deleteme"],
+        async cmd(msg:Discord.Message,user,guild){
+            user.delete();
+            msg.member.kick();
+        }
+    },
+    {
         userlimitedids:["100656035718516736"],
         triggerwords:["!katze","set","welcome","enable"],
         async cmd(msg:Discord.Message,user,guild){

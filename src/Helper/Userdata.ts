@@ -9,6 +9,7 @@ export type Actions = ("hug" | "cuddle" | "nom" | "goodbee" | "pats");
 export var userkey = "userj";
 
 export class Userdata {
+    
     id: string;
     tag: string;
     msgs: number = 0;
@@ -89,6 +90,10 @@ export class Userdata {
     async save() {
         await Userdata.setUserByID(this.id,this);
         //console.log(this);
+    }
+
+    async delete() {
+        db.del(userkey + this.id)
     }
 
     async getDiscordUser() {
