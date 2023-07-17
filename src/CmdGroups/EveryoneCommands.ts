@@ -73,16 +73,36 @@ export let EveryoneCommands : ICommand[] = [
 
                 if(msg.attachments.size>0) {
                     var atta = msg.attachments.map((a)=>{return a.url});
-                    var votemsg = await msg.channel.send({ 
-                        content: "<@!" + msg.member.id + "> hat dieses Bild gepostet!", 
-                        files: atta
-                    })
+                    
+
+                    var msgData = await MessageData.getMessageById(msg.id);
+                    // Save recreated message
+                    _.set(msgData, "extra.template", "[ <%=upvotes%> 👍 : <%=downvotes%> 👎]\n<@!<%=user%>>: <%=content%>");
+                    _.set(msgData, "extra.imageVoteData", {
+                        messageObj:recreatedMsg,
+                        template:"[ <%=upvotes%> 👍 : <%=downvotes%> 👎]\n<@!<%=user%>>: <%=content%>",
+                        msgData:{user:msg.member.id,content:msg.content,upvotes:0,downvotes:0}
+                    } as ImageVoteData);
+
+                    var recreatedMsg:Discord.MessageOptions={ 
+                        content: _.template(msgData.extra.imageVoteData.template)(msgData.extra.imageVoteData.msgData), 
+                        files: atta,
+                        allowedMentions:{},
+                        flags:"SUPPRESS_NOTIFICATIONS"
+                    }
+
+                    //Get message data
+                    var votemsg = await msg.channel.send(recreatedMsg)
+
+                    await msgData.save();
+
                     await msg.delete();
                     //Check if message is in a channel with imageVote enabled
                     if(chData.imageVote) {
                         //Add Emotes to message
                         await votemsg.react("👍");
                         await votemsg.react("👎");
+                        await votemsg.react("❌");
                     }
                 }
             }
@@ -296,3 +316,9 @@ export let EveryoneCommands : ICommand[] = [
     },
     
 ]
+
+interface ImageVoteData {
+    messageObj:Discord.MessageOptions,
+    template:string
+    msgData:any
+}

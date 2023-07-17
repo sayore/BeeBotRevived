@@ -206,9 +206,19 @@ export class BeeApplication implements Application {
 					_.set(message, "extra.downvotes", downvotes);
 					_.set(message, "extra.upvotes", upvotes);
 
+					//if message.extra.imageVoteData is empty ignore, else use it to change message according to the template
+					if (message.extra.imageVoteData != undefined) {
+						message.extra.imageVoteData.msgData.upvotes = upvotes.length;
+						message.extra.imageVoteData.msgData.downvotes = downvotes.length;
+
+						reaction.message.content = _.template(message.extra.imageVoteData.template)(message.extra.imageVoteData.msgData)
+					}
+
 					// Debug log
 					Logging.log("Upvotes: " + upvotes.length + " Downvotes: " + downvotes.length, LogLevel.Report);
 
+					// Log image vote data
+					Logging.log("Image Vote Data: " + JSON.stringify(message.extra), LogLevel.Report);
 					message.save();
 				}
 			} else {
