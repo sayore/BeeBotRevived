@@ -172,6 +172,7 @@ export class BeeApplication implements Application {
 							
 							//await reaction.message.delete();
 							await reaction.message.edit({content: "Deleted by vote", embeds: []});
+							message.extra.imageVoteData.msgData.deleted = true;
 
 							return;
 						}
@@ -218,7 +219,7 @@ export class BeeApplication implements Application {
 					_.set(message, "extra.upvotes", upvotes);
 
 					//if message.extra.imageVoteData is empty ignore, else use it to change message according to the template
-					if (message.extra.imageVoteData != undefined) {
+					if (message.extra.imageVoteData != undefined && message.extra.imageVoteData.msgData.deleted != true) {
 						message.extra.imageVoteData.msgData.upvotes = upvotes.length;
 						message.extra.imageVoteData.msgData.downvotes = downvotes.length;
 
