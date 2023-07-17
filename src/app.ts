@@ -190,7 +190,7 @@ export class BeeApplication implements Application {
 						if (upvotes.includes(discorduser.id))
 							
 
-
+						Logging.log("Vote: " + (upvotes.length - downvotes.length), LogLevel.Report)
 						if (upvotes.length - downvotes.length <= -5) {
 							reaction.message.delete();
 						}
