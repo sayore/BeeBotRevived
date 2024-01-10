@@ -275,7 +275,7 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
-        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "sex"),
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "123313123121313231312sex"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
             var mention = (mentions ? mentions : undefined)
