@@ -275,7 +275,7 @@ export let TrustedCommands: ICommand[] = [
         }
     },
     {
-        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "sex"),
+        prefix: true, typeofcmd: TypeOfCmd.Action, isHalting: true, triggerfunc: (msg) => _.startsWith(_.toLower(msg.content), "1234510sex"),
         async cmd(msg: Discord.Message) {
             var mentions = getMentions(msg.content)[0];
             var mention = (mentions ? mentions : undefined)
@@ -788,15 +788,15 @@ async function simpleReactEmbed(
         var header = "<%= _.upperFirst(action.singular) %>!"
         var template = "<%= sender %> <%= action.plural %> <%= repliant %>!" 
         
-        
+
         if (action.defaultHeader) 
             header = action.defaultHeader
         if (action.defaultTemplate)
             template = action.defaultTemplate
             if(!!action.noTargetTemplate)
-            if(targetVisName=="noone?") {
+            if(targetVisName=="noone?") 
                 template = action.noTargetTemplate    
-            }
+
 
         var linkId = Math.floor(Math.random() * links.length);
         var link = links[linkId].link
