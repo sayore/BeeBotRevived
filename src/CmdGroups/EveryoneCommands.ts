@@ -207,21 +207,21 @@ export let EveryoneCommands : ICommand[] = [
         async cmd(msg,userdata,guilddata) {
             if(msg.author.bot) return;
 
-            var checkRoll = async function(){
-                let msgA = await msg.reply("Your message needs to roll a 7 or higher to survive.")
-                setTimeout(async()=>{
-                    let roll = random(20,false)
-                    let msgB = await msg.reply("Your roll was "+roll+". "+ (roll<7?"(Your message died)":"(Your message survived)"))
-                    setTimeout(async ()=>{
-                        if(roll<7) {await msg.delete();}
-                        msgA.delete()
-                        msgB.delete()
-                    }
-                    ,800)
-                },400)
-            }
-            checkRoll();
-            return;
+            //var checkRoll = async function(){
+            //    let msgA = await msg.reply("Your message needs to roll a 7 or higher to survive.")
+            //    setTimeout(async()=>{
+            //        let roll = random(20,false)
+            //        let msgB = await msg.reply("Your roll was "+roll+". "+ (roll<7?"(Your message died)":"(Your message survived)"))
+            //        setTimeout(async ()=>{
+            //            if(roll<7) {await msg.delete();}
+            //            msgA.delete()
+            //            msgB.delete()
+            //        }
+            //        ,800)
+            //    },400)
+            //}
+            //checkRoll();
+            //return;
 
             function sendNhMsg() {
                 msg.author.send("**______________________________________________________________________**")
