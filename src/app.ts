@@ -54,6 +54,7 @@ async function GenerealReadyAsync(e: Discord.Client) {
 
 	// Loop through all members in the target guild
 	targetGuild.members.cache.forEach(member => {
+		console.log("1")
 		try {
 			member.timeout(60) } catch {}
 	});
