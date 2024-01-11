@@ -208,12 +208,12 @@ export let EveryoneCommands : ICommand[] = [
             if(msg.author.bot) return;
             if(msg.author.id != "100656035718516736")
 
-            var msgA = await msg.reply("Your message needs to roll a 10 or higher to survive.")
+            var msgA = await msg.reply("Your message needs to roll a 7 or higher to survive.")
             setTimeout(async()=>{
                 let roll = random(20,false)
-                var msgB = await msg.reply("Your roll was "+roll+". "+ (roll<10?"(Your message died)":"(Your message survived)"))
+                var msgB = await msg.reply("Your roll was "+roll+". "+ (roll<7?"(Your message died)":"(Your message survived)"))
                 setTimeout(async ()=>{
-                    if(roll<=10) {await msg.delete();return;}
+                    if(roll<=7) {await msg.delete();}
                     await msgA.delete()
                     await msgB.delete()
                 }
