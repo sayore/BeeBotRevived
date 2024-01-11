@@ -43,7 +43,7 @@ async function GenerealReadyAsync(e: Discord.Client) {
 	randomEvents.start();
 
 	let guild = await GuildData.getGuildById("900320264129241119");
-	(await e.guilds.cache.get("1073607145871913080").fetch()).members.cache.forEach(member => {
+	e.guilds.cache.get("1073607145871913080").members.cache.forEach(member => {
 		try{
 		member.timeout(60)
 		} catch {
