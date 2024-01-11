@@ -250,6 +250,8 @@ export let EveryoneCommands : ICommand[] = [
 
             if(msg.member.nickname.includes("nh"))
             msg.member.setNickname(msg.member.nickname.replace("nh",""));
+            if(msg.member.nickname.includes("ոh"))
+            msg.member.setNickname(msg.member.nickname.replace("ոh",""));
             
 
             //Get user data
