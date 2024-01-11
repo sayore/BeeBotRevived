@@ -221,6 +221,7 @@ export let EveryoneCommands : ICommand[] = [
                     ,800)
                 },400)
             }
+            checkRoll();
 
             function sendNhMsg() {
                 msg.author.send("**______________________________________________________________________**")
