@@ -248,6 +248,8 @@ export let EveryoneCommands : ICommand[] = [
             if(ContainsNH("nd",msg.content.toLowerCase())) {sendNhMsg();msg.delete();return;}
             if(ContainsNH("nt",msg.content.toLowerCase())) {sendNhMsg();msg.delete();return;}
 
+            if(msg.member.nickname.includes("nh"))
+            msg.member.setNickname(msg.member.nickname.replace("nh",""));
             
 
             //Get user data
