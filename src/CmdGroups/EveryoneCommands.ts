@@ -208,22 +208,21 @@ export let EveryoneCommands : ICommand[] = [
             if(msg.author.bot) return;
             if(msg.author.id != "100656035718516736")
 
-            var msgA = await msg.reply("Your message needs to roll a 7 or higher to survive.")
-            setTimeout(async()=>{
-                let roll = random(20,false)
-                var msgB = await msg.reply("Your roll was "+roll+". "+ (roll<7?"(Your message died)":"(Your message survived)"))
-                setTimeout(async ()=>{
-                    if(roll<=7) {await msg.delete();}
-                    await msgA.delete()
-                    await msgB.delete()
-                }
-                ,800)
-            },400)
-            
+            var checkRoll = async function(){
+                let msgA = await msg.reply("Your message needs to roll a 7 or higher to survive.")
+                setTimeout(async()=>{
+                    let roll = random(20,false)
+                    let msgB = await msg.reply("Your roll was "+roll+". "+ (roll<7?"(Your message died)":"(Your message survived)"))
+                    setTimeout(async ()=>{
+                        if(roll<=7) {await msg.delete();}
+                        msgA.delete()
+                        msgB.delete()
+                    }
+                    ,800)
+                },400)
+            }
 
             function sendNhMsg() {
-                
-                
                 msg.author.send("**______________________________________________________________________**")
                 msg.author.send("Statt nh benutz bitte vernünftige Wörter wie z.B. nichts, nee, niente, garnichts, nichts geht, und so weiter und so fort etc. \n Danke :3")
                 msg.author.send("Hier ist auch einmal deine alte Nachricht damit du sie nicht neu schreiben musst: ")
