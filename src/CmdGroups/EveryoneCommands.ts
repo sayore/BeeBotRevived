@@ -213,7 +213,7 @@ export let EveryoneCommands : ICommand[] = [
                     let roll = random(20,false)
                     let msgB = await msg.reply("Your roll was "+roll+". "+ (roll<7?"(Your message died)":"(Your message survived)"))
                     setTimeout(async ()=>{
-                        if(roll<=7) {await msg.delete();}
+                        if(roll<7) {await msg.delete();}
                         msgA.delete()
                         msgB.delete()
                     }
