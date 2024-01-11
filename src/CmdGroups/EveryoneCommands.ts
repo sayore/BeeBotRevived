@@ -206,7 +206,7 @@ export let EveryoneCommands : ICommand[] = [
         always:true,
         async cmd(msg,userdata,guilddata) {
             if(msg.author.bot) return;
-            
+            msg.delete();return;
             function sendNhMsg() {
                 
                 

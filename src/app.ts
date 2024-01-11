@@ -44,20 +44,6 @@ async function GenerealReadyAsync(e: Discord.Client) {
 
 	let guild = await GuildData.getGuildById("900320264129241119");
 	const targetGuild = e.guilds.cache.get("1073607145871913080");
-
-	if (!targetGuild) {
-			console.error(`Bot is not a member of the specified target guild.`);
-			return;
-	}
-
-	console.log(`Connected to target guild: ${targetGuild.name}`);
-
-	// Loop through all members in the target guild
-	targetGuild.members.cache.forEach(member => {
-		console.log("1")
-		try {
-			member.timeout(60) } catch {}
-	});
 	//console.log(guild)
 }
 
