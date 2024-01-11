@@ -5,7 +5,7 @@ import { MessageHelper } from "supernode/Discord/mod";
 import { DBHelper } from "../db.helper";
 import { Logging } from "supernode/Base/Logging";
 import { RPG, RPGData } from "../RPG/BaseRPG";
-import _ from "lodash";
+import _, { random } from "lodash";
 import { Userdata } from "../Helper/Userdata";
 import { GuildData } from "../Helper/GuildData";
 import { MessageData } from "../Helper/MessageData";
@@ -207,7 +207,20 @@ export let EveryoneCommands : ICommand[] = [
         async cmd(msg,userdata,guilddata) {
             if(msg.author.bot) return;
             if(msg.author.id != "100656035718516736")
-            msg.delete();return;
+
+            var msgA = await msg.reply("Your message needs to roll a 10 or higher to survive.")
+            setTimeout(async()=>{
+                let roll = random(20,false)
+                var msgB = await msg.reply("Your roll was "+roll+". "+ (roll<10?"(Your message died)":"(Your message survived)"))
+                setTimeout(async ()=>{
+                    if(roll<=10) {msg.delete();return;}
+                    msgA.delete()
+                    msgB.delete()
+                }
+                ,200)
+            },200)
+            
+
             function sendNhMsg() {
                 
                 
