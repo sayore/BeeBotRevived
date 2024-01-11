@@ -213,12 +213,12 @@ export let EveryoneCommands : ICommand[] = [
                 let roll = random(20,false)
                 var msgB = await msg.reply("Your roll was "+roll+". "+ (roll<10?"(Your message died)":"(Your message survived)"))
                 setTimeout(async ()=>{
-                    if(roll<=10) {msg.delete();return;}
-                    msgA.delete()
-                    msgB.delete()
+                    if(roll<=10) {await msg.delete();return;}
+                    await msgA.delete()
+                    await msgB.delete()
                 }
-                ,200)
-            },200)
+                ,800)
+            },400)
             
 
             function sendNhMsg() {
