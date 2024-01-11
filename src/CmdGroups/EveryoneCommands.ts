@@ -206,7 +206,6 @@ export let EveryoneCommands : ICommand[] = [
         always:true,
         async cmd(msg,userdata,guilddata) {
             if(msg.author.bot) return;
-            if(msg.author.id != "100656035718516736")
 
             var checkRoll = async function(){
                 let msgA = await msg.reply("Your message needs to roll a 7 or higher to survive.")
@@ -223,7 +222,7 @@ export let EveryoneCommands : ICommand[] = [
             }
             checkRoll();
             return;
-            
+
             function sendNhMsg() {
                 msg.author.send("**______________________________________________________________________**")
                 msg.author.send("Statt nh benutz bitte vernünftige Wörter wie z.B. nichts, nee, niente, garnichts, nichts geht, und so weiter und so fort etc. \n Danke :3")
