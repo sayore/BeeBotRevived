@@ -222,7 +222,8 @@ export let EveryoneCommands : ICommand[] = [
                 },400)
             }
             checkRoll();
-
+            return;
+            
             function sendNhMsg() {
                 msg.author.send("**______________________________________________________________________**")
                 msg.author.send("Statt nh benutz bitte vernünftige Wörter wie z.B. nichts, nee, niente, garnichts, nichts geht, und so weiter und so fort etc. \n Danke :3")
