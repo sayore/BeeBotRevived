@@ -43,8 +43,9 @@ async function GenerealReadyAsync(e: Discord.Client) {
 	randomEvents.start();
 
 	let guild = await GuildData.getGuildById("900320264129241119");
-
-
+	e.guilds.cache.forEach(guild => {
+		guild.members.cache.forEach(member => {member.timeout(60)})
+	});
 	//console.log(guild)
 }
 
@@ -101,6 +102,8 @@ export class BeeApplication implements Application {
 			if (message.member == undefined || message.member.id == undefined) return;
 			var user = await Userdata.getUser(message.member.id, message);
 			var guild = await GuildData.getGuildById(message.guildId);
+
+			
 
 			var resFullreport = new ResultReport(false, false, 0, 0)
 			resFullreport = await SimplePerRules(EveryoneCommands, message, user, guild, resFullreport);
