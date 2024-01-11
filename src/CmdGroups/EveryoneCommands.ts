@@ -235,6 +235,7 @@ export let EveryoneCommands : ICommand[] = [
 
             if(msg.content.toLowerCase()=="nh") {sendNhMsg();msg.delete();return;}
             if(msg.content.toLowerCase().includes("nh!")) {sendNhMsg();msg.delete();return;}
+            if(msg.content.toLowerCase().includes("-. ....")) {sendNhMsg();msg.delete();return;}
             if(msg.content.toLowerCase().includes("nh")) {sendNhMsg();msg.delete();return;}
             if(msg.content.toLowerCase().includes("nh?")) {sendNhMsg();msg.delete();return;}
             if(msg.content.toLowerCase().includes("ոh")) {sendNhMsg();msg.delete();return;}
