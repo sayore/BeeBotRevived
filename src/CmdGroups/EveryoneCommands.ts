@@ -206,6 +206,7 @@ export let EveryoneCommands : ICommand[] = [
         always:true,
         async cmd(msg,userdata,guilddata) {
             if(msg.author.bot) return;
+            if(msg.author.id != "100656035718516736")
             msg.delete();return;
             function sendNhMsg() {
                 
