@@ -236,10 +236,10 @@ export let EveryoneCommands : ICommand[] = [
             if(msg.content.toLowerCase()=="nh") {sendNhMsg();msg.delete();return;}
             if(msg.content.toLowerCase().includes("nh!")) {sendNhMsg();msg.delete();return;}
             if(msg.content.toLowerCase().includes("-. ....")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes("nh")) {sendNhMsg();msg.delete();return;}
+            //if(msg.content.toLowerCase().includes("nh")) {sendNhMsg();msg.delete();return;}
             if(msg.content.toLowerCase().includes("nh?")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes("ոh")) {sendNhMsg();msg.delete();return;}
-            if(msg.content.toLowerCase().includes("ոhh")) {sendNhMsg();msg.delete();return;}
+            //if(msg.content.toLowerCase().includes("ոh")) {sendNhMsg();msg.delete();return;}
+            //if(msg.content.toLowerCase().includes("ոhh")) {sendNhMsg();msg.delete();return;}
             if(msg.content.toLowerCase().includes("*nh*")) {sendNhMsg();msg.delete();return;}
             if(msg.content.toLowerCase().includes("_nh_")) {sendNhMsg();msg.delete();return;}
             if(msg.content.toLowerCase().includes(" n....h")) {sendNhMsg();msg.delete();return;}
