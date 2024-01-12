@@ -215,7 +215,7 @@ export let EveryoneCommands : ICommand[] = [
                     setTimeout(async()=>{
                         if(roll<7) {await msg.delete();}
                         msgA.delete()
-                    },400)
+                    },850)
                 }
                 checkRoll();
                 return;

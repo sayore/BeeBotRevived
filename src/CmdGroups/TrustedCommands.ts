@@ -847,4 +847,4 @@ async function defaultReactionHandler(msg: Discord.Message, action: ActionInfo, 
      }, 30000);
 
     addActionToStatistic(action, msg);
-}
+    }
