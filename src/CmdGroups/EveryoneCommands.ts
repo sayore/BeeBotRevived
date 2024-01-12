@@ -207,22 +207,24 @@ export let EveryoneCommands : ICommand[] = [
         async cmd(msg,userdata,guilddata) {
             if(msg.author.bot) return;
 
-            //var checkRoll = async function(){
-            //    let msgA = await msg.reply("Your message needs to roll a 7 or higher to survive.")
-            //    setTimeout(async()=>{
-            //        let roll = random(20,false)
-            //        let msgB = await msg.reply("Your roll was "+roll+". "+ (roll<7?"(Your message died)":"(Your message survived)"))
-            //        setTimeout(async ()=>{
-            //            if(roll<7) {await msg.delete();}
-            //            msgA.delete()
-            //            msgB.delete()
-            //        }
-            //        ,800)
-            //    },400)
-            //}
-            //checkRoll();
-            //return;
-
+            // Role ist 1195458116322594969 vorhanden. Roll the dice.
+            if(msg.member.roles.cache.has("1195458116322594969")) {
+                var checkRoll = async function(){
+                    let msgA = await msg.reply("Your message needs to roll a 7 or higher to survive.")
+                    setTimeout(async()=>{
+                        let roll = random(20,false)
+                        let msgB = await msg.reply("Your roll was "+roll+". "+ (roll<7?"(Your message died)":"(Your message survived)"))
+                        setTimeout(async ()=>{
+                            if(roll<7) {await msg.delete();}
+                            msgA.delete()
+                            msgB.delete()
+                        }
+                        ,800)
+                    },400)
+                }
+                checkRoll();
+                return;
+            }
             function sendNhMsg() {
                 msg.author.send("**______________________________________________________________________**")
                 msg.author.send("Statt nh benutz bitte vernünftige Wörter wie z.B. nichts, nee, niente, garnichts, nichts geht, und so weiter und so fort etc. \n Danke :3")
