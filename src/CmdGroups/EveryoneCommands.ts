@@ -210,16 +210,11 @@ export let EveryoneCommands : ICommand[] = [
             // Role ist 1195458116322594969 vorhanden. Roll the dice.
             if(msg.member.roles.cache.has("1195458116322594969")) {
                 var checkRoll = async function(){
-                    let msgA = await msg.reply("Your message needs to roll a 7 or higher to survive.")
+                    let roll = random(20,false)
+                    let msgA = await msg.reply("Your message needs to roll a 7 or higher to survive.\n"+"Your roll was "+roll+". "+ (roll<7?"(Your message died)":"(Your message survived)"));
                     setTimeout(async()=>{
-                        let roll = random(20,false)
-                        let msgB = await msg.reply("Your roll was "+roll+". "+ (roll<7?"(Your message died)":"(Your message survived)"))
-                        setTimeout(async ()=>{
-                            if(roll<7) {await msg.delete();}
-                            msgA.delete()
-                            msgB.delete()
-                        }
-                        ,800)
+                        if(roll<7) {await msg.delete();}
+                        msgA.delete()
                     },400)
                 }
                 checkRoll();
