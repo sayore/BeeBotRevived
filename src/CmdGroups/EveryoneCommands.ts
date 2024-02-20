@@ -110,8 +110,8 @@ export let EveryoneCommands : ICommand[] = [
             message.extra.imageVoteData.msgData.upvotes = upvotes.length;
 			message.extra.imageVoteData.msgData.downvotes = downvotes.length;
             message.save();
-            _.set(message, "extra.downvotes", message.extra.downvotes);
-            _.set(message, "extra.upvotes", message.extra.upvotes);
+            _.set(message, "extra.downvotes", upvotes);
+            _.set(message, "extra.upvotes", downvotes);
             Logging.log("IVD After");
             Logging.log(JSON.stringify(message.extra.imageVoteData));
 
