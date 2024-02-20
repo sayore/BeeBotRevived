@@ -145,29 +145,29 @@
 }
 
 
-  !katze react with 
-  {
-    "emojis": [
-      ":one:",
-      ":two:",
-      ":three:",
-      ":four:",
-      ":five:",
-      ":six:",
-      ":seven:",
-      ":eight:"
-    ],
-    "names":[
-  "INTJ",
-  "INTP",
-  "ENTJ",
-  "ENTP",
-  "INFJ",
-  "INFP",
-  "ENFJ",
-  "ENFP"],
-    "message":"Persönlichkeitstyp? (N Gruppe)"
-  }
+!katze react with 
+{
+  "emojis": [
+    ":one:",
+    ":two:",
+    ":three:",
+    ":four:",
+    ":five:",
+    ":six:",
+    ":seven:",
+    ":eight:"
+  ],
+  "names":[
+"INTJ",
+"INTP",
+"ENTJ",
+"ENTP",
+"INFJ",
+"INFP",
+"ENFJ",
+"ENFP"],
+  "message":"Persönlichkeitstyp? (N Gruppe)"
+}
 !katze react with 
  {
   "emojis": [
@@ -202,4 +202,16 @@
 "Assertive",
 "Turbulent"],
   "message":"Persönlichkeitstyp? (A or T)"
+}
+
+!katze react with 
+{
+  "emojis": [
+    ":flag_ie:",
+    ":scotland:"
+  ],
+  "names":[
+    "Ireland",
+    "Scotland"],
+  "message":"Was ist besser? Scotland oder Ireland?"
 }

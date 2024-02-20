@@ -9,6 +9,7 @@ import _, { random } from "lodash";
 import { Userdata } from "../Helper/Userdata";
 import { GuildData } from "../Helper/GuildData";
 import { MessageData } from "../Helper/MessageData";
+import { getMentions } from "./command.helper";
 //import { getUser, setUser } from "./command.helper";
 
 var randomUserIdCache:{time:number,id:string}[] = []
@@ -38,6 +39,73 @@ export let EveryoneCommands : ICommand[] = [
             }
 
             return false;
+        }
+    },
+    {
+        typeofcmd:TypeOfCmd.Information,
+        userlimitedids:["100656035718516736"],
+        triggerfunc(msg) {
+            return msg.content.startsWith("!katze bfv");
+        },
+        async cmd(msg,user,guild) {
+            var targetId = msg.content.split(" ")[2];
+            var target = await Userdata.getUser(targetId);
+            target.votebanned = true;
+            target.save();
+
+            msg.channel.send("BFV done.");
+
+            return true;
+        }
+    },
+    {
+        typeofcmd:TypeOfCmd.Information,
+        userlimitedids:["100656035718516736"],
+        triggerfunc(msg) {
+            return msg.content.startsWith("!katze ubfv");
+        },
+        async cmd(msg,user,guild) {
+            var targetId = msg.content.split(" ")[2];
+            var target = await Userdata.getUser(targetId);
+            target.votebanned = true;
+            target.save();
+
+            msg.channel.send("UBFV done.");
+
+            return true;
+        }
+    },
+    {
+        typeofcmd:TypeOfCmd.Information,
+        userlimitedids:["100656035718516736"],
+        triggerfunc(msg) {
+            return msg.content.startsWith("!katze rmdv");
+        },
+        async cmd(msg,user,guild) {
+            var messageId = msg.content.split(" ")[2];
+            var message = await MessageData.getMessageById(messageId);
+            //get message from discord
+            var channel = clientBee.channels.cache.get(msg.channelId);
+            var msg = await (channel as Discord.TextChannel).messages.fetch(messageId);
+            var targetId = msg.content.split(" ")[3];
+            var target = await Userdata.getUser(targetId);
+            
+            message.extra.downvotes = message.extra.downvotes.filter(e=>e!=target.id);
+
+            if (message.extra.imageVoteData != undefined && message.extra.imageVoteData.msgData.deleted != true) {
+                message.extra.imageVoteData.msgData.upvotes = message.extra.upvotes.length;
+                message.extra.imageVoteData.msgData.downvotes = message.extra.downvotes.length;
+
+                msg.edit({content:_.template(message.extra.imageVoteData.template?message.extra.imageVoteData.template:"[ <%=upvotes%> 👍 : <%=downvotes%> 👎]")(message.extra.imageVoteData.msgData)})
+            } else {
+                msg.edit({content:_.template("[ <%=upvotes%> 👍 : <%=downvotes%> 👎]")({upvotes:message.extra.upvotes.length,downvotes:message.extra.downvotes.length})})
+            }
+
+            message.save();
+
+            msg.channel.send("RMDV done.");
+
+            return true;
         }
     },
     {

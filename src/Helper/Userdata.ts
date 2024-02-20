@@ -16,6 +16,7 @@ export class Userdata {
     accentcolor:number;
     hexcolor:string;
     hexaccentcolor:string;
+    votebanned:boolean = false;
     marriedTo:string[]=[];
     fetchCounter=0;
     extra:any;
