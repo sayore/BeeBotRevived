@@ -89,19 +89,26 @@ export let EveryoneCommands : ICommand[] = [
             var msg = await (channel as Discord.TextChannel).messages.fetch(messageId);
             var targetId = msg.content.split(" ")[3];
             var target = await Userdata.getUser(targetId);
+
+            var upvotes = _.get(message, "extra.upvotes");
+			var downvotes = _.get(message, "extra.downvotes");
             
-            message.extra.downvotes = message.extra.downvotes.filter(e=>e!=target.id);
+            downvotes = message.extra.downvotes.filter(e=>e!=target.id);
 
             if (message.extra.imageVoteData != undefined && message.extra.imageVoteData.msgData.deleted != true) {
-                message.extra.imageVoteData.msgData.upvotes = message.extra.upvotes.length;
-                message.extra.imageVoteData.msgData.downvotes = message.extra.downvotes.length;
+                message.extra.imageVoteData.msgData.upvotes = upvotes.length;
+                message.extra.imageVoteData.msgData.downvotes = downvotes.length;
 
                 msg.edit({content:_.template(message.extra.imageVoteData.template?message.extra.imageVoteData.template:"[ <%=upvotes%> 👍 : <%=downvotes%> 👎]")(message.extra.imageVoteData.msgData)})
             } else {
-                msg.edit({content:_.template("[ <%=upvotes%> 👍 : <%=downvotes%> 👎]")({upvotes:message.extra.upvotes.length,downvotes:message.extra.downvotes.length})})
+                msg.edit({content:_.template("[ <%=upvotes%> 👍 : <%=downvotes%> 👎]")({upvotes:upvotes.length,downvotes:downvotes.length})})
             }
 
+            message.extra.imageVoteData.msgData.upvotes = upvotes.length;
+			message.extra.imageVoteData.msgData.downvotes = downvotes.length;
             message.save();
+            _.set(message, "extra.downvotes", message.extra.downvotes);
+            _.set(message, "extra.upvotes", message.extra.upvotes);
 
             msg.channel.send("RMDV done.");
 
