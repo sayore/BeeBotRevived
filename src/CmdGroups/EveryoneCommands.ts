@@ -86,7 +86,7 @@ export let EveryoneCommands : ICommand[] = [
             var message = await MessageData.getMessageById(messageId);
             //get message from discord
             var channel = clientBee.channels.cache.get(msg.channelId);
-            var msg = await (channel as Discord.TextChannel).messages.fetch(messageId);
+            var discord_image_vote_msg = await (channel as Discord.TextChannel).messages.fetch(messageId);
             var targetId = msg.content.split(" ")[3];
             var target = await Userdata.getUser(targetId);
 
@@ -104,9 +104,9 @@ export let EveryoneCommands : ICommand[] = [
                 message.extra.imageVoteData.msgData.upvotes = upvotes.length;
                 message.extra.imageVoteData.msgData.downvotes = downvotes.length;
 
-                msg.edit({content:_.template(message.extra.imageVoteData.template?message.extra.imageVoteData.template:"[ <%=upvotes%> 👍 : <%=downvotes%> 👎]")(message.extra.imageVoteData.msgData)})
+                discord_image_vote_msg.edit({content:_.template(message.extra.imageVoteData.template?message.extra.imageVoteData.template:"[ <%=upvotes%> 👍 : <%=downvotes%> 👎]")(message.extra.imageVoteData.msgData)})
             } else {
-                msg.edit({content:_.template("[ <%=upvotes%> 👍 : <%=downvotes%> 👎]")({upvotes:upvotes.length,downvotes:downvotes.length})})
+                discord_image_vote_msg.edit({content:_.template("[ <%=upvotes%> 👍 : <%=downvotes%> 👎]")({upvotes:upvotes.length,downvotes:downvotes.length})})
             }
 
             message.extra.imageVoteData.msgData.upvotes = upvotes.length;
