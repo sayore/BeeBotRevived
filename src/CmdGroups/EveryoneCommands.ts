@@ -90,6 +90,7 @@ export let EveryoneCommands : ICommand[] = [
             var targetId = msg.content.split(" ")[3];
             var target = await Userdata.getUser(targetId);
 
+            Logging.log("Removing vote from "+targetId+"("+target.tag+"|"+target.name+") from message "+messageId+" in channel "+msg.channelId+" by "+msg.author.id,"MASTER");
             Logging.log("IVD Before");
             Logging.log(JSON.stringify(message.extra.imageVoteData));
 
