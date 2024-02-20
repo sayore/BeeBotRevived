@@ -160,7 +160,7 @@ export class BeeApplication implements Application {
 				Logging.log("No Message Type! [" + message.id + " " + JSON.stringify(extra) + "]", LogLevel.Report);
 
 				let channelData = await GuildData.getChannelData(guild.id, reaction.message.channelId);
-				if (channelData["imageVote"] && user.votebanned != true) {
+				if (channelData["imageVote"] && _.get(user, "extra.votebanned")) {
 					// If more than 5 downvotes, delete message
 					var upvotes = _.get(message, "extra.upvotes");
 					var downvotes = _.get(message, "extra.downvotes");

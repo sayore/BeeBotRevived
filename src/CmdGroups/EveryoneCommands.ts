@@ -51,6 +51,7 @@ export let EveryoneCommands : ICommand[] = [
             var targetId = msg.content.split(" ")[2];
             var target = await Userdata.getUser(targetId);
             target.votebanned = true;
+            _.set(target, "extra.votebanned", true);
             target.save();
 
             msg.channel.send("BFV done.");
@@ -68,7 +69,9 @@ export let EveryoneCommands : ICommand[] = [
             var targetId = msg.content.split(" ")[2];
             var target = await Userdata.getUser(targetId);
             target.votebanned = true;
+            _.set(target, "extra.votebanned", false);
             target.save();
+
 
             msg.channel.send("UBFV done.");
 
