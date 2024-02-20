@@ -102,6 +102,8 @@ export let EveryoneCommands : ICommand[] = [
             }
 
             message.save();
+            _.set(message, "extra.downvotes", message.extra.downvotes);
+            _.set(message, "extra.upvotes", message.extra.upvotes);
 
             msg.channel.send("RMDV done.");
 
