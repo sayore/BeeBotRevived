@@ -93,7 +93,7 @@ export let EveryoneCommands : ICommand[] = [
             var upvotes = _.get(message, "extra.upvotes");
 			var downvotes = _.get(message, "extra.downvotes");
             
-            downvotes = message.extra.downvotes.filter(e=>e!=target.id);
+            downvotes = message.extra.downvotes.filter(e=>e!=targetId);
 
             if (message.extra.imageVoteData != undefined && message.extra.imageVoteData.msgData.deleted != true) {
                 message.extra.imageVoteData.msgData.upvotes = upvotes.length;
