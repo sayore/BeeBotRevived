@@ -196,7 +196,7 @@ export class BeeApplication implements Application {
 						if (upvotes.includes(discorduser.id))
 							
 
-						Logging.log("Vote: " + (upvotes.length - downvotes.length), LogLevel.Report)
+						//Logging.log("Vote: " + (upvotes.length - downvotes.length), LogLevel.Report)
 						if (upvotes.length - downvotes.length <= -5) {
 							reaction.message.delete();
 							return;
@@ -231,10 +231,10 @@ export class BeeApplication implements Application {
 					}
 
 					// Debug log
-					Logging.log("Upvotes: " + upvotes.length + " Downvotes: " + downvotes.length, LogLevel.Report);
+					//Logging.log("Upvotes: " + upvotes.length + " Downvotes: " + downvotes.length, LogLevel.Report);
 
 					// Log image vote data
-					Logging.log("Image Vote Data: " + JSON.stringify(message.extra), LogLevel.Report);
+					//Logging.log("Image Vote Data: " + JSON.stringify(message.extra), LogLevel.Report);
 					message.save();
 				}
 			} else {

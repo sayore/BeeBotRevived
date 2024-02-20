@@ -90,6 +90,9 @@ export let EveryoneCommands : ICommand[] = [
             var targetId = msg.content.split(" ")[3];
             var target = await Userdata.getUser(targetId);
 
+            Logging.log("IVD Before");
+            Logging.log(message.extra.imageVoteData);
+
             var upvotes = _.get(message, "extra.upvotes");
 			var downvotes = _.get(message, "extra.downvotes");
             
@@ -109,6 +112,8 @@ export let EveryoneCommands : ICommand[] = [
             message.save();
             _.set(message, "extra.downvotes", message.extra.downvotes);
             _.set(message, "extra.upvotes", message.extra.upvotes);
+            Logging.log("IVD After");
+            Logging.log(message.extra.imageVoteData);
 
             msg.channel.send("RMDV done.");
 
