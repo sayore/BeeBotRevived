@@ -473,6 +473,22 @@ export let MasterCommands : ICommand[] = [
                             msg.reply("done");
                         }
                     }
+                } else if(!isNaN(parseInt(msgsplit[3])) && msgsplit[2] == "from") {
+                    let channel = await clientBee.channels.fetch(msgsplit[3]);
+                    if(channel) {
+                        let guild = await GuildData.getGuildById(msg.guild.id);
+                        if(guild) {
+                            if(guild.extra && guild.extra.messageRedirects) {
+                                if(guild.extra.messageRedirects[msg.channelId]) {
+                                    delete guild.extra.messageRedirects[msg.channelId];
+                                    GuildData.setGuildById(msg.guild.id,guild);
+                                    msg.reply("done");
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    msg.reply("Invalid arguments. Try `katze redirect <channel> to <channel>` or `katze redirect <channel> from <channel>` \n Got: "+msgsplit.join(" "));
                 }
                 if(!isNaN(parseInt(msgsplit[3])) && msgsplit[2] == "remove") {
                     let channel = await clientBee.channels.fetch(msgsplit[3]);
