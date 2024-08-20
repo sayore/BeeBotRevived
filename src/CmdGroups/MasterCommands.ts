@@ -458,7 +458,7 @@ export let MasterCommands : ICommand[] = [
         },
         async cmd(msg:Discord.Message){
             let msgsplit = msg.content.split(" ");
-            if(msgsplit.length == 4) {
+            if(msgsplit.length == 5) {
                 //check if argument is number and if channel exists
                 if(!isNaN(parseInt(msgsplit[3])) && msgsplit[2] == "to") {
                     let channel = await clientBee.channels.fetch(msgsplit[3]);
@@ -473,6 +473,35 @@ export let MasterCommands : ICommand[] = [
                             msg.reply("done");
                         }
                     }
+                }
+                if(!isNaN(parseInt(msgsplit[3])) && msgsplit[2] == "remove") {
+                    let channel = await clientBee.channels.fetch(msgsplit[3]);
+                    if(channel) {
+                        let guild = await GuildData.getGuildById(msg.guild.id);
+                        if(guild) {
+                            if(guild.extra && guild.extra.messageRedirects) {
+                                if(guild.extra.messageRedirects[msg.channelId]) {
+                                    delete guild.extra.messageRedirects[msg.channelId];
+                                    GuildData.setGuildById(msg.guild.id,guild);
+                                    msg.reply("done");
+                                }
+                            }
+                        }
+                    }
+                }
+                if(!isNaN(parseInt(msgsplit[3])) && msgsplit[2] == "list") {
+                    let guild = await GuildData.getGuildById(msg.guild.id);
+                    if(guild) {
+                        if(guild.extra && guild.extra.messageRedirects) {
+                            let list = Object.keys(guild.extra.messageRedirects).map((v)=>{
+                                return v + " -> " + guild.extra.messageRedirects[v].to;
+                            });
+                            msg.reply(list.join("\n"));
+                        }
+                    }
+                }
+                if(isNaN(parseInt(msgsplit[3])) && msgsplit[2] == "to") {
+                    msg.reply("Channel ID must be a number");
                 }
             } else { 
                 msg.reply("Usage: !katze redirect <channel id> to <channel id>("+msgsplit.length+")");
