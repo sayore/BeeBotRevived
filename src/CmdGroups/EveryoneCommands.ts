@@ -399,7 +399,7 @@ export let EveryoneCommands : ICommand[] = [
                 //console.log("A message was sent in a redirect channel")
                 var redirectChannel = clientBee.channels.cache.get(guild.extra.messageRedirects[msg.channelId].to);
                 if(redirectChannel && redirectChannel.isText()) {
-                    msg.channel.send("Deine Nachricht wurde an die aktiven mods weitergeleitet kleinen moment bitte :3")
+                    
                     var embed = new Discord.MessageEmbed();
                     embed.setAuthor({name:user.tag, iconURL: msg.member.avatarURL({dynamic: true, size: 512})});
                     embed.setDescription(msg.content);
@@ -420,6 +420,10 @@ export let EveryoneCommands : ICommand[] = [
                     _.set(msgData,"extra.applyingMember",msg.member.id);
                     msgData.save();
 
+                    let repliedMsg = await msg.channel.send("Deine Nachricht wurde weitergeleitet <@" + msg.author.id + "> :3 (Diese Nachricht verschwindeet in 30 Sekunden.)");
+                    setTimeout(async ()=>{
+                        await repliedMsg.delete();
+                    },30000)
                     msg.delete();
                     return true;
                 }
