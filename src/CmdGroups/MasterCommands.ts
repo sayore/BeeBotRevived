@@ -460,35 +460,36 @@ export let MasterCommands : ICommand[] = [
             let msgsplit = msg.content.split(" ");
             if(msgsplit.length == 5) {
                 //check if argument is number and if channel exists
-                if(!isNaN(parseInt(msgsplit[3])) && msgsplit[2] == "to") {
-                    let channel = await clientBee.channels.fetch(msgsplit[3]);
+                if(!isNaN(parseInt(msgsplit[2])) && msgsplit[3] == "to" && !isNaN(parseInt(msgsplit[4]))) {
+                    let channel = await clientBee.channels.fetch(msgsplit[2]);
                     if(channel) {
                         let guild = await GuildData.getGuildById(msg.guild.id);
                         if(guild) {
                             guild.extra ??= {}; //if guild.extra is undefined, set it to an empty object
                             guild.extra.messageRedirects ??= {}; //if guild.extra.messageRedirects is undefined, set it to an empty object
                             if(_.isArray(guild.extra.messageRedirects)) guild.extra.messageRedirects = {};
-                            guild.extra.messageRedirects[msg.channelId] = {to: msgsplit[3]};
+                            guild.extra.messageRedirects[msg.channelId] = {to: msgsplit[4]};
                             GuildData.setGuildById(msg.guild.id,guild);
                             msg.reply("done");
                         }
                     }
-                } else if(!isNaN(parseInt(msgsplit[3])) && msgsplit[2] == "from") {
-                    let channel = await clientBee.channels.fetch(msgsplit[3]);
+                } else if(!isNaN(parseInt(msgsplit[2])) && msgsplit[3] == "from" && !isNaN(parseInt(msgsplit[4]))) {
+                    let channel = await clientBee.channels.fetch(msgsplit[4]);
                     if(channel) {
                         let guild = await GuildData.getGuildById(msg.guild.id);
                         if(guild) {
-                            if(guild.extra && guild.extra.messageRedirects) {
-                                if(guild.extra.messageRedirects[msg.channelId]) {
-                                    delete guild.extra.messageRedirects[msg.channelId];
-                                    GuildData.setGuildById(msg.guild.id,guild);
-                                    msg.reply("done");
-                                }
-                            }
+                            guild.extra ??= {}; //if guild.extra is undefined, set it to an empty object
+                            guild.extra.messageRedirects ??= {}; //if guild.extra.messageRedirects is undefined, set it to an empty object
+                            if(_.isArray(guild.extra.messageRedirects)) guild.extra.messageRedirects = {};
+                            guild.extra.messageRedirects[msg.channelId] = {to: msgsplit[2]};
+                            GuildData.setGuildById(msg.guild.id,guild);
+                            msg.reply("done");
                         }
                     }
                 } else {
                     msg.reply("Invalid arguments. Try `katze redirect <channel> to <channel>` or `katze redirect <channel> from <channel>` \n Got: "+msgsplit.join(" "));
+
+                    // Check what arguments  are wrong and hint to the user
                 }
                 if(!isNaN(parseInt(msgsplit[3])) && msgsplit[2] == "remove") {
                     let channel = await clientBee.channels.fetch(msgsplit[3]);
