@@ -242,23 +242,37 @@ export class BeeApplication implements Application {
 
 				if (messageType == "application") {
 					if (reaction.emoji.name == "✅") {
+						//Remove all emojis from message
+						reaction.message.reactions.removeAll();
+
+						//If member already has role "Mitglied" reply with message
+						if(member.roles)
+						{
+							var finding = member.roles.cache.find((role: Discord.Role) => { return role.name == "Mitglied" });
+							if (finding) {
+								reaction.message.reply("Member wurde bereits angenommen.");
+								return;
+							}
+						}
+
 						// Check if role "Mitglied" exists
 						var finding = reaction.message.guild.roles.cache.find((role: Discord.Role) => { return role.name == "Mitglied" });
+						var trial = reaction.message.guild.roles.cache.find((role: Discord.Role) => { return role.name == "Trial Mitglied" });
 
 						if (!finding)
 							await reaction.message.guild.roles.create({ name: "Mitglied", mentionable: false, hoist: false, position: 0, reason: "react role", color: 0x000000 })
 
 						// Add role "Mitglied" to user
 						var member = reaction.message.guild.members.cache.find(member => member.id === _.get(message, "extra.applyingMember"));
-						if (member == undefined) { Logging.log("No member found", LogLevel.Report); return; }
+						if (member == undefined) { reaction.message.reply("No member found"); return; }
 						member.roles.add(finding);
-						Logging.log("Added role Mitglied to " + member.displayName, LogLevel.Report)
+						reaction.message.reply("Added role Mitglied to " + member.displayName)
 						member.send("Deine Vorstellung wurde angenommen. Du bist nun Mitglied der Community. \n\nDiese Nachricht wurde automatisch versendet.")
 					}
 					if (reaction.emoji.name == "🟡") {
 						var trialVotes = _.get(message, "extra.trialVotes")
 
-						if (trialVotes == 1) {
+						if (trialVotes == 2) {
 							// Check if role "Mitglied" exists
 							var finding = reaction.message.guild.roles.cache.find((role: Discord.Role) => { return role.name == "Mitglied" });
 
@@ -269,17 +283,27 @@ export class BeeApplication implements Application {
 							var member = reaction.message.guild.members.cache.find(member => member.id === _.get(message, "extra.applyingMember"));
 							if (member == undefined) { Logging.log("No member found", LogLevel.Report); return; }
 							member.roles.add(finding);
-							Logging.log("Added role Mitglied to " + member.displayName, LogLevel.Report)
+							reaction.message.reply("Member " + member.displayName + " wurde über Trial System angenommen.")
 							member.send("Deine Vorstellung wurde angenommen. Du bist nun Mitglied der Community. \n\nDiese Nachricht wurde automatisch versendet.")
+							member.roles.add(trial);
+							Logging.log("Added role Trial to " + member.displayName, LogLevel.Report)
 						}
 						if (trialVotes == 0 || trialVotes == undefined) { _.set(message, "extra.trialVotes", 1); }
 						message.save();
 					}
 					if (reaction.emoji.name == "🚫") {
+						if(member.roles)
+							{
+								var finding = member.roles.cache.find((role: Discord.Role) => { return role.name == "Mitglied" });
+								if (finding) {
+									reaction.message.reply("Member wurde bereits angenommen.");
+									return;
+								}
+							}
 						// Remove role "Mitglied" from user
 						var member = reaction.message.guild.members.cache.find(member => member.id === _.get(message, "extra.applyingMember"));
 						// Direct Message user he has to apply again
-						member.send("Deine Vorstellung wurde abgelehnt. Bitte versuche es erneut. \nGründe hierfür könnten hier z.b. eine zu kurze Bewerbung sein oder das die Bewerbung qualitativ nicht zu unserer Community passt. \nWenn du Fragen hast, wende dich bitte an einen Admin oder Moderator(Zu erkennen an der Team/Meow Rolle). \n\nDiese Nachricht wurde automatisch versendet.")
+						member.send("Deine Vorstellung wurde abgelehnt. Bitte versuche es erneut. \nGründe hierfür könnten hier z.b. eine zu kurze Bewerbung sein oder das die Bewerbung qualitativ|inhaltlich nicht zu unserer Community passt. \nWenn du Fragen hast, wende dich bitte an einen Admin oder Moderator falls du denkst diese Bewertung  stimme nicht zu.(Zu erkennen an der Team/M3OW Rolle). \n\nDiese Nachricht wurde automatisch versendet.")
 
 					}
 				}
