@@ -401,8 +401,12 @@ export let EveryoneCommands : ICommand[] = [
                 if(redirectChannel && redirectChannel.isText()) {
                     
                     var embed = new Discord.MessageEmbed();
-                    embed.setAuthor({name:user.tag, iconURL: msg.member.avatarURL({dynamic: true, size: 512})});
+                    embed.setAuthor({name:"username: "+msg.author.username+"| tag: "+msg.author.tag, iconURL:msg.author.avatarURL(), url:msg.author.avatarURL()});
                     embed.setDescription(msg.content);
+                    embed.setFields([
+                        {name:"Account Created", value:msg.author.createdAt.toDateString()},
+                        {name:"Joined", value:msg.member.joinedAt.toDateString()},
+                      ])
                     embed.setColor("RANDOM");
                     embed.setTimestamp(msg.createdTimestamp);
                     redirectChannel.send({embeds:[embed]});
