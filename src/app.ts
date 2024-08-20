@@ -245,16 +245,12 @@ export class BeeApplication implements Application {
 						//Remove all emojis from message
 						reaction.message.reactions.removeAll();
 
-						//If member already has role "Mitglied" reply with message
-						if(member.roles)
-						{
-							var finding = member.roles.cache.find((role: Discord.Role) => { return role.name == "Mitglied" });
-							if (finding) {
-								reaction.message.reply("Member wurde bereits angenommen.");
-								return;
-							}
+						var finding = member?.roles?.cache?.find((role: Discord.Role) => { return role.name == "Mitglied" });
+						if (finding) {
+							reaction.message.reply("Member wurde bereits angenommen.");
+							return;
 						}
-
+						
 						// Check if role "Mitglied" exists
 						var finding = reaction.message.guild.roles.cache.find((role: Discord.Role) => { return role.name == "Mitglied" });
 						var trial = reaction.message.guild.roles.cache.find((role: Discord.Role) => { return role.name == "Trial Mitglied" });
