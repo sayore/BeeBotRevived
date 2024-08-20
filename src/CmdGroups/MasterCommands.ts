@@ -474,6 +474,8 @@ export let MasterCommands : ICommand[] = [
                         }
                     }
                 }
+            } else { 
+                msg.reply("Usage: !katze redirect <channel id> to <channel id>");
             }
         }
     },

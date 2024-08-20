@@ -2,6 +2,31 @@
 !katze react with 
  {
   "emojis": [
+    ":man_frowning:",
+    ":person_frowning:",
+    ":three:",
+    ":person_gesturing_no:",
+    ":shy:",
+    ":six:",
+    ":seven:",
+    ":eight:"
+  ],
+  "names":[
+    "14-15",
+    "16-17",
+    "18-21",
+    "22-25",
+    "26-28",
+    "29-33",
+    "34-45",
+    "46+"
+  ],
+  "message":"Alter?"
+}
+
+!katze react with 
+ {
+  "emojis": [
     ":one:",
     ":two:",
     ":three:",
@@ -42,7 +67,7 @@
     "In einer Beziehung",
     "Offene Beziehung",
     "Auf der Suche",
-    "auf der Suche nach Abenteuern",
+    "Auf der Suche nach Abenteuern",
     "Forever Alone",
     "Verheiratet",
     "Poly Beziehung",
