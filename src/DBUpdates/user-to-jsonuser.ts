@@ -18,7 +18,7 @@ import { RPG, RPGData } from '../RPG/rpg';
         if(!key.startsWith("userj"))
         if(!value.converted) {
             console.log("Converting old User Profile...")
-            console.log("Covnerted: "+value.converted);
+            console.log("Converted: "+value.converted);
             let userdata =new Userdata()
             _.assignIn(userdata,await (await db.get(key)));
             userdata.rpg = <RPGData>_.assignIn(new RPG(), userdata.rpg);
